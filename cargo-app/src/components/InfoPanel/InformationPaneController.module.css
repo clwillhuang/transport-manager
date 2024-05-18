@@ -1,0 +1,39 @@
+.anchor {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    min-width: 300px;
+    /* position: relative; */
+    height: 0;
+    flex-direction: column;
+    /* border-radius: 15px; */
+    /* overflow: auto;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid white;
+    text-align: left;
+    padding: 15px; */
+}
+
+.content {
+    padding: 20px;
+    display: flex;
+    height: fit-content;
+}
+
+.content button:not(:last-child) {
+    margin-right: 3px;
+}
+
+.content h2 {
+    font-weight: bold;
+    text-align: left;
+    margin-right: 50px;
+}
+
+.content h3, .content label {
+    margin-top: 10px;
+    font-size: 1.0em;
+    font-weight: bold;
+    text-align: left;
+}

@@ -1,0 +1,40 @@
+.fetchContainer {
+    max-height: 100%;
+    width: 100%;
+    display: block;  
+}
+
+.fetchContainer > div {
+    max-height: 95%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.lastFetched {
+    color: white;
+    text-align: left;
+    .title {
+        text-align: left;
+    }
+    .time {
+        text-align: left;
+    }
+    .request {
+        text-align: right;
+    }
+}
+
+.pleaseSelect {
+    color: white;
+    text-align: left;
+}
+
+.mapInfo, .industryInfo {
+    color: white;
+    text-align: left;
+}
+
+.saveTitle {
+    font-weight: bold;
+    padding: 20px 0 25px 0;
+}

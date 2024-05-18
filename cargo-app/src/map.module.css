@@ -1,0 +1,26 @@
+.background {
+    background-color: black;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    right: 0%;
+    display: flex;
+    height: 100vh;
+    width: max(30vw, 400px);
+    flex-direction: column;
+    place-items: center;
+    background-color: rgba(118, 118, 118, 0.468);
+    color: white;
+    overflow-y: auto;
+}
+
+.menuContainer {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+} 

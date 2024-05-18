@@ -1,0 +1,40 @@
+.container {
+    /* padding: 25px; */
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    color: white;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-direction: column;
+    /* background-color: rgb(21, 21, 21); */
+    /* border-radius: 15px; */
+    /* border: 1px solid rgb(144, 144, 144); */
+}
+
+.closeButton {
+    display: flex;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px;
+    margin: 0;
+    line-height: 1;
+    border-radius: 5px;
+}
+
+
+/* Content viewport */
+.container > div {
+    box-sizing: content-box;
+    flex-grow: 1;
+    width: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+.tabParent > div {
+    position: relative;
+    overflow: auto;
+}

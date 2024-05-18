@@ -1,0 +1,171 @@
+.flexConstraint {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.flexConstraint > div {
+    display: inline-block;
+    /* flex-direction: row; */
+	/* height: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column; */
+}
+
+.flexConstraint form {
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.flexConstraint label {
+    color: white;
+}
+
+.content {
+    color: white;
+    display: inline-flex;
+    flex-direction: row;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    /* border-top: 2px white solid; */
+}
+
+.industryList {
+    position: relative;
+    flex-direction: column;
+    display: flex;
+    text-align: left;
+    margin: 0;
+    width: 200px;
+    height: 100%;
+    max-height: 100;
+    overflow: auto;
+    /* border-right: 2px solid white; */
+}
+
+.directoryOverflow {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.directory {
+    padding: 0;
+    list-style: none;
+    color: white;
+    flex: 1;
+}
+
+.directory>li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.industryInfo {
+    padding-left: 20px;
+    height: 100%;
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+}
+
+.industryInfo ul {
+    padding: 0;
+    list-style: none;
+    color: white;
+    text-align: center;
+}
+
+.industryInfo .industryMiddle {
+
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-direction: column;
+
+    h3 {
+        margin: 0;
+        padding: 10px;
+    }
+
+    > div {
+        flex-grow: 1;
+        /* Take up remaining height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+}
+
+/* Apply these styles to the outermost div with className={styles.producesList} */
+.producesList,
+.acceptsList {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    >h3 {
+        margin: 0;
+        padding: 10px;
+    }
+
+    >div {
+        flex-grow: 1;
+        /* Take up remaining height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+        height: 100%;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .producesItem, .acceptsItem {
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 5px;
+        margin: 5px 0;
+    }
+
+    .producesItem {
+        background-color: rgb(16, 42, 77);
+    }
+    
+    .acceptsItem {
+        border-radius: 5px;
+        background-color: rgb(16, 77, 20);
+    }
+
+    .producesItem h4, .acceptsItem h4 {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .producesItem li, .acceptsItem li {
+        cursor: pointer;
+    }
+    .producesItem li:hover, .acceptsItem li:hover {
+        text-decoration: underline;
+    }
+}
+
+
+.industryMiddle, .producesList, .acceptsList {
+    width: 30%;
+    text-align: center;
+}
+

@@ -1,0 +1,22 @@
+.actionIndicator {
+    position: fixed !important; 
+    top: 100px;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.actionIndicator span {
+    position: relative;
+}
+
+.header {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.title {
+    padding-bottom: 20px;
+    font-weight: bold;
+}

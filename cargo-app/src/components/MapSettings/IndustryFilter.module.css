@@ -1,0 +1,17 @@
+.industryList {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    grid-template-columns: 1fr 1fr;
+    text-align: left;
+    display: grid;
+}
+
+.industryList label {
+    margin-left: 5px;
+    white-space: nowrap;
+}
+
+.industryList li, .industryList label {
+    display: inline-block;
+}

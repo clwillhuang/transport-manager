@@ -1,0 +1,19 @@
+.container {
+    position: fixed;
+    display: flex;
+    left: 15px;
+    bottom: 15px;
+    min-width: min(90%, 400px);
+    flex-direction: column;
+}
+
+.title {
+    padding: 10px;
+}
+
+.index {
+    width: 100%;
+    border-radius: 15px;
+    background-color: white;
+    border: 3px solid black;
+}

@@ -1,0 +1,40 @@
+.menu {
+    display: flex;
+    width: min-content;
+    border-radius: 15px;
+    overflow: visible;
+    margin-top: 15px;
+}
+
+.menuItem {
+    padding: 5px 15px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+}
+
+.menuItem:hover .tooltip {
+    opacity: 1;
+    color: white;
+}
+
+.tooltip {
+    text-align: left;
+    transition: opacity 0.2s ease-in-out;;
+    position: absolute;
+    top: calc(100% + 15px);
+    left: 0;
+    opacity: 0;
+    background-color: black;
+    border-radius: 5px;
+    border: 2px solid white;
+    padding: 10px;
+    margin: 0;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.tooltip p {
+    margin: 10px 0 0 0;
+}

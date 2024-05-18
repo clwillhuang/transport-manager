@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "paths": {
+      "~shared/*": ["../shared/*"],
+    },
+    "rootDirs": [
+        "./src",
+        "../shared",
+        "../shared/node_modules/*"
+      ], 
+      "typeRoots": [
+        "./index.d.ts",
+        "../shared/node_modules/@types"
+      ],
+  },
+  "include": [
+    "vite.config.ts",
+  ]
+}

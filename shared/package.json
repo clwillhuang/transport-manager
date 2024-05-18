@@ -1,0 +1,27 @@
+{
+    "name": "transport-manager-shared",
+    "version": "0.0.1",
+    "description": "Package containing shared types between frontend and backend.",
+    "main": "index.js",
+    "scripts": {
+        "declare:shared": "npx tsc -d",
+        "db:generate": "drizzle-kit generate:pg --config drizzle.config.ts",
+        "db:push": "drizzle-kit push:pg --config=drizzle.config.ts",
+        "db:drop": "drizzle-kit drop --config=drizzle.config.ts",
+        "db:migrate": "npx tsc --project tsconfig.migrate.json && node .\\migrate.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "drizzle-orm": "^0.30.1",
+        "net": "^1.0.2",
+        "pg": "^8.11.3"
+    },
+    "devDependencies": {
+        "@types/dotenv": "^8.2.0",
+        "@types/pg": "^8.11.2",
+        "dotenv": "^16.4.5",
+        "drizzle-kit": "^0.20.14",
+        "typescript": "^4.9.5"
+    }
+}

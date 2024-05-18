@@ -1,0 +1,79 @@
+.menu {
+    display: flex;
+    border-radius: 15px;
+}
+
+.modalSizing > div {
+    min-width: min(700px, 95vw);
+}
+
+.menuItem {
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    padding: 10px;
+}
+
+.menuItem svg {
+    margin-right: 5px;
+}
+
+.window {
+    position: fixed;
+    /* background-color: black; */
+    /* border: 3px solid white; */
+    /* width: 800px;
+    height: 80vh;
+    max-width: 95vw; */
+    /* display: flex;
+    flex-direction: column;
+    top: 100px;
+    left: calc(50% - 400px);
+    overflow: auto;
+    max-height: calc(90vh);
+    z-index: 100; */
+}
+
+.header {
+    display: inline-block;
+    position: relative;
+    /* height: 40px; */
+    width: 100%;
+    color: white;
+}
+
+.header h2 {
+    text-align: left;
+    float: left;
+    margin: 10px;
+    height: 30px;
+}
+
+.header h2 svg {
+    margin-right: 10px;
+}
+
+.header button {
+    float: right;
+    margin: 10px;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+}
+
+/* .overflow {
+    flex: 1;
+    overflow: auto;
+} */
+
+.defined {
+    width: 100%;
+    max-height: 70vh;
+    display: flex;
+}

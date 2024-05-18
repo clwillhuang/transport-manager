@@ -1,0 +1,38 @@
+.editButton {
+    font-size: normal;
+}
+
+.modalFormPanel div {
+    margin: 10px 0;
+}
+
+.modalFormPanel h2 {
+    /* margin-bottom: 10px; */
+}
+
+.modalFormPanel label {
+    /* display: block;
+    margin-bottom: 10px; */
+}
+
+.modalFormPanel input {
+    /* width: 100%; */
+    /* padding: 8px;
+    box-sizing: border-box;
+    margin-top: 4px;
+    margin-bottom: 10px; */
+}
+
+.modalFormPanel button {
+    /* background: #4caf50;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px; */
+}
+
+.modalFormPanel button.cancel {
+    background: #ccc;
+}

@@ -1,0 +1,12 @@
+node_modules/
+cargo-app/node_modules/
+
+hot/
+build/
+**.env
+**.js
+shared/db/**/*.d.ts
+
+cargo-app/public/personal/
+
+shared/drizzle

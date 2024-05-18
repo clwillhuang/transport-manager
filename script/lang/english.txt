@@ -1,0 +1,1 @@
+STR_WELCOME    :Hello {COMPANY}!{}{}You are playing a game with Transport Manager, a web-based tool for game visualization and interaction.

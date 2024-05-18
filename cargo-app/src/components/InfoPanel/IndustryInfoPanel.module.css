@@ -1,0 +1,19 @@
+.cargos {
+    width: 100%;
+    position: relative;
+}
+
+.cargos section {
+    width: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    vertical-align: top;
+}
+
+.cargos section ul {
+    list-style: none;
+    margin: 0;
+    list-style-type: none;
+    padding: 0;
+}

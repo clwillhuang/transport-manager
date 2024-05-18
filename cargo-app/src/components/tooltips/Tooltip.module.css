@@ -1,0 +1,49 @@
+.container {
+    position: absolute;
+    border-radius: 15px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.container, .container * {
+    pointer-events: none;
+}
+
+.container h4, .overlay h4 {
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgb(139, 139, 139);
+}
+
+.overlay h5 {
+    margin-top: 10px;
+}
+
+.container p, .overlay h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.overlay p {
+    margin: 0;
+}
+
+/* Drag tooltip specifies its own padding and border b/c not child of main controller */
+.dragToolTip {
+    background-color: rgba(255, 255, 255, 0.968);
+    color: black;
+    border: 2px black solid;
+    border-radius: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.dragToolTip p {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.overlay {
+    text-wrap: nowrap;
+    text-align: left;
+}
