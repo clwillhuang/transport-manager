@@ -171,12 +171,15 @@ const MapController = ({
 	const [image, setImage] = useState<HTMLImageElement | null>(null);
 	const [pixels, setPixels] = useState<string[][]>([]);
 
+	// Preload example image on first load
 	// useEffect(() => {
-	// 	const imagePath = './maps/blank.png';
+	// 	console.log('Loading image')
+	// 	const imagePath = './maps/example.png';
 	// 	const img = new Image();
 	// 	img.src = imagePath;
 	// 	setImage(img)
 	// 	img.onload = () => {
+	// 		console.log('ONload')
 	// 		var canvas = document.createElement('canvas');
 	// 		canvas.width = img.width;
 	// 		canvas.height = img.height;
