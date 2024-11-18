@@ -38,7 +38,7 @@ class StationMapObject extends HoverableMapObject<Station, TrackConnectableObjec
                     cx={0}
                     cy={0}
                     r={5}
-                    fill='green'
+                    fill='orange'
                     stroke='#000000'
                     strokeWidth={1}
                 />

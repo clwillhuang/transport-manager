@@ -61,11 +61,11 @@ const MenuController = ({
     };
 
     const items: MenuWindowData[] = useMemo(() => [
-        {
+        ... (import.meta.env.VITE_ENABLE_SOCKET === 'on' ? [{ 
             index: Windows.EconomyOptions,
             title: <><FontAwesomeIcon icon={faCog} /> Economies</>,
             content: <ChangeIndustryPane {...{ saveId, initial }} />
-        },
+        }] : []),
         {
             index: Windows.Saves,
             title: <><FontAwesomeIcon icon={faSave} /> Saves</>,

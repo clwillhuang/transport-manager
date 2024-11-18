@@ -104,7 +104,7 @@ const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
         // Show two tabs. One shows current save data. One shows list of all saves
         <div className={styles.fetchContainer}>
         <Tabs title='Select and Browse Save Games' fill className={styles.tabPane}>
-            <Tab eventKey="current" title='Current Save'>
+            { import.meta.env.VITE_ENABLE_SOCKET === 'on' && <Tab eventKey="current" title='Current Save'>
                 <Container>
                     {
                         (!selectedSaveId || !currentSave) ? <div className={styles.pleaseSelect}>
@@ -164,7 +164,7 @@ const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
                         }} /> 
                     }
                 </Container>
-            </Tab>
+            </Tab> }
             <Tab eventKey="all" title="All Saves"  >
                 <ListGroup variant='flush'>
                     {

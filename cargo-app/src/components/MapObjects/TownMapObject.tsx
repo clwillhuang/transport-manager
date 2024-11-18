@@ -9,7 +9,7 @@ class TownMapObject extends ConnectableMapObject<Town> {
 
     // Implement the render method to create the station icon
     render() {
-        const { x: mapX, y: mapY, name } = this.props.data;
+        const { x: mapX, y: mapY, name, isCity } = this.props.data;
         const { x, y } = ConvertTileToCanvasCoordinate({ x: mapX, y: mapY }, this.props.mapSize);
         return (
             <g transform={`translate(${x}, ${y})`}
@@ -22,7 +22,7 @@ class TownMapObject extends ConnectableMapObject<Town> {
                     cx={0}
                     cy={0}
                     r={5}
-                    fill={'green'}
+                    fill={isCity ? 'green' : 'limegreen'}
                     stroke={'#000000'}
                     strokeWidth={1}
                 />

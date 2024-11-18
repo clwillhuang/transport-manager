@@ -7,7 +7,7 @@
     "dev": "nodemon .\\build\\server\\src\\server.js",
     "watch": "npx tspc --outDir .\\build && npx tspc --outDir .\\build -w",
     "start": "node .\\build\\server\\server.js",
-    "hotbuild": "npx tspc --outDir .\\hot && node .\\hot\\server\\server.js"
+    "hotbuild": "npx tspc --outDir .\\hot && node .\\hot\\server\\src\\server.js"
   },
   "author": "",
   "license": "ISC",

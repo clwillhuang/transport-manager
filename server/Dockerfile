@@ -23,6 +23,7 @@ RUN npm run build
 RUN npm run db:generate && npm run db:migrate
 
 # Expose the port the app runs on
+ARG VITE
 ARG SERVER_PORT
 ENV SERVER_PORT=$SERVER_PORT
 EXPOSE $SERVER_PORT

@@ -4,6 +4,7 @@ services:
   express:
     build: 
       context: ./server
+    env_file: .env
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:

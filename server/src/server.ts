@@ -126,5 +126,5 @@ io.on('connection', (socket) => {
 
 // must listen using server due to socket io
 server.listen(process.env.SERVER_PORT, () => {
-    console.log(`Server listening on ${SERVER_PORT}`);
+    console.log(`Server listening on ${process.env.SERVER_PORT}`);
 })

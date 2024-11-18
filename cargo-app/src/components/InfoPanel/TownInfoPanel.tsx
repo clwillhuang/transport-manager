@@ -33,7 +33,7 @@ const TownInfoPanel = ({ id, saveId, onClose }: TownInfoPanelProps) => {
 
     return (
         <>
-            <span id='card-type'>TOWN</span>
+            <span id='card-type'>SETTLEMENT</span>
             <h2>{name} ({isCity ? 'City' : 'Town'})</h2>
             <h3>Location</h3>
             <div>

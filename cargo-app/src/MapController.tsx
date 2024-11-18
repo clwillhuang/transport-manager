@@ -172,35 +172,32 @@ const MapController = ({
 	const [pixels, setPixels] = useState<string[][]>([]);
 
 	// Preload example image on first load
-	// useEffect(() => {
-	// 	console.log('Loading image')
-	// 	const imagePath = './maps/example.png';
-	// 	const img = new Image();
-	// 	img.src = imagePath;
-	// 	setImage(img)
-	// 	img.onload = () => {
-	// 		console.log('ONload')
-	// 		var canvas = document.createElement('canvas');
-	// 		canvas.width = img.width;
-	// 		canvas.height = img.height;
-	// 		console.log('loaded image')
-	// 		var context = canvas.getContext('2d')!;
-	// 		context.imageSmoothingEnabled = false;
-	// 		// setImage(img);
-	// 		context.drawImage(img, 0, 0);
-	// 		let imageData = context.getImageData(0, 0, img.width, img.height);
-	// 		// console.log(imageData)
-	// 		const pixelData = new Array(img.height);
-	// 		for (let i = 0; i < img.height; i++) {
-	// 			pixelData[i] = new Array(img.width);
-	// 			for (let j = 0; j < img.width; j++) {
-	// 				const index = (i * img.width + j) * 4;
-	// 				pixelData[i][j] = convertToHex(imageData?.data[index], imageData?.data[index + 1], imageData?.data[index + 2], imageData?.data[index + 3]);
-	// 			}
-	// 		}
-	// 		setPixels(pixelData);
-	// 	};
-	// }, [])
+	useEffect(() => {
+		const imagePath = './maps/Example Map.png';
+		const img = new Image();
+		img.src = imagePath;
+		setImage(img)
+		img.onload = () => {
+			var canvas = document.createElement('canvas');
+			canvas.width = img.width;
+			canvas.height = img.height;
+			var context = canvas.getContext('2d')!;
+			context.imageSmoothingEnabled = false;
+			// setImage(img);
+			context.drawImage(img, 0, 0);
+			let imageData = context.getImageData(0, 0, img.width, img.height);
+			// console.log(imageData)
+			const pixelData = new Array(img.height);
+			for (let i = 0; i < img.height; i++) {
+				pixelData[i] = new Array(img.width);
+				for (let j = 0; j < img.width; j++) {
+					const index = (i * img.width + j) * 4;
+					pixelData[i][j] = convertToHex(imageData?.data[index], imageData?.data[index + 1], imageData?.data[index + 2], imageData?.data[index + 3]);
+				}
+			}
+			setPixels(pixelData);
+		};
+	}, [])
 
 	const onFinishCoverageConnection = (
 		// station: Station | null, 
@@ -427,7 +424,7 @@ const MapController = ({
 					</SaveContext.Consumer>
 
 					{/* Distance Measurement Line */}
-					{(isDragging && action == Action.DistanceMeasure) && <line x1={mouseDownLoc.x} y1={mouseDownLoc.y} x2={currentMouseLoc.x} y2={currentMouseLoc.y} stroke='white' className={styles.distanceLine} />}
+					{(isDragging && action == Action.DistanceMeasure) && <line x1={mapSize.mapWidth - mouseDownLoc.x} y1={mouseDownLoc.y} x2={mapSize.mapWidth - currentMouseLoc.x} y2={currentMouseLoc.y} stroke='white' className={styles.distanceLine} />}
 					{/* Station connection line */}
 					{
 						(action === Action.ConnectStation && selectedStation?.selectedStation?.id) && <line x1={selectedStation.selectedStation.x} y1={selectedStation.selectedStation.y} x2={currentMouseLoc.x} y2={currentMouseLoc.y} stroke='green' className={styles.distanceLine} />

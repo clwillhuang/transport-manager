@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import './App.css'
 import './index.css'
 import styles from './map.module.css'
@@ -16,7 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import { baseUrl } from './tools/serverConn';
 import type { GETCurrentCompanyResponse } from '~shared/api/schema/apiCompany';
 import NotificationsPanel from './components/Notifications/NotificationsPanel';
-import type { GETOneSaveResponse } from '~shared/api/schema/apiSave';
+import type { GETAllSaveResponse, GETOneSaveResponse } from '~shared/api/schema/apiSave';
 import { Action } from './components/ActionMenu/actionMenuOptions';
 
 type SaveContextType = {
@@ -47,12 +47,27 @@ function App() {
 		initialData: null,
 	})
 
+	const { data: allSaves } = useQuery<GETAllSaveResponse | null>({
+        queryKey: ['currentsave'],
+        queryFn: () => fetch(`${baseUrl}/saves`).then(res => res.json()),
+		enabled: import.meta.env.VITE_ENABLE_SOCKET !== 'on',
+		initialData: null
+    })
+
 	const saveQuery = useQuery<GETOneSaveResponse | null>({
 		queryKey: ['save'],
 		queryFn: () => fetch(`${baseUrl}/saves/${saveId}`).then(res => res.json()),
 		enabled: !!saveId,
 		initialData: null,
 	})
+
+	// Once all saves are retrieved, pre-emptively load next one if socket is disabled.
+	useEffect(() => {
+		if (import.meta.env.VITE_ENABLE_SOCKET !== 'on' && allSaves) {
+			const firstSave = allSaves.at(0);
+			if (firstSave) setSaveId(firstSave.id)
+		}
+	}, [allSaves])
 
 	return (
 		<SaveContext.Provider value={{ saveId }}>

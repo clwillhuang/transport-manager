@@ -29,6 +29,6 @@ export const ACTION_MENU_OPTIONS: Map<Action, ActionMenuOption> = new Map<Action
         [Action.AddSign, { title: 'Add Sign / Text Label', description: 'Click on a location to place a new sign/label on the map.', icon: faSignsPost }],
         [Action.AddIndustry, { title: 'Add Industry', description: 'Click on a point to add an industry', icon: faIndustry }],
         [Action.AddCity, { title: 'Add City', description: 'Click on a location to place a new city on the map.', icon: faCity }],
-        [Action.BuildTrack, { title: 'Build Train Track', description: 'Click to create train tracks between two points on the map.', icon: faHammer }],
+        // [Action.BuildTrack, { title: 'Build Train Track', description: 'Click to create train tracks between two points on the map.', icon: faHammer }],
     ]
 )

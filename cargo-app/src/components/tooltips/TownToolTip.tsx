@@ -5,7 +5,7 @@ export const TownToolTip: ToolTipRenderer<ToolTipProps<Town>> = ({data}) => {
     const { x, y, name, isCity } = data;
     return (
         <>
-            <h4>Town: "{name}"{isCity ? ' (City)' : ''}</h4>
+            <h4>{isCity ? 'City' : 'Town'} of {name}</h4>
             <h5>Location</h5>
             <p>{`(${x}, ${y})`}</p>
         </>
