@@ -8,14 +8,14 @@ export interface DragToolTipData {
     model?: CargoPaymentModel | null,
 }
 
-const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2, 
-    maximumFractionDigits: 2, 
-  });
+// const formatter = new Intl.NumberFormat('en-US', {
+//     style: 'currency',
+//     currency: 'USD',
+//     minimumFractionDigits: 2, 
+//     maximumFractionDigits: 2, 
+//   });
 
-export default ({start, end, model}: DragToolTipData) => {
+export default ({start, end }: DragToolTipData) => {
     const distance = calculateManhattanDistance(start, end);
 	return <div className={styles.dragToolTip}>
         <h4>Distance</h4>

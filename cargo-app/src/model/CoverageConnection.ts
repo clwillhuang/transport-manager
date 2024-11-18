@@ -1,7 +1,7 @@
 // Represents a connection between a station and a connectable object (e.g. industry, town, etc.)
 
-import type { Station } from "~shared/db/schema/station";
-import type { Cargo } from "~shared/db/schema/cargo";
+import type { Station } from "@dbtypes/db/schema/station";
+import type { Cargo } from "@dbtypes/db/schema/cargo";
 
 // inplemented by all map objects that can be connected to a source
 export interface IConnectableMapObjectProps {

@@ -7,7 +7,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "paths": {
-      "~shared/*": ["../shared/*"],
+      "@dbtypes/*": ["../shared/*"],
     },
     "rootDirs": [
         "./src",

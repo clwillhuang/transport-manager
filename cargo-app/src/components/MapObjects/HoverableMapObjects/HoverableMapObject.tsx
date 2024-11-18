@@ -49,7 +49,7 @@ abstract class HoverableMapObject<T, P = {}> extends MapObject<T, P & HoverProps
     TTComponent: ToolTipRenderer<ToolTipProps<T, P>>;
 
     // Get tooltip render location from props 
-    getToolTipOffset(data: T): TileCoordinate {
+    getToolTipOffset(_data: T): TileCoordinate {
         return { x: 5, y: 5 };
     }
 
@@ -64,7 +64,7 @@ abstract class HoverableMapObject<T, P = {}> extends MapObject<T, P & HoverProps
         }
     }
 
-    onMouseLeave(event: React.MouseEvent<Element, MouseEvent>): void {
+    onMouseLeave(_event: React.MouseEvent<Element, MouseEvent>): void {
         if (this.tooltip) {
             this.props.hideToolTip(this.tooltip.key)
         }

@@ -2,8 +2,7 @@
 import HoverableMapObject, { HoverProps, ToolTipProps } from "./HoverableMapObjects/HoverableMapObject";
 import { ConvertTileToCanvasCoordinate, MapObjectProps } from "./MapObject";
 import { TrackConnectableObjectProps } from "./TrackConnectableObjectProps";
-import { TileCoordinate } from "../../model/Point";
-import type { Station } from "~shared/db/schema/station";
+import type { Station } from "@dbtypes/db/schema/station";
 
 // A map object meant to represent a train station
 class StationMapObject extends HoverableMapObject<Station, TrackConnectableObjectProps> {

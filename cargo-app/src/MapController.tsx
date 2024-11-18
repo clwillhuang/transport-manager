@@ -3,7 +3,7 @@ import { InformationPaneMode } from './components/InfoPanel/InformationPaneMode'
 import DragToolTip from './components/tooltips/DragToolTip';
 import styles from './MapController.module.css'
 import tooltipStyles from './components/tooltips/Tooltip.module.css';
-import svgPanZoom, { zoomOut } from 'svg-pan-zoom';
+import svgPanZoom from 'svg-pan-zoom';
 import InformationPaneController, { InformationPaneControllerData } from './components/InfoPanel/InformationPaneController';
 import { IWindowOpenable } from './components/Menu/MenuController';
 import { ConnectMode, CoverageConnectionProps } from './components/MapObjects/ConnectableMapObject';
@@ -16,20 +16,19 @@ import StationMap from './components/MapObjects/StationMap';
 import TownMap from './components/MapObjects/TownMap';
 import SignMap from './components/MapObjects/SignMap';
 import { TileCoordinate } from './model/Point';
-import type { Station } from '~shared/db/schema/station';
-import type { Circle } from '~shared/db/schema/circle'
-import type { Sign } from '~shared/db/schema/sign'
-import type { Town } from '~shared/db/schema/town'
+import type { Station } from '@dbtypes/db/schema/station';
+import type { Circle } from '@dbtypes/db/schema/circle'
+import type { Sign } from '@dbtypes/db/schema/sign'
+import type { Town } from '@dbtypes/db/schema/town'
 
 import { baseUrl, fetchPOSTFactory } from './tools/serverConn';
-import type { GETAllIndustryTypeResponse } from '~shared/api/schema/apiIndustryType';
+import type { GETAllIndustryTypeResponse } from '@dbtypes/api/schema/apiIndustryType';
 import MapSettingsDisplay from './components/MapSettings/MapSettingsDisplay';
-import DefaultImage from '../public/maps/blank.png'
 
 import { DefinedUseQueryResult, useQueryClient } from '@tanstack/react-query';
-import type { GETCurrentCompanyResponse } from '~shared/api/schema/apiCompany';
-import type { GETOneSaveResponse } from '~shared/api/schema/apiSave';
-import { Card, ListGroup, Overlay } from 'react-bootstrap';
+import type { GETCurrentCompanyResponse } from '@dbtypes/api/schema/apiCompany';
+import type { GETOneSaveResponse } from '@dbtypes/api/schema/apiSave';
+import { Card, ListGroup } from 'react-bootstrap';
 import UpdateImageModal from './components/Modals/ChangeImageModal';
 import { ConvertTileToCanvasCoordinate } from './components/MapObjects/MapObject';
 import { IconType, IconTypeValues } from './components/MapSettings/IconFilter';
@@ -169,7 +168,7 @@ const MapController = ({
 	}
 
 	const [image, setImage] = useState<HTMLImageElement | null>(null);
-	const [pixels, setPixels] = useState<string[][]>([]);
+	const [_pixels, setPixels] = useState<string[][]>([]);
 
 	// Preload example image on first load
 	useEffect(() => {
@@ -240,7 +239,7 @@ const MapController = ({
 		return;
 	}, [setInnerToolTip, zoomInstance])
 
-	const onObjectMouseLeave = useCallback((key: Key) => {
+	const onObjectMouseLeave = useCallback((_key: Key) => {
 		if (innerToolTip) {
 			setInnerToolTip(null);
 		}

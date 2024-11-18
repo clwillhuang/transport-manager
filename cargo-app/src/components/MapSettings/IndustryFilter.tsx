@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Form, FormGroup } from "react-bootstrap";
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
 import FormCheckLabel from "react-bootstrap/esm/FormCheckLabel";
 import styles from './IndustryFilter.module.css'
-import type { GETAllIndustryTypeResponse } from "~shared/api/schema/apiIndustryType";
+import type { GETAllIndustryTypeResponse } from "@dbtypes/api/schema/apiIndustryType";
 
 interface IndustryFilterContentProps {
     industryTypes: GETAllIndustryTypeResponse,

@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { baseUrl, fetchDELETEFactory } from "../../tools/serverConn";
-import type { GETOneStationResponse } from "~shared/api/schema/apiStation";
+import type { GETOneStationResponse } from "@dbtypes/api/schema/apiStation";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTruck } from "@fortawesome/free-solid-svg-icons/faTruck";

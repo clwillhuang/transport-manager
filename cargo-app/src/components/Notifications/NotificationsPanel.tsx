@@ -5,7 +5,7 @@ import Notification, { NotificationProps } from './Notification';
 import styles from './Notifications.module.css'
 
 export default function Notifications() {
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [_isConnected, setIsConnected] = useState(socket.connected);
   const [toasts, setToasts] = useState<Array<NotificationProps>>([]);
   const addToast = (newToast: NotificationProps) => setToasts((toasts) => [...toasts, newToast]);
   const removeToast = (id: string) =>

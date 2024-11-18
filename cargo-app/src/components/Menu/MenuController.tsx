@@ -1,7 +1,6 @@
 import { faIndustry } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactElement, useMemo } from "react"
-import CustomCloseButton from "../CloseButton";
 import IndustryPane from "./IndustryPane";
 import ChangeIndustryPane from "./ChangeIndustryPane";
 import styles from './MenuController.module.css'
@@ -10,7 +9,7 @@ import { faSave } from "@fortawesome/free-solid-svg-icons/faSave";
 import FetchPane from "./FetchPane";
 import GraphPane from "../PaymentGraphs/GraphPane";
 import { faChartLine } from "@fortawesome/free-solid-svg-icons/faChartLine";
-import { Col, Container, ListGroup, Modal, ModalHeader, Row } from "react-bootstrap";
+import { ListGroup, Modal } from "react-bootstrap";
 
 // This is the top bar of the app, with options to view different windows
 export enum Windows {

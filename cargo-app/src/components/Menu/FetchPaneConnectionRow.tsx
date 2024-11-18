@@ -20,7 +20,7 @@ const FetchPaneConnectionRow = ({
     const disconnectMutation = useMutation({
         mutationKey: ['disconnect'],
         mutationFn: () => fetch(`${baseUrl}/socket/disconnect`, { method: 'POST', headers: { 'Content-Type': 'application/json' } }).then(res => res.json()),
-        onSuccess: (res) => {
+        onSuccess: (_res) => {
             setSaveId(null)
         }
     })

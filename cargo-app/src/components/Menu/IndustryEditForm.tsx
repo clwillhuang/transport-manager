@@ -3,11 +3,11 @@ import React, { useState, ChangeEvent, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { baseUrl, fetchPOSTFactory } from '../../tools/serverConn';
 import { useMutation } from '@tanstack/react-query';
-import type { GETAllCargoResponse } from '~shared/api/schema/apiCargo';
-import type { IndustryType } from '~shared/db/schema/industryType';
+import type { GETAllCargoResponse } from '@dbtypes/api/schema/apiCargo';
+import type { IndustryType } from '@dbtypes/db/schema/industryType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
-import type { GETAllIndustryTypeResponse } from '~shared/api/schema/apiIndustryType';
+import type { GETAllIndustryTypeResponse } from '@dbtypes/api/schema/apiIndustryType';
 
 interface EditIndustryTypeFormProps {
     selectedType: IndustryType;
@@ -16,7 +16,12 @@ interface EditIndustryTypeFormProps {
     saveId: number;
 }
 
-const EditIndustryTypeForm: React.FC<EditIndustryTypeFormProps> = ({ industryTypes, cargoes, selectedType, saveId }) => {
+const EditIndustryTypeForm: React.FC<EditIndustryTypeFormProps> = ({ 
+    // industryTypes, 
+    // cargoes,
+    selectedType, 
+    saveId
+}) => {
     const [editedIndustryType, setEditedIndustryType] = useState<IndustryType>({ ...selectedType })
 
     useEffect(() => {

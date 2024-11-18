@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { baseUrl, fetchDELETEFactory } from "../../tools/serverConn";
-import type { GETOneSignResponse } from "~shared/api/schema/apiSign";
-import type { Sign } from "~shared/db/schema/sign";
+import type { GETOneSignResponse } from "@dbtypes/api/schema/apiSign";
+import type { Sign } from "@dbtypes/db/schema/sign";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import UpdateSignModal from "../Modals/UpdateSignModal";
 

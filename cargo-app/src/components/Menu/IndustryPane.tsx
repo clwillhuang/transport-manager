@@ -3,9 +3,9 @@ import { useState } from "react";
 import styles from './IndustryPane.module.css'
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../tools/serverConn";
-import type { GETAllCargoResponse } from "~shared/api/schema/apiCargo";
-import type { GETAllIndustryTypeResponse, GETOneIndustryTypeResponse } from "~shared/api/schema/apiIndustryType";
-import type { IndustryType } from "~shared/db/schema/industryType";
+import type { GETAllCargoResponse } from "@dbtypes/api/schema/apiCargo";
+import type { GETAllIndustryTypeResponse, GETOneIndustryTypeResponse } from "@dbtypes/api/schema/apiIndustryType";
+import type { IndustryType } from "@dbtypes/db/schema/industryType";
 import { Container, ListGroup } from "react-bootstrap";
 import EditIndustryTypeForm from "./IndustryEditForm";
 import HexColorBox from "../HexColorBox";

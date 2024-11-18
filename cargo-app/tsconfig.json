@@ -15,7 +15,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "~shared/*": ["../shared/*"],
+      // "@dbtypes/*": ["../shared/*"],
+      "@dbtypes/*": ["./src/dbtypes/*"]
     },         
     // "plugins": [
     //   // Transform paths in output .js files

@@ -1,5 +1,4 @@
-import { TileCoordinate } from "../../model/Point";
-import type { Sign } from "~shared/db/schema/sign";
+import type { Sign } from "@dbtypes/db/schema/sign";
 import HoverableMapObject from "./HoverableMapObjects/HoverableMapObject";
 import { ConvertTileToCanvasCoordinate } from "./MapObject";
 

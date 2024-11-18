@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { baseUrl, fetchPOSTFactory } from '../../tools/serverConn';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Station } from '~shared/db/schema/station';
+import type { Station } from '@dbtypes/db/schema/station';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import styles from './UpdateModal.module.css'

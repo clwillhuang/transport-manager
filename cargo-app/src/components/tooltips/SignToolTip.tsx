@@ -1,5 +1,5 @@
 import { ToolTipProps, ToolTipRenderer } from '../MapObjects/HoverableMapObjects/HoverableMapObject';
-import type { Sign } from '~shared/db/schema/sign';
+import type { Sign } from '@dbtypes/db/schema/sign';
 
 export const SignToolTip: ToolTipRenderer<ToolTipProps<Sign>> = ({ data }) => {
     const { x, y, text } = data;

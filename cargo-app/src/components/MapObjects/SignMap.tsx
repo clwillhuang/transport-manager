@@ -6,8 +6,8 @@ import SignMapObject from "./SignMapObject";
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../tools/serverConn";
 import { GenericMapProps, OpensInfoPanel } from "./GenericMapProps";
-import type { GETAllSignResponse } from "~shared/api/schema/apiSign";
-import type { Sign } from "~shared/db/schema/sign";
+import type { GETAllSignResponse } from "@dbtypes/api/schema/apiSign";
+import type { Sign } from "@dbtypes/db/schema/sign";
 
 interface SignMapProps extends GenericMapProps, OpensInfoPanel {
 }

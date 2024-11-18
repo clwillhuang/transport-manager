@@ -1,11 +1,11 @@
 // Allow the user to upload a new image, select a new mod, economy or cargo payment model
 import { useState } from "react";
-import { Col, FormGroup, FormLabel, Row, Button, FormControl, Alert } from "react-bootstrap";
+import { Col, FormGroup, FormLabel, Row, Button, Alert } from "react-bootstrap";
 import Form from "react-bootstrap/esm/Form";
 import styles from './ChangeIndustryPane.module.css'
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { baseUrl, fetchPOSTFactory } from "../../tools/serverConn";
-import type { GETAllPacksResponse, IndustryPackResponse, IndustryVersionResponse } from "~shared/api/schema/apiEconomies";
+import type { GETAllPacksResponse, IndustryPackResponse, IndustryVersionResponse } from "@dbtypes/api/schema/apiEconomies";
 
 interface ChangeIndustryPaneProps {
     saveId: number | null,

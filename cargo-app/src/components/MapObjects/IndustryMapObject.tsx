@@ -1,4 +1,4 @@
-import type { Industry } from "~shared/db/schema/industry"
+import type { Industry } from "@dbtypes/db/schema/industry"
 import ConnectableMapObject, { ConnectableMapObjectProps } from "./ConnectableMapObject";
 import { ConvertTileToCanvasCoordinate } from "./MapObject";
 

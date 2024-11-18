@@ -23,7 +23,7 @@ abstract class MapObject<T, P = {}> extends Component<MapObjectProps<T> & P> {
 
     abstract override render(): JSX.Element;
 
-    onMouseDown(event: React.MouseEvent<Element, MouseEvent>): void {
+    onMouseDown(_event: React.MouseEvent<Element, MouseEvent>): void {
         this.props.setInfoPanel(this.props);
     }
 }

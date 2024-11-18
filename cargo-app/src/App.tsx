@@ -14,9 +14,9 @@ import { InformationPaneControllerData } from './components/InfoPanel/Informatio
 import { InformationPaneMode } from './components/InfoPanel/InformationPaneMode';
 import { useQuery } from '@tanstack/react-query';
 import { baseUrl } from './tools/serverConn';
-import type { GETCurrentCompanyResponse } from '~shared/api/schema/apiCompany';
+import type { GETCurrentCompanyResponse } from '@dbtypes/api/schema/apiCompany';
 import NotificationsPanel from './components/Notifications/NotificationsPanel';
-import type { GETAllSaveResponse, GETOneSaveResponse } from '~shared/api/schema/apiSave';
+import type { GETAllSaveResponse, GETOneSaveResponse } from '@dbtypes/api/schema/apiSave';
 import { Action } from './components/ActionMenu/actionMenuOptions';
 
 type SaveContextType = {

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { baseUrl, fetchDELETEFactory } from "../../tools/serverConn";
-import type { GETOneTownResponse } from "~shared/api/schema/apiTown";
+import type { GETOneTownResponse } from "@dbtypes/api/schema/apiTown";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import UpdateTownModal from "../Modals/UpdateTownModal";
 

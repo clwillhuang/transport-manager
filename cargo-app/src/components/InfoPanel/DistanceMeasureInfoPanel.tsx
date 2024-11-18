@@ -7,7 +7,7 @@
 // import { useQuery } from "@tanstack/react-query";
 // import { baseUrl } from "../../tools/serverConn";
 
-import type { Cargo } from "~shared/db/schema/cargo";
+import type { Cargo } from "@dbtypes/db/schema/cargo";
 
 // export interface DistanceFormProps {
 //     cargoId: number | null,

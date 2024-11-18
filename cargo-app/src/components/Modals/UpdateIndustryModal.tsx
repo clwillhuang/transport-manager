@@ -2,11 +2,11 @@ import React, { useState, ChangeEvent, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { baseUrl, fetchPOSTFactory } from '../../tools/serverConn';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import type { Industry } from '~shared/db/schema/industry';
-import type { IndustryType } from '~shared/db/schema/industryType';
+import type { Industry } from '@dbtypes/db/schema/industry';
+import type { IndustryType } from '@dbtypes/db/schema/industryType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
-import type { GETAllIndustryTypeResponse } from '~shared/api/schema/apiIndustryType';
+import type { GETAllIndustryTypeResponse } from '@dbtypes/api/schema/apiIndustryType';
 import styles from './UpdateModal.module.css'
 
 interface UpdateIndustryModalProps {

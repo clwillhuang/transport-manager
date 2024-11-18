@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import IndustryFilterContent from "./IndustryFilter";
 import styles from './MapSettingsDisplay.module.css'
-import type { GETAllIndustryTypeResponse } from "~shared/api/schema/apiIndustryType";
+import type { GETAllIndustryTypeResponse } from "@dbtypes/api/schema/apiIndustryType";
 import { Accordion } from "react-bootstrap";
 import IconFilter, { IconType } from "./IconFilter";
 import StationFilter, { StationType } from "./StationFilter";
@@ -26,12 +26,6 @@ enum MapSettingIndices {
 const MapSettingsDisplay = ({ 
     industryTypes, industriesVisible, setIndustriesVisible, iconsVisible, setIconsVisible, stationsVisible, setStationsVisible
 }: MapSettingsDisplayProps) => {
-    const [activeIndex, setActiveIndex] = useState<MapSettingIndices>(MapSettingIndices.Closed);
-
-    const handleClick = (index: MapSettingIndices) => {
-        setActiveIndex(activeIndex === index ? MapSettingIndices.Closed : index);
-    };
-
     const items = [
         {
             index: MapSettingIndices.IndustryFilter,
@@ -43,16 +37,12 @@ const MapSettingsDisplay = ({
             title: 'Filter Map Icons',
             content: <IconFilter iconsVisible={iconsVisible} setIconsVisible={setIconsVisible}/>
         },
-        // {
-        //     index: MapSettingIndices.TownFilter,
-        //     title: 'Filter by Town Size',
-        //     content: <div>Not yet implemented</div>
-        // },
         {
             index: MapSettingIndices.StationFilter,
             title: 'Filter by Station Type',
             content: <StationFilter stationsVisible={stationsVisible} setStationsVisible={setStationsVisible}/>
         }
+        // TODO: Future feature of filtering by town size.
     ]
 
     return (
@@ -68,20 +58,6 @@ const MapSettingsDisplay = ({
                 ))
             }
         </Accordion>
-        // <div className={styles.container}>
-        //     {items.map((item) => (
-        //         <div key={item.index} className={styles.index}>
-        //             <div
-        //                 style={{ cursor: 'pointer' }}
-        //                 onClick={() => handleClick(item.index)}
-        //                 className={styles.title}
-        //             >
-        //                 <strong>{item.title}</strong>
-        //             </div>
-        //             {activeIndex === item.index && <div>{item.content}</div>}
-        //         </div>
-        //     ))}
-        // </div>
     );
 }
 

@@ -4,8 +4,8 @@ import { ConnectionProps } from '../MapObjects/ConnectableMapObject';
 import { MapObjectProps } from '../MapObjects/MapObject';
 import { useQuery } from '@tanstack/react-query';
 import { baseUrl } from '../../tools/serverConn';
-import type { Industry } from '~shared/db/schema/industry';
-import type { GETOneIndustryResponse } from '~shared/api/schema/apiIndustry';
+import type { Industry } from '@dbtypes/db/schema/industry';
+import type { GETOneIndustryResponse } from '@dbtypes/api/schema/apiIndustry';
 
 // NOTE: Cannot directly use IndustryMapObjectProps b/c has extra prop for tooltip. It expands to
 // ConnectableMapObjectProps<Industry, AdditionalIndustryMapObjectProps> & AdditionalIndustryMapObjectProps

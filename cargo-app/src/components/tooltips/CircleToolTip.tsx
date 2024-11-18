@@ -1,5 +1,5 @@
 import { ToolTipProps, ToolTipRenderer } from '../MapObjects/HoverableMapObjects/HoverableMapObject';
-import type { Circle } from '~shared/db/schema/circle';
+import type { Circle } from '@dbtypes/db/schema/circle';
 
 export const CircleToolTip: ToolTipRenderer<ToolTipProps<Circle>> = ({data}) => {
 

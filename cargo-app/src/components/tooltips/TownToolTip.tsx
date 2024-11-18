@@ -1,5 +1,5 @@
 import { ToolTipProps, ToolTipRenderer } from '../MapObjects/HoverableMapObjects/HoverableMapObject';
-import type { Town } from '~shared/db/schema/town';
+import type { Town } from '@dbtypes/db/schema/town';
 
 export const TownToolTip: ToolTipRenderer<ToolTipProps<Town>> = ({data}) => {
     const { x, y, name, isCity } = data;

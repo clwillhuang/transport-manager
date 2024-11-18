@@ -1,4 +1,4 @@
-import { GETAllCargoResponse } from "~shared/api/schema/apiCargo";
+import { GETAllCargoResponse } from "@dbtypes/api/schema/apiCargo";
 import styles from './IndustryPane.module.css'
 import CargoTooltip from "../tooltips/CargoToolTip";
 import { OverlayTrigger } from "react-bootstrap";

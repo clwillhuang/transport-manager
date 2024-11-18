@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GETOneStationResponse, GETOneStationResponseCargoEntry } from "~shared/api/schema/apiStation";
+import { GETOneStationResponse, GETOneStationResponseCargoEntry } from "@dbtypes/api/schema/apiStation";
 
 const StationCargoEntry = ({ data }: { data: GETOneStationResponse }) => {
     const [expand, showExpand] = useState<boolean>(false);

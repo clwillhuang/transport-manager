@@ -1,5 +1,5 @@
 import { ToolTipProps, ToolTipRenderer } from '../MapObjects/HoverableMapObjects/HoverableMapObject';
-import type { Station } from '~shared/db/schema/station';
+import type { Station } from '@dbtypes/db/schema/station';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck } from "@fortawesome/free-solid-svg-icons/faTruck";
 import { faPlane } from "@fortawesome/free-solid-svg-icons/faPlane";

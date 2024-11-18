@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import styles from './UpdateModal.module.css'
-import type { Sign } from '~shared/db/schema/sign'
+import type { Sign } from '@dbtypes/db/schema/sign'
 
 interface UpdateSignModalProps {
     signData: Sign;

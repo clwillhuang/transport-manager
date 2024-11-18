@@ -2,8 +2,8 @@ import { ChangeEvent } from "react";
 import HexColorBox from "../HexColorBox";
 import { baseUrl, fetchDELETEFactory, fetchPOSTFactory } from "../../tools/serverConn";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { Circle, CircleType } from "~shared/db/schema/circle"
-import type { GETOneCircleResponse } from "~shared/api/schema/apiCircle"
+import type { Circle, CircleType } from "@dbtypes/db/schema/circle"
+import type { GETOneCircleResponse } from "@dbtypes/api/schema/apiCircle"
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import { Form, FormControl } from "react-bootstrap"
 

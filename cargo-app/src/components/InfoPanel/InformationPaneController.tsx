@@ -8,9 +8,9 @@ import StationInfoPanel from "./StationInfoPanel";
 import SignInfoPanel from "./SignInfoPanel";
 import TownInfoPanel from "./TownInfoPanel";
 import { SaveContext } from "../../App";
-import type { Station } from "~shared/db/schema/station";
+import type { Station } from "@dbtypes/db/schema/station";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
-import { Card, CardBody } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 
 export interface InformationPaneControllerData {
   infoPanelMode: InformationPaneMode,

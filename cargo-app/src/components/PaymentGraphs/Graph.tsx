@@ -2,9 +2,9 @@ import { Chart, LegendItem } from "chart.js/auto";
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { Button, OverlayTrigger, Placeholder } from "react-bootstrap";
 import styles from './Graphs.module.css'
-import type { Cargo } from "~shared/db/schema/cargo";
+import type { Cargo } from "@dbtypes/db/schema/cargo";
 import { useQuery } from "@tanstack/react-query";
-import type { CalculateGraphResponse } from "~shared/api/schema/apiCalculate";
+import type { CalculateGraphResponse } from "@dbtypes/api/schema/apiCalculate";
 import CargoTooltip from "../tooltips/CargoToolTip";
 
 export interface GraphSubclassProps {
@@ -48,7 +48,7 @@ const GraphContainer = ({ endpoint, cargos, minX, maxX, incrementX, renderParams
 		}
 	}
 
-	const { data, isLoading, isError, error, isFetching } = useQuery<CalculateGraphResponse>({
+	const { data, isLoading, isError, isFetching } = useQuery<CalculateGraphResponse>({
 		queryKey: ['graph', endpoint, minX, maxX, incrementX, ...Object.values(params)],
 		queryFn: () => {
 			const body = JSON.stringify({ minX, maxX, incrementX, cargoIds: cargos.map(c => c.id), ...params })

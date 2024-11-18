@@ -8,9 +8,9 @@ import IndustryMapObject, { } from "./IndustryMapObject";
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../tools/serverConn";
 import { GenericMapProps, OpensInfoPanel } from "./GenericMapProps";
-import type { Industry } from "~shared/db/schema/industry";
-import type { GETAllIndustryResponse } from "~shared/api/schema/apiIndustry";
-import type { GETAllIndustryTypeResponse } from "~shared/api/schema/apiIndustryType";
+import type { Industry } from "@dbtypes/db/schema/industry";
+import type { GETAllIndustryResponse } from "@dbtypes/api/schema/apiIndustry";
+import type { GETAllIndustryTypeResponse } from "@dbtypes/api/schema/apiIndustryType";
 
 interface IndustryMapProps extends GenericMapProps, ConnectionProps, OpensInfoPanel {
     industriesVisible: number[],

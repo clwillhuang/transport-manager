@@ -7,8 +7,8 @@ import TownMapObject from "./TownMapObject";
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../tools/serverConn";
 import { GenericMapProps, OpensInfoPanel } from "./GenericMapProps";
-import type { Town } from "~shared/db/schema/town";
-import type { GETAllTownResponse } from "~shared/api/schema/apiTown";
+import type { Town } from "@dbtypes/db/schema/town";
+import type { GETAllTownResponse } from "@dbtypes/api/schema/apiTown";
 
 interface TownMapProps extends GenericMapProps, OpensInfoPanel, ConnectionProps {}
 

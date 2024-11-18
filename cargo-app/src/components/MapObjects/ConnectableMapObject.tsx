@@ -2,7 +2,7 @@ import React from "react";
 import HoverableMapObject, { HoverableMapObjectProps, HoverProps, ToolTipProps } from "./HoverableMapObjects/HoverableMapObject";
 import { MapObjectProps } from "./MapObject";
 import { ICoverageCoverable } from "../../model/CoverageConnection";
-import type { Station } from "~shared/db/schema/station";
+import type { Station } from "@dbtypes/db/schema/station";
 
 // What is the current action to be performed when a connectable object is clicked on?
 export enum ConnectMode { 
@@ -31,6 +31,7 @@ abstract class ConnectableMapObject<T, P = {}> extends HoverableMapObject<T, Con
     }
 
     updateConnection(mapMode: ConnectMode): void {
+        console.log(mapMode);
         // if (!this.props.coverageConnectionProps.selectedStation) return;
         // if (mapMode === ConnectMode.Connect) {
         //     this.props.coverageConnectionProps.selectedStation.addCoverageConnection(this.props.data);

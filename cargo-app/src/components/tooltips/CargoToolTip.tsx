@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip } from "react-bootstrap";
 import { baseUrl } from "../../tools/serverConn";
-import type { GETOneCargoResponse } from "~shared/api/schema/apiCargo";
+import type { GETOneCargoResponse } from "@dbtypes/api/schema/apiCargo";
 import { forwardRef } from "react";
 import styles from './Tooltip.module.css'
-import { ConvertTEToString } from '~shared/db/utils'
+import { ConvertTEToString } from '@dbtypes/db/utils'
 
 type CargoTooltipProps = {
     cargoId: number | null,

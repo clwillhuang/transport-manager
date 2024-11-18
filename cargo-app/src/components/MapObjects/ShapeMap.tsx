@@ -7,8 +7,8 @@ import { ToolTipType } from "./HoverableMapObjects/HoverableMapObject";
 import { GenericMapProps, OpensInfoPanel } from "./GenericMapProps";
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../tools/serverConn";
-import type { GETAllCircleResponse } from "~shared/api/schema/apiCircle";
-import type { Circle } from "~shared/db/schema/circle";
+import type { GETAllCircleResponse } from "@dbtypes/api/schema/apiCircle";
+import type { Circle } from "@dbtypes/db/schema/circle";
 
 interface ShapeMapProps extends GenericMapProps, OpensInfoPanel {
     infoPanel: InformationPaneControllerData,

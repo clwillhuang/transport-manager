@@ -2,9 +2,9 @@ import { IWindowOpenable, Windows } from "../Menu/MenuController";
 import styles from './IndustryInfoPanel.module.css'
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { baseUrl, fetchDELETEFactory } from "../../tools/serverConn";
-import type { GETOneIndustryResponse } from "~shared/api/schema/apiIndustry";
-import type { CargoToIndustryType } from "~shared/db/schema/cargoesToIndustryTypesRelations"
-import type { Cargo } from "~shared/db/schema/cargo"
+import type { GETOneIndustryResponse } from "@dbtypes/api/schema/apiIndustry";
+import type { CargoToIndustryType } from "@dbtypes/db/schema/cargoesToIndustryTypesRelations"
+import type { Cargo } from "@dbtypes/db/schema/cargo"
 import UpdateIndustryModal from "../Modals/UpdateIndustryModal";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import HexColorBox from "../HexColorBox";

@@ -1,5 +1,5 @@
 import { Tab, Tabs } from "react-bootstrap";
-import type { Cargo } from "~shared/db/schema/cargo";
+import type { Cargo } from "@dbtypes/db/schema/cargo";
 import styles from './GraphPane.module.css'
 import GraphOneWayProfit from "./GraphOneWayProfit";
 import GraphVariableDistance from "./GraphVariableDistance";

@@ -1,5 +1,4 @@
-import { TileCoordinate } from "../../model/Point";
-import type { Town } from "~shared/db/schema/town";
+import type { Town } from "@dbtypes/db/schema/town";
 import ConnectableMapObject from "./ConnectableMapObject";
 import { ConvertTileToCanvasCoordinate } from "./MapObject";
 

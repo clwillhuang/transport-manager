@@ -13,15 +13,15 @@ const CustomCloseButton = ({onClickHandler}: CustomCloseButtonProps) => {
         right: '15px'
     }
 
-    const styles: CSSProperties = {
-        borderRadius: '10px', 
-        color: 'white',
-        border: '3px solid white',
-        height: '40px',
-        width: '40px',
-        margin: '0px',
-        padding: '0px'
-    }
+    // const styles: CSSProperties = {
+    //     borderRadius: '10px', 
+    //     color: 'white',
+    //     border: '3px solid white',
+    //     height: '40px',
+    //     width: '40px',
+    //     margin: '0px',
+    //     padding: '0px'
+    // }
 
     return(
         <span style={containerStyles}>

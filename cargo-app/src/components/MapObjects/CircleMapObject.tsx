@@ -1,6 +1,5 @@
 import HoverableMapObject from "./HoverableMapObjects/HoverableMapObject";
-import { TileCoordinate } from "../../model/Point";
-import { Circle } from "~shared/db/schema/circle"
+import { Circle } from "@dbtypes/db/schema/circle"
 import { ConvertTileToCanvasCoordinate } from "./MapObject";
 
 const STROKE_WIDTH = '3px'

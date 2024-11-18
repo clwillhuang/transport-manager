@@ -6,8 +6,8 @@ import StationToolTip from "../tooltips/StationToolTip";
 import { GenericMapProps, OpensInfoPanel } from "./GenericMapProps";
 import { ToolTipType } from "./HoverableMapObjects/HoverableMapObject";
 import StationMapObject from "./StationMapObject";
-import type { GETAllStationResponse } from "~shared/api/schema/apiStation";
-import type { Station } from "~shared/db/schema/station";
+import type { GETAllStationResponse } from "@dbtypes/api/schema/apiStation";
+import type { Station } from "@dbtypes/db/schema/station";
 import { StationType } from "../MapSettings/StationFilter";
 // import { TrackConnectableObjectProps } from "./TrackConnectableObjectProps";
 

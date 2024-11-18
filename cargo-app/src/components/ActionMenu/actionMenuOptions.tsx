@@ -1,5 +1,5 @@
 
-import { IconDefinition, faCircle, faCity, faDiamond, faHammer, faIndustry, faMousePointer, faRulerCombined, faSignsPost, faTrain } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition, faCircle, faCity, faDiamond, faIndustry, faMousePointer, faRulerCombined, faSignsPost, faTrain } from "@fortawesome/free-solid-svg-icons";
 
 // This is the second top bar of the pp, where the user can activate mouse tools and draw elements
 export enum Action {

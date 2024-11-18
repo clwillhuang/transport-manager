@@ -6,7 +6,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { baseUrl } from "../../tools/serverConn";
-import type { GETAllSaveResponse, GETOneSaveResponse } from "~shared/api/schema/apiSave";
+import type { GETAllSaveResponse, GETOneSaveResponse } from "@dbtypes/api/schema/apiSave";
 import { Button, Col, Container, ListGroup, Row, Tab, Tabs } from "react-bootstrap";
 import styles from './FetchPane.module.css'
 import FetchPaneConnectionRow, { GameConnectionResponse } from "./FetchPaneConnectionRow";
