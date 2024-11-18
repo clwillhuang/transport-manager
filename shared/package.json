@@ -8,7 +8,7 @@
         "db:generate": "drizzle-kit generate:pg --config drizzle.config.ts",
         "db:push": "drizzle-kit push:pg --config=drizzle.config.ts",
         "db:drop": "drizzle-kit drop --config=drizzle.config.ts",
-        "db:migrate": "npx tsc --project tsconfig.migrate.json && node .\\migrate.js"
+        "db:migrate": "npx tsc --project tsconfig.migrate.json && node ./migrate.js"
     },
     "author": "",
     "license": "ISC",

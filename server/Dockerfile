@@ -1,26 +1,35 @@
 # Use the official Node.js image
-FROM node:14
+FROM node:18-alpine
 
 # Create and change to the app directory
-WORKDIR /usr/src/app
+WORKDIR /usr/transport-manager
 
 # Copy the package.json and package-lock.json files
-COPY package*.json ./
-COPY index.d.ts .
-COPY index.ts .
-COPY tsconfig.json .
+# COPY package*.json ./
+# COPY index.d.ts .
+# COPY index.ts .
+# COPY tsconfig.json .
+COPY ./server ./server
+COPY ./shared ./shared
+
+WORKDIR /usr/transport-manager/shared
+
+RUN npm install
+
+RUN npm run declare:shared
+
+RUN npm run db:generate && npm run db:migrate
+
+COPY ./server .
+WORKDIR /usr/transport-manager/server
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
-COPY ./src .
+RUN echo $(npm run)
 
 # Build Typescript
 RUN npm run build
-
-# Run database generation and migration scripts
-RUN npm run db:generate && npm run db:migrate
 
 # Expose the port the app runs on
 ARG VITE

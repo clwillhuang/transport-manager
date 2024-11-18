@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Sign, signs } from '~shared/db/schema/sign';
 import { db } from '~shared/db/setup';
 import { and, eq } from '~shared/drizzle-orm';
-import { GETAllSignResponse, GETOneSignResponse} from '~shared/api/schema/apisign';
+import { GETAllSignResponse, GETOneSignResponse} from '~shared/api/schema/apiSign';
 
 export const signCreateOne = async (req: Request, res: Response) => {
     try {
