@@ -117,6 +117,10 @@ app.get("/send/ping", (req: Request, res: Response) => {
     res.json(200);
 })
 
+app.get("/status", (_req: Request, res: Response) => {
+    res.status(200).json({ 'message': `Server is up and allowing connections from ${process.env.ALLOWED_ORIGIN}.`})
+})
+
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('disconnect', () => {
