@@ -9,7 +9,7 @@ const server = require('http').createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server, {
     cors: {
-        origin: "http://[::1]:5173",
+        origin: process.env.ALLOWED_ORIGIN,
         credentials: true,
     }
 })
@@ -125,6 +125,6 @@ io.on('connection', (socket) => {
 });
 
 // must listen using server due to socket io
-server.listen(3000, () => {
-    console.log(`Server listening on 3000`);
+server.listen(process.env.SERVER_PORT, () => {
+    console.log(`Server listening on ${SERVER_PORT}`);
 })
