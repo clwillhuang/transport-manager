@@ -8,7 +8,7 @@
     "watch": "npx tspc --outDir ./build && npx tspc --outDir ./build -w",
     "start": "node ./build/server/src/server.js",
     "hotbuild": "npx tspc --outDir ./hot && node ./hot/server/src/server.js",
-    "deploy": "cd ../shared && npm run db:generate && npm run db:migrate && cd server && node ./build/server/src/server.js"
+    "deploy": "drizzle-kit push:pg --config=drizzle.config.ts && node ./build/server/src/server.js"
   },
   "author": "",
   "license": "ISC",

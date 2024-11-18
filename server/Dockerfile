@@ -38,4 +38,4 @@ ENV SERVER_PORT=$SERVER_PORT
 EXPOSE $SERVER_PORT
 
 # Start the application
-CMD [ "run.sh" ]
+CMD [ "npm", "run", "deploy"]
