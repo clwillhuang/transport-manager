@@ -5,6 +5,6 @@ import { baseUrl } from './serverConn';
 // const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:4000';
 const URL = baseUrl
 
-export const socket = io(URL, { 
+export const socket = import.meta.env.VITE_ENABLE_SOCKET === 'on' ? io(URL, { 
     withCredentials: true,
-});
+}) : null;

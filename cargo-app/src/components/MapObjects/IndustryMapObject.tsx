@@ -26,8 +26,8 @@ class IndustryMapObject extends ConnectableMapObject<Industry, AdditionalIndustr
                 cx={x}
                 cy={y}
                 fill={`#${hex}`}
-                r={3}
-                stroke={'#000000ff'}
+                r={5}
+                stroke={'#ffff33ff'}
                 strokeWidth={1}
                 onMouseLeave={this.onMouseLeave}
                 onMouseDown={this.onMouseDown}

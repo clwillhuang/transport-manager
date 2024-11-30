@@ -87,7 +87,7 @@ const IndustryPane = ({ initialIndustryVisible, saveId }: IndustryPaneProps) => 
                                         <div>
                                             <h4>{data.name}</h4>
                                             <HexColorBox hex={data.hex} textcolor="white" />
-                                            <EditIndustryTypeForm industryTypes={industryTypes} cargoes={cargoes} saveId={saveId} selectedType={data} />
+                                            {import.meta.env.VITE_ENABLE_SOCKET === 'on' && <EditIndustryTypeForm industryTypes={industryTypes} cargoes={cargoes} saveId={saveId} selectedType={data} />}
                                         </div>
                                     }
                                 </div>

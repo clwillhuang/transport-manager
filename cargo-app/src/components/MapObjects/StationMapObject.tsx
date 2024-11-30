@@ -19,7 +19,7 @@ class StationMapObject extends HoverableMapObject<Station, TrackConnectableObjec
 
     // Implement the render method to create the station icon
     render() {
-        const { x: mapX, y: mapY } = this.props.data;
+        const { x: mapX, y: mapY, name } = this.props.data;
         const { x, y } = ConvertTileToCanvasCoordinate({ x: mapX, y: mapY }, this.props.mapSize);
         // const { coverage } = this.props.data;
         return (
@@ -41,6 +41,9 @@ class StationMapObject extends HoverableMapObject<Station, TrackConnectableObjec
                     stroke='#000000'
                     strokeWidth={1}
                 />
+                <text x={6} y={2} fontSize="5" fontFamily="Arial" fill="white">
+                    {name}
+                </text>
                 
                 {/* <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--> */}
                 <svg xmlns="http://www.w3.org/2000/svg" height="5" width="5" viewBox="0 0 448 512" transform={`translate(-2.5, -2.5)`}>

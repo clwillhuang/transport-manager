@@ -5,13 +5,15 @@ import Notification, { NotificationProps } from './Notification';
 import styles from './Notifications.module.css'
 
 export default function Notifications() {
-  const [_isConnected, setIsConnected] = useState(socket.connected);
+  const [_isConnected, setIsConnected] = useState(socket?.connected);
   const [toasts, setToasts] = useState<Array<NotificationProps>>([]);
   const addToast = (newToast: NotificationProps) => setToasts((toasts) => [...toasts, newToast]);
   const removeToast = (id: string) =>
     setToasts((toasts) => toasts.filter((e) => e.id !== id));
 
   useEffect(() => {
+    if (import.meta.env.VITE_ENABLE_SOCKET !== 'on' || !socket) return;
+
     function onConnect() {
       addToast({
         title: 'Notifications Active',
@@ -49,9 +51,11 @@ export default function Notifications() {
     socket.on('message', onMessageEvent);
 
     return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('message', onMessageEvent);
+      if (socket) {
+        socket.off('connect', onConnect);
+        socket.off('disconnect', onDisconnect);
+        socket.off('message', onMessageEvent);
+      }
     };
   }, []);
 

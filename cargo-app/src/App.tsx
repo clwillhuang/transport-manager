@@ -41,7 +41,7 @@ function App() {
 	const [saveId, setSaveId] = useState<number | null>(null);
 
 	const { data: company } = useQuery<GETCurrentCompanyResponse | null>({
-		queryKey: ['player'],
+		queryKey: ['player', saveId],
 		queryFn: () => fetch(`${baseUrl}/data/${saveId}/companies/player`).then(res => res.json()),
 		enabled: !!saveId,
 		initialData: null,
@@ -55,7 +55,7 @@ function App() {
     })
 
 	const saveQuery = useQuery<GETOneSaveResponse | null>({
-		queryKey: ['save'],
+		queryKey: ['save', saveId],
 		queryFn: () => fetch(`${baseUrl}/saves/${saveId}`).then(res => res.json()),
 		enabled: !!saveId,
 		initialData: null,
@@ -96,7 +96,7 @@ function App() {
 					{ (saveQuery.data && !saveQuery.isFetching && !saveQuery.isError) && <ActionController {...{action, setAction}} initial={{}}/> }
 				</div>
 			</div>
-			<NotificationsPanel/>	
+			{import.meta.env.VITE_ENABLE_SOCKET === 'on' && <NotificationsPanel/>}
 		</SaveContext.Provider>
 	);
 };

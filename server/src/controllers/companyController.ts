@@ -38,7 +38,10 @@ export const companyGetCurrent = async(req: Request, res: Response) => {
                 where: and(eq(companies.isAI, false), eq(companies.saveId, req.saveId))
             });
             if (aiCompany)
-            res.status(200).json(aiCompany)
+                res.status(200).json(aiCompany)
+            else {
+                res.status(404).json({message: "No companies are present in this save."})
+            }
         }
     } catch (error) {
         res.status(500).json({ message: error.message });

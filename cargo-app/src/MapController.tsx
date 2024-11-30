@@ -423,15 +423,17 @@ const MapController = ({
 					</SaveContext.Consumer>
 
 					{/* Distance Measurement Line */}
-					{(isDragging && action == Action.DistanceMeasure) && <line x1={mapSize.mapWidth - mouseDownLoc.x} y1={mouseDownLoc.y} x2={mapSize.mapWidth - currentMouseLoc.x} y2={currentMouseLoc.y} stroke='white' className={styles.distanceLine} />}
+					{(isDragging && action == Action.DistanceMeasure) && 
+						<line x1={mapSize.mapWidth - mouseDownLoc.x} y1={mouseDownLoc.y} x2={mapSize.mapWidth - currentMouseLoc.x} y2={currentMouseLoc.y} stroke='white' className={styles.distanceLine} />}
 					{/* Station connection line */}
-					{
-						(action === Action.ConnectStation && selectedStation?.selectedStation?.id) && <line x1={selectedStation.selectedStation.x} y1={selectedStation.selectedStation.y} x2={currentMouseLoc.x} y2={currentMouseLoc.y} stroke='green' className={styles.distanceLine} />
+					{(action === Action.ConnectStation && selectedStation?.selectedStation?.id) &&
+						<line x1={selectedStation.selectedStation.x} y1={selectedStation.selectedStation.y} x2={currentMouseLoc.x} y2={currentMouseLoc.y} stroke='green' className={styles.distanceLine} />
 					}
 				</g>
 			</svg>
 			{
-				(isDragging && action === Action.DistanceMeasure) && <div ref={distanceDiv} className={styles.distanceTooltip}>
+				(isDragging && action === Action.DistanceMeasure) &&
+				<div ref={distanceDiv} className={styles.distanceTooltip}>
 					<DragToolTip start={mouseDownLoc} end={currentMouseLoc} />
 				</div>
 			}
