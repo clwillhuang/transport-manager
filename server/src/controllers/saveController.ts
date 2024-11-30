@@ -17,12 +17,12 @@ export const saveCreateOne = async (req: Request, res: Response) => {
 
 
 export const saveGetAll = async (req: Request, res: Response) => {
-    try {
+    //try {
         const allsaves: GETAllSaveResponse = await db.select().from(saves);
         res.status(200).json(allsaves);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    //} catch (error) {
+    //    res.status(500).json({ message: error.message });
+    //}
 };
 
 

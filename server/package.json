@@ -3,19 +3,24 @@
   "version": "0.0.1",
   "description": "Backend server to listen to OpenTTD admin port and relay data.",
   "scripts": {
-    "build": "npx tspc --outDir ./build ",
+    "build": "npx tspc --outDir ./build",
     "dev": "nodemon ./build/server/src/server.js",
     "watch": "npx tspc --outDir ./build && npx tspc --outDir ./build -w",
     "start": "node ./build/server/src/server.js",
+    "start-forever": "forever start ./build/server/src/server.js",
+    "stop-forever": "forever stop ./build/server/src/server.js",
     "hotbuild": "npx tspc --outDir ./hot && node ./hot/server/src/server.js",
-    "deploy": "drizzle-kit push:pg --config=drizzle.config.ts && node ./build/server/src/server.js"
+    "deploy": "node ./build/server/src/server.js",
+    "db:generate": "drizzle-kit generate:pg --config drizzle.config.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
+    "drizzle-orm": "^0.30.2",
     "express": "^4.18.2",
+    "forever": "^4.0.3",
     "net": "^1.0.2",
     "pg": "^8.11.3",
     "socket.io": "^4.7.5"
@@ -23,9 +28,10 @@
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
+    "@types/node": "^18.19.64",
     "@types/pg": "^8.11.2",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.30.2",
+    "drizzle-kit": "^0.20.14",
     "nodemon": "^3.1.0",
     "ts-patch": "^3.1.2",
     "typescript": "^5.4.2",
