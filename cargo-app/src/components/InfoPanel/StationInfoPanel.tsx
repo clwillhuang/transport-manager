@@ -11,6 +11,7 @@ import StationCargoEntry from './StationCargoPanel'
 import { faShip } from "@fortawesome/free-solid-svg-icons/faShip";
 import UpdateStationModal from "../Modals/UpdateStationModal";
 import styles from './InfoPanel.module.css'
+import { Button } from "react-bootstrap";
 
 export interface StationInfoPanelProps extends BaseInfoPanelProps {
     // data: Station,
@@ -59,9 +60,9 @@ const StationInfoPanel = ({ id, saveId, onClose }: StationInfoPanelProps) => {
             </div>
             <div>
                 <UpdateStationModal stationData={data} saveId={saveId} />
-                <button onClick={deleteStation}>
+                <Button onClick={deleteStation}>
                     Delete
-                </button>
+                </Button>
             </div>
         </>
     )

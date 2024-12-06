@@ -39,10 +39,10 @@ const UpdateImageModal: React.FC<UpdateImageModalProps> = ({ setImage }) => {
     };
 
     if (!showEdit && import.meta.env.VITE_ENABLE_SOCKET === 'on') return (
-        <button className={styles.editButton} onClick={() => { setShowEdit(true); setFile(null)}}>
+        <Button className={styles.editButton} onClick={() => { setShowEdit(true); setFile(null)}}>
             <FontAwesomeIcon icon={faEdit} size='xs' />
             <span>Upload New Map Image</span>
-        </button>
+        </Button>
     )
 
     return (

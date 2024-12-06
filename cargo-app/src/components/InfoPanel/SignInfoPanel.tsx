@@ -4,6 +4,7 @@ import type { GETOneSignResponse } from "@dbtypes/api/schema/apiSign";
 import type { Sign } from "@dbtypes/db/schema/sign";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import UpdateSignModal from "../Modals/UpdateSignModal";
+import { Button } from "react-bootstrap";
 
 export interface SignInfoPanelProps extends BaseInfoPanelProps {}
 
@@ -43,9 +44,9 @@ const SignInfoPanel = ({ id, saveId, onClose }: SignInfoPanelProps) => {
             </div>
             <div>
                 <UpdateSignModal signData={data} saveId={saveId}/>
-                <button onClick={deleteStation}>
+                <Button onClick={deleteStation}>
                     Delete
-                </button>
+                </Button>
             </div>
         </>
     )

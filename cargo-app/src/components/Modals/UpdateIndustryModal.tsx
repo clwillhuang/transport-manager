@@ -56,10 +56,10 @@ const UpdateIndustryModal: React.FC<UpdateIndustryModalProps> = ({ industryData,
     };
 
     if (!showEdit) return (
-        <button className={styles.editButton} onClick={() => setShowEdit(true)}>
+        <Button className={styles.editButton} onClick={() => setShowEdit(true)}>
             <FontAwesomeIcon icon={faEdit} size='xs' />
             <span>Edit</span>
-        </button>
+        </Button>
     )
 
     if (isLoading || !industryTypes) return <>Loading ...</>

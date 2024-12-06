@@ -3,6 +3,7 @@ import { baseUrl, fetchDELETEFactory } from "../../tools/serverConn";
 import type { GETOneTownResponse } from "@dbtypes/api/schema/apiTown";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import UpdateTownModal from "../Modals/UpdateTownModal";
+import { Button } from "react-bootstrap";
 
 
 export interface TownInfoPanelProps extends BaseInfoPanelProps {}
@@ -45,9 +46,9 @@ const TownInfoPanel = ({ id, saveId, onClose }: TownInfoPanelProps) => {
             </div>
             <div>
                 <UpdateTownModal townData={data} saveId={saveId}/>
-                <button onClick={deleteStation}>
+                <Button onClick={deleteStation}>
                     Delete
-                </button>
+                </Button>
             </div>
         </>
     )

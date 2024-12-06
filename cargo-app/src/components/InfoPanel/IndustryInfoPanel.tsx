@@ -8,6 +8,7 @@ import type { Cargo } from "@dbtypes/db/schema/cargo"
 import UpdateIndustryModal from "../Modals/UpdateIndustryModal";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import HexColorBox from "../HexColorBox";
+import { Button } from "react-bootstrap";
 
 interface IndustryInfoPanelProps extends IWindowOpenable, BaseInfoPanelProps { }
 
@@ -75,17 +76,17 @@ const IndustryInfoPanel = ({ id, saveId, setWindowIndex, onClose }: IndustryInfo
             </div>
             <div>
                 <UpdateIndustryModal industryData={data} saveId={saveId} />
-                <button onClick={() => setWindowIndex({
+                <Button onClick={() => setWindowIndex({
                     window: Windows.IndustryChain,
                     initial: {
                         initialIndustryVisible: data.industryTypeId
                     }
                 })}>
                     View industry chain
-                </button>
-                <button onClick={() => mutation.mutate()}>
+                </Button>
+                <Button onClick={() => mutation.mutate()}>
                     Delete
-                </button>
+                </Button>
             </div>
         </>
     )

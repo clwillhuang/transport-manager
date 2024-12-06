@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Circle, CircleType } from "@dbtypes/db/schema/circle"
 import type { GETOneCircleResponse } from "@dbtypes/api/schema/apiCircle"
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
-import { Form, FormControl } from "react-bootstrap"
+import { Button, Form, FormControl } from "react-bootstrap"
 
 
 export interface CircleInfoPanelProps extends BaseInfoPanelProps { };
@@ -77,9 +77,9 @@ const CircleInfoPanel = ({ id, saveId, onClose }: CircleInfoPanelProps) => {
             <HexColorBox hex={color!} textcolor="white" />
             <div>
                 {/* TODO: Delete shape from app */}
-                <button onClick={deleteCircle}>
+                <Button onClick={deleteCircle}>
                     Delete shape
-                </button>
+                </Button>
             </div>
         </>
     )
