@@ -40,6 +40,9 @@ const CircleInfoPanel = ({ id, saveId, onClose }: CircleInfoPanelProps) => {
 
     const deleteCircle = () => {
         fetchDELETEFactory(`${baseUrl}/data/${saveId}/circles/${id}`, {})
+            .then(() => {
+                queryClient.invalidateQueries({ queryKey: ['circle'] })
+            })
         onClose()
     }
 

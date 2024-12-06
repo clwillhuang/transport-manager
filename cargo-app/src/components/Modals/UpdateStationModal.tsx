@@ -39,6 +39,7 @@ const UpdateStationModal: React.FC<UpdateStationModalProps> = ({ stationData, sa
             fetchPOSTFactory(`${baseUrl}/data/${saveId}/stations/${editedstationData.id}`, newData),
         onSuccess: () => { 
             queryClient.invalidateQueries({ queryKey: ['station', editedstationData.id] }) 
+            queryClient.invalidateQueries({ queryKey: ['station' ]}) 
             setShowEdit(false)
         }
     })

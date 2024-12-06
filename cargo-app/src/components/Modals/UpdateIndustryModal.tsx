@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { baseUrl, fetchPOSTFactory } from '../../tools/serverConn';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Industry } from '@dbtypes/db/schema/industry';
 import type { IndustryType } from '@dbtypes/db/schema/industryType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,6 +16,7 @@ interface UpdateIndustryModalProps {
 
 const UpdateIndustryModal: React.FC<UpdateIndustryModalProps> = ({ industryData, saveId }) => {
     const [editedIndustryData, setEditedIndustryType] = useState<Industry>({ ...industryData })
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         setEditedIndustryType(industryData)
@@ -40,6 +41,8 @@ const UpdateIndustryModal: React.FC<UpdateIndustryModalProps> = ({ industryData,
             fetchPOSTFactory(`${baseUrl}/data/${saveId}/industries/${industryData.id}`, newData),
         onSuccess: () => {
             setShowEdit(false)
+            queryClient.invalidateQueries({ queryKey: ['industries', saveId ] }) 
+            queryClient.invalidateQueries({ queryKey: ['industry', industryData?.id ] })
         }
     })
 

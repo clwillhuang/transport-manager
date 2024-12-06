@@ -39,6 +39,7 @@ const UpdateSignModal: React.FC<UpdateSignModalProps> = ({ signData, saveId }) =
             fetchPOSTFactory(`${baseUrl}/data/${saveId}/signs/${editedSignData.id}`, newData),
         onSuccess: () => { 
             queryClient.invalidateQueries({ queryKey: ['sign', editedSignData.id] })
+            queryClient.invalidateQueries({ queryKey: ['sign'] })
             setShowEdit(false) 
         }
     })

@@ -39,6 +39,7 @@ const UpdateTownModal: React.FC<UpdateTownModalProps> = ({ townData, saveId }) =
             fetchPOSTFactory(`${baseUrl}/data/${saveId}/towns/${editedTownData.id}`, newData),
         onSuccess: () => { 
             queryClient.invalidateQueries({ queryKey: ['town', saveId, editedTownData.id] })
+            queryClient.invalidateQueries({ queryKey: ['town'] })
             setShowEdit(false)
          }
     })
