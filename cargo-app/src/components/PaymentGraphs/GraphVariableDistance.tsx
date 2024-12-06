@@ -26,7 +26,9 @@ const GraphVariableDistance = ({ cargos, saveId }: GraphSubclassProps) => {
             maxX={6000}
             minX={0}
             incrementX={200}
-			params={{speed, units}}/>
+			params={{speed, units}}
+			titleY='Profit ($)'
+			titleX='Distance (squares)'/>
 	)
 }
 

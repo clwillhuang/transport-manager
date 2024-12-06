@@ -12,7 +12,7 @@ export interface GraphSubclassProps {
 	cargos: Cargo[]
 }
 
-interface GraphVariableTransitDaysProps {
+interface GraphContainerProps {
 	endpoint: string,
 	cargos: Cargo[],
 	minX: number,
@@ -21,10 +21,12 @@ interface GraphVariableTransitDaysProps {
 	renderParams: () => ReactNode;
 	getYValue?: (cargo: Cargo, xValue: number) => Promise<number>;
 	params: any,
-	saveId: number
+	saveId: number,
+	titleX?: string,
+	titleY?: string
 }
 
-const GraphContainer = ({ endpoint, cargos, minX, maxX, incrementX, renderParams, params, saveId }: GraphVariableTransitDaysProps) => {
+const GraphContainer = ({ endpoint, cargos, minX, maxX, incrementX, renderParams, params, saveId, titleX, titleY }: GraphContainerProps) => {
 	const canvasParent = useRef<HTMLDivElement>(null);
 	const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 	const [chart, setChart] = useState<Chart | undefined>(undefined);
@@ -126,7 +128,7 @@ const GraphContainer = ({ endpoint, cargos, minX, maxX, incrementX, renderParams
 			type: 'line',
 			data: {
 				labels: xLabels,
-				datasets: datasets
+				datasets: datasets,
 			},
 			options: {
 				scales: {
@@ -134,11 +136,19 @@ const GraphContainer = ({ endpoint, cargos, minX, maxX, incrementX, renderParams
 						beginAtZero: true,
 						grid: {
 							color: '#ffffffff'
+						},
+						title: {
+							display: true,
+							text: titleY
 						}
 					},
 					x: {
 						grid: {
 							color: '#ffffffff',
+						},
+						title: {
+							display: true,
+							text: titleX
 						}
 					}
 				},

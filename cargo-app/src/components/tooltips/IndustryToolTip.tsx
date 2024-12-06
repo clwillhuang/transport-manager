@@ -33,7 +33,7 @@ export const IndustryToolTip: ToolTipRenderer<
 
 	return <>
 		<h4>{name}</h4>
-		<h5>Type</h5>
+		<h5>Industry Type</h5>
 		<p>{type_name}</p>
 		<h5>Location</h5>
 		<p>{x}, {y}</p>

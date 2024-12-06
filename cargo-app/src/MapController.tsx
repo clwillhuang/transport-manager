@@ -93,7 +93,7 @@ const MapController = ({
 
 	const queryClient = useQueryClient()
 
-	const onStartConnectingStation = (station: Station | null) => {
+	const onStartConnectingStation = useCallback((station: Station | null) => {
 		setAction(Action.ConnectStation);
 		setSelectedStation({
 			selectedStation: station,
@@ -104,7 +104,7 @@ const MapController = ({
 			infoPanelMode: InformationPaneMode.Default,
 			data: {}
 		})
-	}
+	}, [setAction, setSelectedStation, setInfoPanel]);
 
 	// Add action-based effects here
 	useEffect(() => {
@@ -121,13 +121,13 @@ const MapController = ({
 		}
 	}, [action])
 
-	const enablePan = () => {
+	const enablePan = useCallback(() => {
 		const svgElem = document.getElementById(CANVAS_ID);
 		if (svgElem) {
 			if (!zoomInstance)
 				setZoomInstance(svgPanZoom(svgElem));
 		}
-	}
+	}, [CANVAS_ID, zoomInstance, setZoomInstance, svgPanZoom])
 
 	const distanceDiv = useRef<HTMLDivElement | null>(null);
 

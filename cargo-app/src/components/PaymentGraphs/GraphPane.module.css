@@ -34,6 +34,10 @@
     position: relative;
 }
 
+.tabParent {
+    width: 100%;
+}
+
 .tabParent > div {
     position: relative;
     overflow: auto;

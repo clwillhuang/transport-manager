@@ -29,7 +29,9 @@ const GraphOneWayProfit = ({ cargos, saveId }: GraphSubclassProps) => {
 			maxX={4096}
 			minX={0}
 			incrementX={100}
-			params={{speed, units, cost}}/>
+			params={{speed, units, cost}}
+			titleY='Profit ($)'
+			titleX='Distance (squares)'/>
 	)
 }
 

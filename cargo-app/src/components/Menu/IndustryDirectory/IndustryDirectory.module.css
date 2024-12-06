@@ -1,0 +1,11 @@
+.parent, .table {
+    width: 100%;
+}
+
+.parent {
+    min-height: 500px;
+}
+
+.form {
+    margin: 10px auto 10px 0;
+}

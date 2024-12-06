@@ -27,6 +27,8 @@ const GraphVariableSpeed = ({ cargos, saveId }: GraphSubclassProps) => {
 			incrementX={10}
 			renderParams={renderParams}
 			params={{ squares, units }}
+			titleY='Profit ($)'
+			titleX='Speed (km/h)'
 		/>
 	)
 }

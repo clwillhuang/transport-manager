@@ -1,5 +1,5 @@
 import express from "express";
-import { townCreateOne, townGetAll, townGetOne, townUpdateOne, townDeleteOne } from "../controllers/townController";
+import { townCreateOne, townGetAll, townGetOne, townUpdateOne, townDeleteOne, townGetDirectory } from "../controllers/townController";
 
 const townRouter = express.Router();
 
@@ -8,6 +8,8 @@ townRouter.post('/', townCreateOne);
 
 // GET endpoint to get all town
 townRouter.get('/', townGetAll);
+
+townRouter.get('/directory', townGetDirectory)
 
 // GET endpoint to get a single town by ID
 townRouter.get('/:id', townGetOne);

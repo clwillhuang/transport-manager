@@ -1,4 +1,3 @@
-import { faIndustry } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactElement, useMemo } from "react"
 import IndustryPane from "./IndustryPane";
@@ -10,6 +9,11 @@ import FetchPane from "./FetchPane";
 import GraphPane from "../PaymentGraphs/GraphPane";
 import { faChartLine } from "@fortawesome/free-solid-svg-icons/faChartLine";
 import { ListGroup, Modal } from "react-bootstrap";
+import IndustryDirectory from "./IndustryDirectory/IndustryDirectory";
+import TownDirectory from "./TownDirectory/TownDirectory";
+import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons/faMapLocationDot";
+import { faIndustry } from "@fortawesome/free-solid-svg-icons/faIndustry";
+import { faDiagramProject } from "@fortawesome/free-solid-svg-icons/faDiagramProject";
 
 // This is the top bar of the app, with options to view different windows
 export enum Windows {
@@ -17,6 +21,8 @@ export enum Windows {
     EconomyOptions,
     Graphs,
     IndustryChain,
+    IndustryDirectory,
+    TownDirectory,
     Saves,
 }
 
@@ -77,8 +83,18 @@ const MenuController = ({
         },
         {
             index: Windows.IndustryChain,
-            title: <><FontAwesomeIcon icon={faIndustry} />Industries</>,
+            title: <><FontAwesomeIcon icon={faDiagramProject} />Supply Chain</>,
             content: <IndustryPane {...initial} saveId={saveId} />
+        },
+        {
+            index: Windows.IndustryDirectory,
+            title: <><FontAwesomeIcon icon={faIndustry} />Industry Directory</>,
+            content: <IndustryDirectory {...initial} saveId={saveId} />
+        },
+        {
+            index: Windows.TownDirectory,
+            title: <><FontAwesomeIcon icon={faMapLocationDot} />Town Directory</>,
+            content: <TownDirectory {...initial} saveId={saveId} />
         }
     ], [initial, saveId, setSaveId]);
 

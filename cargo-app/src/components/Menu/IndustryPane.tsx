@@ -20,19 +20,19 @@ const IndustryPane = ({ initialIndustryVisible, saveId }: IndustryPaneProps) => 
     const [selectedType, setSelectedType] = useState<number | null>(initialIndustryVisible ?? null);
 
     const { data: industryTypes, isLoading } = useQuery<GETAllIndustryTypeResponse>({
-        queryKey: [`industrytypes`],
+        queryKey: [`industrytypes`, saveId],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/industrytypes/`, { method: 'GET' }).then(res => res.json()),
         enabled: !!saveId,
     })
 
     const { data: cargoes, isLoading: cargosLoading } = useQuery<GETAllCargoResponse>({
-        queryKey: [`cargoes`],
+        queryKey: [`cargoes`, saveId],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/cargoes`, { method: 'GET' }).then(res => res.json()),
         enabled: !!saveId,
     })
 
     const { data, isLoading: typeLoading, isFetching: typeFetching } = useQuery<GETOneIndustryTypeResponse>({
-        queryKey: ['industrytype', selectedType],
+        queryKey: ['industrytype', selectedType, saveId],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/industrytypes/${selectedType}`, { method: 'GET' }).then(res => res.json()),
         enabled: !!selectedType && !!saveId,
     })

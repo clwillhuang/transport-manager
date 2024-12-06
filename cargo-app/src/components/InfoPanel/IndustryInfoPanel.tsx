@@ -39,7 +39,7 @@ const IndustryInfoPanel = ({ id, saveId, setWindowIndex, onClose }: IndustryInfo
         <>
             <span id='card-type'>INDUSTRY INFORMATION</span>
             <h2>{name}</h2>
-            <h3>Type</h3>
+            <h3>Industry Type</h3>
             <span>{type_name} <HexColorBox hex={hex} textcolor='white' /></span>
             <h3>Location</h3>
             <div>

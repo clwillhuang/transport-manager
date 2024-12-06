@@ -18,6 +18,7 @@ import type { GETCurrentCompanyResponse } from '@dbtypes/api/schema/apiCompany';
 import NotificationsPanel from './components/Notifications/NotificationsPanel';
 import type { GETAllSaveResponse, GETOneSaveResponse } from '@dbtypes/api/schema/apiSave';
 import { Action } from './components/ActionMenu/actionMenuOptions';
+import WelcomeModal from './components/WelcomeModal/WelcomeModal';
 
 type SaveContextType = {
 	saveId: number | null,
@@ -61,7 +62,7 @@ function App() {
 		initialData: null,
 	})
 
-	// Once all saves are retrieved, pre-emptively load next one if socket is disabled.
+	// Once all saves are retrieved, pre-emptively load first one if socket is disabled.
 	useEffect(() => {
 		if (import.meta.env.VITE_ENABLE_SOCKET !== 'on' && allSaves) {
 			const firstSave = allSaves.at(0);
@@ -71,7 +72,7 @@ function App() {
 
 	return (
 		<SaveContext.Provider value={{ saveId }}>
-			
+			<WelcomeModal/>
 			<div className={styles.background}>
 				{saveId &&
 					<MapController {...{

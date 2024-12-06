@@ -25,7 +25,7 @@ const TownInfoPanel = ({ id, saveId, onClose }: TownInfoPanelProps) => {
 
     if (!data || !data.id) return <></>
 
-    const { name, x, y, isCity } = data;
+    const { name, x, y, isCity, population } = data;
 
     const deleteStation = () => {
         mutation.mutate();
@@ -35,6 +35,10 @@ const TownInfoPanel = ({ id, saveId, onClose }: TownInfoPanelProps) => {
         <>
             <span id='card-type'>SETTLEMENT</span>
             <h2>{name} ({isCity ? 'City' : 'Town'})</h2>
+            <h3>Population</h3>
+            <div>
+                <p style={{ margin: 0}}>{population}</p>
+            </div>
             <h3>Location</h3>
             <div>
                 <p>X: {x}, Y: {y}</p>

@@ -5,6 +5,12 @@ import { CargoToIndustryType } from '../../db/schema/cargoesToIndustryTypesRelat
 
 export type GETAllIndustryResponse = Industry[]
 
+export type GETIndustryDirectoryResponse = {
+    pages: number,
+    total: number,
+    data: Industry[]
+}
+
 export type GETOneIndustryResponse = Industry & {
     type: IndustryType & {
         accepts: Array<CargoToIndustryType & { cargo: Cargo }>;

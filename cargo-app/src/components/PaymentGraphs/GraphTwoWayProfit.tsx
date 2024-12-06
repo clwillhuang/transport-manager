@@ -43,6 +43,8 @@ const GraphTwoWayProfit = ({ cargos, saveId }: GraphSubclassProps) => {
             minX={0}
             incrementX={100}
             params={{ speed, units, cost, loadTime, returningEmpty }}
+            titleY='Profit ($)'
+			titleX='Distance (squares)'
         />
     )
 }

@@ -17,11 +17,11 @@ interface IndustryMapProps extends GenericMapProps, ConnectionProps, OpensInfoPa
     industryTypes: GETAllIndustryTypeResponse,
 }
 
-function IndustryMap({ industriesVisible, industryTypes, mapSize, ...props }: IndustryMapProps) {
+function IndustryMap({ industriesVisible, industryTypes, mapSize, saveId, ...props }: IndustryMapProps) {
 
     const { data } = useQuery<GETAllIndustryResponse>({
-        queryKey: ['industries'],
-        queryFn: () => fetch(`${baseUrl}/data/${props.saveId}/industries`).then(res => res.json())
+        queryKey: ['industries', saveId],
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries`).then(res => res.json())
     })
 
     if (!data) return <></>
@@ -39,6 +39,7 @@ function IndustryMap({ industriesVisible, industryTypes, mapSize, ...props }: In
                     TTComponent={IndustryToolTip}
                     infoPanelMode={InformationPaneMode.Industry}
                     key={site.industryId}
+                    saveId={saveId}
                     {...props}
                 />)
             }

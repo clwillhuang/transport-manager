@@ -1,5 +1,5 @@
 import express from "express";
-import { industryCreateOne, industryGetAll, industryGetOne, industryUpdateOne, industryDeleteOne } from "../controllers/industryController";
+import { industryCreateOne, industryGetAll, industryGetDirectory, industryGetOne, industryUpdateOne, industryDeleteOne } from "../controllers/industryController";
 
 const industryRouter = express.Router();
 
@@ -8,6 +8,9 @@ industryRouter.post('/', industryCreateOne);
 
 // GET endpoint to get all industry
 industryRouter.get('/', industryGetAll);
+
+// GET endpoint to get all industry
+industryRouter.get('/directory', industryGetDirectory);
 
 // GET endpoint to get a single industry by ID
 industryRouter.get('/:id', industryGetOne);

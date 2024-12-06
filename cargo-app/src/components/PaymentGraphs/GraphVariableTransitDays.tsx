@@ -27,6 +27,8 @@ const GraphVariableTransitDays = ({ cargos, saveId }: GraphSubclassProps) => {
 			minX={10}
 			incrementX={10}
 			params={{ squares, units }}
+			titleY='Profit ($)'
+			titleX='Number of days cargo is in transit'
 		/>
 	)
 }
