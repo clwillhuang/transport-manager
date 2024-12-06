@@ -85,10 +85,10 @@ const EditIndustryTypeForm: React.FC<EditIndustryTypeFormProps> = ({
     };
 
     if (!showEdit) return (
-        <button onClick={() => setShowEdit(true)}>
+        <Button onClick={() => setShowEdit(true)}>
             <FontAwesomeIcon icon={faEdit} />
             <span>Edit</span>
-        </button>
+        </Button>
     )
 
     return (

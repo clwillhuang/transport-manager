@@ -56,10 +56,10 @@ const UpdateSignModal: React.FC<UpdateSignModalProps> = ({ signData, saveId }) =
     };
 
     if (!showEdit) return (
-        <button className={styles.editButton} onClick={() => setShowEdit(true)}>
+        <Button className={styles.editButton} onClick={() => setShowEdit(true)}>
             <FontAwesomeIcon icon={faEdit} size='xs' />
             <span>Edit</span>
-        </button>
+        </Button>
     )
 
     return (

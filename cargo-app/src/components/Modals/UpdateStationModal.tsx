@@ -61,10 +61,10 @@ const UpdateStationModal: React.FC<UpdateStationModalProps> = ({ stationData, sa
     };
 
     if (!showEdit) return (
-        <button className={styles.editButton} onClick={() => setShowEdit(true)}>
+        <Button className={styles.editButton} onClick={() => setShowEdit(true)}>
             <FontAwesomeIcon icon={faEdit} size='xs' />
             <span>Edit</span>
-        </button>
+        </Button>
     )
 
     return (

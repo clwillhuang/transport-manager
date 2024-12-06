@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GETOneStationResponse, GETOneStationResponseCargoEntry } from "@dbtypes/api/schema/apiStation";
+import { Button } from "react-bootstrap";
 
 const StationCargoEntry = ({ data }: { data: GETOneStationResponse }) => {
     const [expand, showExpand] = useState<boolean>(false);
@@ -43,7 +44,7 @@ const StationCargoEntry = ({ data }: { data: GETOneStationResponse }) => {
     return(
         
         <div>
-            <button onClick={() => showExpand(!expand)}>{expand ? 'Hide Details' : 'Expand Details'}</button>
+            <Button onClick={() => showExpand(!expand)}>{expand ? 'Hide Details' : 'Expand Details'}</Button>
             <ul>{data.waiting.map(renderCargo)}</ul>
         </div>
     )

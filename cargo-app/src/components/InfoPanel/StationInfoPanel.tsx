@@ -50,10 +50,15 @@ const StationInfoPanel = ({ id, saveId, onClose }: StationInfoPanelProps) => {
                 {hasBus && <FontAwesomeIcon size='2x' icon={faBus} />}
                 {hasDock && <FontAwesomeIcon size='2x' icon={faShip} />}
             </span>
-            <h3>Cargo Waiting</h3>
-            <div>
-                <StationCargoEntry data={data}/>
-            </div>
+            { 
+                import.meta.env.VITE_ENABLE_SOCKET === 'on' && 
+                <>
+                    <h3>Cargo Waiting</h3>
+                    <div>
+                        <StationCargoEntry data={data}/>
+                    </div>
+                </>
+            }
             <h3>Location</h3>
             <div>
                 <span>X: {x}, Y: {y}</span>
