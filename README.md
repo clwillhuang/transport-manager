@@ -4,6 +4,8 @@ This repository contains a work-in-progress ExpressJS server and TypeScript Reac
 
 The server functions by connecting to OpenTTD's Admin Port with a TCP socket connection, both sending and receiving packets over this connection. Transmission of in-depth game data, such as map state and economy data, is enabled through a custom made in-game gamescript. A local PostgreSQL database is used to store game data and is made available using an ExpressJS server. The web application provides users with a dashboard that allows them to view, edit, and save details about their local game.
 
+A preview build of the website is available at https://transport-manager-ttd.vercel.app/. The preview build only demos a pre-loaded dataset, since socket functionalities are disabled.
+
 ## Features
 
 The current iteration supports:
@@ -17,10 +19,10 @@ The current iteration supports:
 - A web application centered around an interactive map which includes:
     - labels for the in-game data mentioned above
     - a click and drag distance measuring tool
-    - ability to annotate the map with signs, circles and diamonds
+    - ability to annotate the map with signs, circles and diamonds for notes and distance estimates
+    - directories which list all towns and industries on the map
     - a icon filter by industry type, icon type, station types
-    - actions to add, edit and delete towns, industries, and stations
-    - an industry directory for quick access to industry information
+    - actions to add, edit or delete towns, industries, and stations
 
 The repo is currently still a work-in-progress, with only one in-game economy supported (FIRS 4.15 Steeltown) which is used for basic testing.
 
