@@ -4,8 +4,7 @@
   "description": "Backend server to listen to OpenTTD admin port and relay data.",
   "scripts": {
     "build": "npx tspc --outDir ./build",
-    "dev": "nodemon ./build/server/src/server.js",
-    "watch": "npx tspc --outDir ./build && npx tspc --outDir ./build -w",
+    "dev": "nodemon --exec ts-node -P tsconfig.json ./src/server.ts",
     "start": "node ./build/server/src/server.js",
     "start-forever": "forever start ./build/server/src/server.js",
     "stop-forever": "forever stop ./build/server/src/server.js",
@@ -32,8 +31,10 @@
     "@types/pg": "^8.11.2",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.20.14",
-    "nodemon": "^3.1.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
     "ts-patch": "^3.1.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.2",
     "typescript-transform-paths": "^3.4.7"
   }
