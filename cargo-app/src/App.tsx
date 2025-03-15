@@ -24,7 +24,7 @@ type SaveContextType = {
 	saveId: number | null,
 }
 
-export const SaveContext = createContext<SaveContextType | undefined>(undefined);
+export const SaveContext = createContext<SaveContextType>({ saveId: null });
 
 function App() {
 	// Which menu window is open

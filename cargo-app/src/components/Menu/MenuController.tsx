@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement, useMemo } from "react"
+import { ReactElement, useContext, useMemo } from "react"
 import IndustryPane from "./IndustryPane";
 import ChangeIndustryPane from "./ChangeIndustryPane";
 import styles from './MenuController.module.css'
@@ -14,6 +14,7 @@ import TownDirectory from "./TownDirectory/TownDirectory";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons/faMapLocationDot";
 import { faIndustry } from "@fortawesome/free-solid-svg-icons/faIndustry";
 import { faDiagramProject } from "@fortawesome/free-solid-svg-icons/faDiagramProject";
+import { SaveContext } from "../../App";
 
 // This is the top bar of the app, with options to view different windows
 export enum Windows {
@@ -53,9 +54,10 @@ const MenuController = ({
     window,
     setWindowIndex,
     initial,
-    saveId,
     setSaveId
 }: MenuControllerProps) => {
+
+    const { saveId } = useContext(SaveContext);
 
     const handleClick = (index: Windows) => {
         var initial = null
