@@ -13,6 +13,7 @@ const io = new Server(server, {
         credentials: true,
     }
 })
+
 import { GameConnection, createConnection } from "./utils/connection";
 import gameSendRouter from './routes/socket';
 import dataRouter from './routes/dataRoutes';
@@ -20,6 +21,7 @@ import { requireSave } from './middleware/saveMiddleware';
 import saveRouter from './routes/saveRoutes';
 import economyRouter from './routes/economyRoutes';
 import calculateRouter from './routes/calculateRoutes';
+import { MessageNotificationContext, emitNotificationMessage } from './utils/NotificationEmitter';
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -31,7 +33,7 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
     // Emit a notification if the response code is > 399 regardless of whether next() used or json/status sent
     res.on('finish', () => {
         if (res.statusCode > 399) {
-            activeConnection.emitNotification('message', { title: "Error", message: `Unexpected server error ${res.statusCode}: ${res.statusMessage}. ${req.originalUrl}`, context: "danger" })
+            activeConnection.emitNotification('message', { title: "Error", message: `Unexpected server error ${res.statusCode}: ${res.statusMessage}. ${req.originalUrl}`, context: MessageNotificationContext.DANGER })
         }
     });
     next()
@@ -62,13 +64,13 @@ app.get("/socket/current", (req: Request, res: Response) => {
     res.json({ serverName: activeConnection.serverName, saveId: activeConnection.saveId, socketReadyState: activeConnection?.socket?.readyState, gsQueue: activeConnection.queuedRequests })
 })
 
-// Define your middleware function to attach activeConnection to the request object
+// Define middleware function to attach activeConnection to the request object
 const requireActiveConnection = (req: Request & { activeConnection?: GameConnection }, res: Response, next: NextFunction) => {
     if (!activeConnection.socket || !activeConnection.serverName) {
         return res.status(404).json({ message: 'No connection found.' });
     }
-    req.activeConnection = activeConnection; // Attach activeConnection to the request object
-    next(); // Move to the next middleware or route handler
+    req.activeConnection = activeConnection; 
+    next();
 };
 
 // Routes to send data over socket such as polls
@@ -92,10 +94,10 @@ app.get("/socket/disconnect", (req: Request, res: Response) => {
     req.activeConnection = activeConnection
     if (req.activeConnection.socket) {
         req.activeConnection.socket!.end(Buffer.from(new Uint8Array([0x03, 0x00, 0x01])), () => { console.log("Ending This Connection") })
-        req.activeConnection.emitNotification('message', { title: "Disconnect", message: "Disconnected from your OpenTTD game.", context: 'success'})
+        req.activeConnection.emitNotification('message', { title: "Disconnect", message: "Disconnected from your OpenTTD game.", context: MessageNotificationContext.SUCCESS })
         res.json(200);
     } else {
-        req.activeConnection.emitNotification('message', { title: "Disconnect", message: "Cannot disconnect, because there is no existing connection to OpenTTD!", context: 'warning' })
+        req.activeConnection.emitNotification('message', { title: "Disconnect", message: "Cannot disconnect, because there is no existing connection to OpenTTD!", context: MessageNotificationContext.WARNING })
         res.json(200);
     }
 })
@@ -103,7 +105,7 @@ app.get("/socket/disconnect", (req: Request, res: Response) => {
 app.use("/socket/connect", (req: Request, res: Response) => {
     req.activeConnection = activeConnection
     activeConnection.socket = createConnection(io, activeConnection);
-    req.activeConnection.emitNotification('message', { title: "Connect", message: "Trying to connect to your OpenTTD game.", context: 'info' })
+    req.activeConnection.emitNotification('message', { title: "Connect", message: "Trying to connect to your OpenTTD game.", context: MessageNotificationContext.INFO })
     res.status(200).json({
         'ip': process.env.OPENTTD_SERVER_IP as string,
         'port': process.env.OPENTTD_SERVER_ADMIN_PORT as string,
@@ -113,7 +115,7 @@ app.use("/socket/connect", (req: Request, res: Response) => {
 });
 
 app.get("/send/ping", (req: Request, res: Response) => {
-    activeConnection.emitNotification('message', { title: "Ping", message: "Pong", context: "success" })
+    activeConnection.emitNotification('message', { title: "Ping", message: "Pong", context: MessageNotificationContext.SUCCESS })
     res.json(200);
 })
 

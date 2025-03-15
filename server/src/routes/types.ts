@@ -1,4 +1,5 @@
-import { GameConnection, NotificationEmitter } from "../utils/connection";
+import { GameConnection } from "../utils/connection";
+import { NotificationEmitter } from '../utils/NotificationEmitter';
 
 declare global {
     namespace Express {

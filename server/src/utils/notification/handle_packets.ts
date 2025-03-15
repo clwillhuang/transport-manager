@@ -1,15 +1,16 @@
 //https://github.com/OpenTTD/OpenTTD/blob/master/src/network/core/tcp_admin.h
 
-import { GameConnection } from "./connection"
-import { AdminUpdateType, PacketType } from "./constants"
-import { createClientInfoPacket, createCompanyPollPacket } from "./createPackets"
-import { isAdminClientInfoData } from "./packetParsers/parseAdminClientInfo"
-import { parseAdminCompanyInfo } from "./packetParsers/parseAdminCompanyInfo"
-import { parseAdminCompanyStats } from "./packetParsers/parseAdminCompanyStats"
-import { PacketDataMap, PacketData, PacketDataType, PacketProperty } from "./packet_types"
-import { parseGS } from "./parsers/parseGamescript"
-import { parseSave } from "./parsers/parseSave"
-import { ExtractUINT8, ExtractBOOL, ExtractUINT16, ExtractSTRING, ExtractUINT32, ExtractUINT64, ExtractINT64, ReadFunction, ReadFunctionResult, ExtractMoney as ExtractMONEY, ExtractFlag as ExtractFLAG } from "./read"
+import { MessageNotificationContext } from "../NotificationEmitter"
+import { GameConnection } from "../connection"
+import { AdminUpdateType, PacketType } from "../constants"
+import { createClientInfoPacket, createCompanyPollPacket } from "../packetCreators/createPackets"
+import { isAdminClientInfoData } from "../packetParsers/parseAdminClientInfo"
+import { parseAdminCompanyInfo } from "../packetParsers/parseAdminCompanyInfo"
+import { parseAdminCompanyStats } from "../packetParsers/parseAdminCompanyStats"
+import { PacketDataMap, PacketData, PacketDataType, PacketProperty } from "../packet_types"
+import { parseGS } from "../parsers/parseGamescript"
+import { parseSave } from "../parsers/parseSave"
+import { ExtractUINT8, ExtractBOOL, ExtractUINT16, ExtractSTRING, ExtractUINT32, ExtractUINT64, ExtractINT64, ReadFunction, ReadFunctionResult, ExtractMoney as ExtractMONEY, ExtractFlag as ExtractFLAG } from "../read"
 
 const READ_FUNCTIONS: Record<PacketDataType, ReadFunction<any>> = {
     [PacketDataType.BOOL]: ExtractBOOL,
@@ -68,6 +69,7 @@ export async function processPacket(rawBuffer: Buffer, activeConnection: GameCon
 export async function processType(Type: PacketType, buffer: Buffer, activeConnection: GameConnection): Promise<object> {
     let data = parseBuffer(buffer, Type)
     switch (Type) {
+        // Send packets
         case PacketType.ADMIN_PACKET_ADMIN_JOIN:
             console.log(buffer, "ADMIN_JOIN")
             break
@@ -95,10 +97,8 @@ export async function processType(Type: PacketType, buffer: Buffer, activeConnec
         case PacketType.ADMIN_PACKET_ADMIN_EXTERNAL_CHAT:
             console.log(buffer, "ADMIN_EXTERNAL_CHAT")
             break
-        //----------------------------------------
-        //          ABOVE IS WHAT WE CAN SEND
-        //          BELOW  WE RECEIVE
-        //----------------------------------------
+        
+        // Receive packets
         case PacketType.ADMIN_PACKET_SERVER_FULL:
             console.log("SERVER Full")
             break
@@ -117,7 +117,7 @@ export async function processType(Type: PacketType, buffer: Buffer, activeConnec
             activeConnection.emitNotification('message', { 
                 title: 'Connection Successful', 
                 message: `Successfully connected to your currently running OpenTTD game over the Admin Port. Save ID: ${activeConnection.saveId}, Server Name: ${activeConnection.serverName}`,
-                context: 'success'
+                context: MessageNotificationContext.SUCCESS
             })
             // Once connected, ask for client data
             const clientPacket = createClientInfoPacket(4294967295)

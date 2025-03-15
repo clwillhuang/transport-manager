@@ -1,14 +1,13 @@
 import { AdminUpdateFrequency, AdminUpdateType, GameScriptDataType, PacketType } from './constants'
-import { processPacket } from './handle_packets';
-import { createAdminJoin, createUpdatePacket } from './createPackets';
+import { processPacket } from './notification/handle_packets';
+import { createAdminJoin, createUpdatePacket } from './packetCreators/createPackets';
 import { Socket } from 'net';
 import { get } from 'http'
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { Server } from "socket.io";
-
-export type NotificationEmitter = (event: string, data: { title: string; message: string; context?: "success" | "primary" | "secondary" | "danger" | "warning" | "info" | "light" | "dark"; }) => void;
+import { MessageNotificationContext, NotificationEmitter } from './NotificationEmitter';
 
 export type GameConnection = {
     socket: Socket | null,
@@ -54,14 +53,14 @@ export function createConnection(io, activeConnection: GameConnection, processDa
             activeConnection.emitNotification('message', { 
                 title: "Connection Failure", 
                 message: "Encountered an error while connected to your OpenTTD game.",
-                context: 'danger'
+                context: MessageNotificationContext.DANGER
             })
         } else {
             console.log(activeConnection)
             activeConnection.emitNotification('message', { 
                 title: "Connection Unsuccessful", 
                 message: `Encountered an error while trying to connect to your OpenTTD game at Host ${HOST}, Port ${PORT}.`,
-                context: 'danger'
+                context: MessageNotificationContext.DANGER
             })
         }
         activeConnection.queuedRequests = [];
@@ -76,7 +75,7 @@ export function createConnection(io, activeConnection: GameConnection, processDa
             activeConnection.emitNotification('message', { 
                 title: "Connection Closed", 
                 message: "Disconnected from your OpenTTD game.",
-                context: 'danger'
+                context: MessageNotificationContext.DANGER
             })
         }
         activeConnection.queuedRequests = [];

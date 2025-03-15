@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { createGSDataPacket, createCompanyPollPacket, createUpdatePacket, PollableAdminCompanyUpdateType } from "../utils/createPackets";
+import { createGSDataPacket, createCompanyPollPacket, createUpdatePacket, PollableAdminCompanyUpdateType } from "../utils/packetCreators/createPackets";
 import { AdminUpdateFrequency, AdminUpdateType, GSDataTypeFriendlyNames, GameScriptDataType, PacketType } from "../utils/constants";
 import { activeConnection } from "../server";
 import { companies } from "~shared/db/schema/company";
 import { db } from "~shared/db/setup";
 import { and, eq } from "~shared/drizzle-orm";
 import { Save, saves } from "~shared/db/schema/save";
+import { MessageNotificationContext } from "../utils/NotificationEmitter";
 
 export const MapGSTypeToDateField: Record<GameScriptDataType, keyof Save> = {
     [GameScriptDataType.COMPANY]: 'timeFetchedCompanies',
@@ -37,11 +38,11 @@ export async function requestUpdateAll(req: Request, res: Response, next: NextFu
         activeConnection.socket!.write(packet);
     } catch (e) {
         console.log('Error sending packet', e);
-        activeConnection.emitNotification('message', { title: `Failed to send request to GameScript`, message: `Failed to send update request for update type: ${friendlyText}`, context: 'danger' });
+        activeConnection.emitNotification('message', { title: `Failed to send request to GameScript`, message: `Failed to send update request for update type: ${friendlyText}`, context: MessageNotificationContext.DANGER });
         activeConnection.queuedRequests = []
         res.json({ 'success': false, queue: req.activeConnection.queuedRequests })
     }
-    activeConnection.emitNotification('message', { title: `Sent request to GameScript`, message: `Sent update request for update type: ${friendlyText}`, context: 'success' });
+    activeConnection.emitNotification('message', { title: `Sent request to GameScript`, message: `Sent update request for update type: ${friendlyText}`, context: MessageNotificationContext.SUCCESS });
 
     res.json({ 'success': true, queue: req.activeConnection.queuedRequests })
 }
@@ -63,10 +64,10 @@ export function requestDataFactory(gsDataType: GameScriptDataType) {
             activeConnection.socket!.write(packet);
         } catch (e) {
             console.log('Error sending packet', e);
-            activeConnection.emitNotification('message', { title: `Failed to send request to GameScript`, message: `Failed to send update request for update type: ${friendlyText}`, context: 'danger' });
+            activeConnection.emitNotification('message', { title: `Failed to send request to GameScript`, message: `Failed to send update request for update type: ${friendlyText}`, context: MessageNotificationContext.DANGER });
             throw e;
         }
-        activeConnection.emitNotification('message', { title: `Sent request to GameScript`, message: `Sent update request for update type: ${friendlyText}`, context: 'success' });
+        activeConnection.emitNotification('message', { title: `Sent request to GameScript`, message: `Sent update request for update type: ${friendlyText}`, context: MessageNotificationContext.SUCCESS });
 
         let newData = {}
 

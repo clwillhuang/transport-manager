@@ -1,6 +1,5 @@
-import { AdminUpdateFrequency, AdminUpdateType, PacketType } from "./constants"
+import { AdminUpdateFrequency, AdminUpdateType, PacketType } from "../constants"
 
-//--FUNCTIONS--
 export function createAdminJoin(Password:string, BotName:string, Version:string) {
     //SIZE  SIZE 0x00 BotName 0x00 Password 0x00  Version 0x00
     let Variables:Array<string> = [Password, BotName, Version]
