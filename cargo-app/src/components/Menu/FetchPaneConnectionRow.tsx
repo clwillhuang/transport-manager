@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { baseUrl } from "../../tools/serverConn"
 import { Row } from "react-bootstrap"
-import { setSaveId } from "../../features/saves/saveSlice"
 import { useAppDispatch } from "../../app/hooks"
 
 export type GameConnectionResponse = {
@@ -18,8 +17,6 @@ const FetchPaneConnectionRow = ({
     isLoadingConnection: boolean,
     connectedSaveId: number | null
  }) => {
-    const dispatch = useAppDispatch();
-
     const disconnectMutation = useMutation({
         mutationKey: ['disconnect'],
         mutationFn: () => fetch(`${baseUrl}/socket/disconnect`, { method: 'POST', headers: { 'Content-Type': 'application/json' } }).then(res => res.json()),

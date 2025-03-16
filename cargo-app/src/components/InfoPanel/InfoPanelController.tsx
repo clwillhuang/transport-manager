@@ -10,6 +10,7 @@ import type { Station } from "@dbtypes/db/schema/station";
 import { Card } from "react-bootstrap";
 import { InfoPanelMode, selectInfoPanelMode, setInfoPanelMode } from "../../features/infoPanel/infoPanelSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { BaseInfoPanelProps } from './BaseInfoPanelProps';
 
 export interface InformationPaneControllerData {
 }
@@ -34,7 +35,7 @@ const InfoPanelController = ({ setWindowIndex, onStartConnectingStation }: Infor
   }
 
   const innerContent = () => {
-    const baseProps: { onClose: () => void } = { onClose: onClose }
+    const baseProps: BaseInfoPanelProps = { onClose: onClose }
     if (infoPanelMode === InfoPanelMode.Industry) {
       return <IndustryInfoPanel {...baseProps} {...{setWindowIndex}} />
     } 

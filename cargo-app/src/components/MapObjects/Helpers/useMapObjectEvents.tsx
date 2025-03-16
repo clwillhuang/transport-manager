@@ -21,7 +21,7 @@ const useMapObjectEvents = () => {
     const onMouseEnter = (event: React.MouseEvent<Element, MouseEvent>) => {
       dispatch(showToolTip({ mode, data, event: { clientX: event.clientX, clientY: event.clientY } }));
     };
-    const onMouseLeave = (event: React.MouseEvent<Element, MouseEvent>) => {
+    const onMouseLeave = () => {
       dispatch(hideToolTip());
     }
     return { onMouseEnter, onMouseLeave };
