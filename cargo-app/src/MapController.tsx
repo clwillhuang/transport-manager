@@ -1,16 +1,14 @@
-import { Key, memo, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
-import { InformationPaneMode } from './components/InfoPanel/InformationPaneMode';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import DragToolTip from './components/tooltips/DragToolTip';
 import styles from './MapController.module.css'
 import tooltipStyles from './components/tooltips/Tooltip.module.css';
 import svgPanZoom from 'svg-pan-zoom';
-import InformationPaneController, { InformationPaneControllerData } from './components/InfoPanel/InformationPaneController';
+import InfoPanelController from './components/InfoPanel/InfoPanelController';
 import { IWindowOpenable } from './components/Menu/MenuController';
 import { ConnectMode, CoverageConnectionProps } from './components/MapObjects/ConnectableMapObject';
 import convertToHex from './tools/map_processing/convertToHex';
 import IndustryMap from './components/MapObjects/IndustryMap';
 import { ICoverageCoverable } from './model/CoverageConnection';
-import { SaveContext } from './App';
 import ShapeMap from './components/MapObjects/ShapeMap';
 import StationMap from './components/MapObjects/StationMap';
 import TownMap from './components/MapObjects/TownMap';
@@ -37,12 +35,18 @@ import ActionIndicator from './components/ActionMenu/ActionIndicator';
 import { Action } from './components/ActionMenu/actionMenuOptions';
 import { useAppSelector } from './app/hooks';
 import { selectSaveId } from './features/saves/saveSlice';
+import { selectToolTipEvent, selectToolTipMode, ToolTipMode } from './features/tooltips/tooltipSlice';
+import IndustryToolTip from './components/tooltips/IndustryToolTip';
+import TownToolTip from './components/tooltips/TownToolTip';
+import StationToolTip from './components/tooltips/StationToolTip';
+import CircleToolTip from './components/tooltips/CircleToolTip';
+import SignToolTip from './components/tooltips/SignToolTip';
+import { InfoPanelMode, selectInfoPanelMode, setInfoPanelMode } from './features/infoPanel/infoPanelSlice';
+import { useDispatch } from 'react-redux';
 
 interface MapControllerProps extends IWindowOpenable {
 	action: Action,
 	setAction: React.Dispatch<React.SetStateAction<Action>>,
-	infoPanel: InformationPaneControllerData,
-	setInfoPanel: React.Dispatch<React.SetStateAction<InformationPaneControllerData>>,
 	company: GETCurrentCompanyResponse | null,
 	saveQuery: DefinedUseQueryResult<GETOneSaveResponse | null, Error>
 }
@@ -51,13 +55,13 @@ const MapController = ({
 	setWindowIndex,
 	action,
 	setAction,
-	infoPanel,
-	setInfoPanel,
 	company,
 	saveQuery
 }: MapControllerProps) => {
 
 	const saveId = useAppSelector(selectSaveId);
+	const toolTipMode = useAppSelector(selectToolTipMode);
+	const toolTipEvent = useAppSelector(selectToolTipEvent);
 
 	const CANVAS_ID = 'map';
 	const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -82,19 +86,51 @@ const MapController = ({
 		)
 	}, [saveId])
 
-	const [innerToolTip, setInnerToolTip] = useState<ReactElement | null>();
 	const tooltipDiv = useRef<HTMLDivElement | null>(null);
-	const MapToolTipInstance = memo(({ innerToolTip }: { innerToolTip: ReactElement }) => {
-		return (innerToolTip)
-	}, (prevProps, nextProps) => {
-		return !prevProps || !nextProps || prevProps.innerToolTip.key === nextProps.innerToolTip.key
-	})
+
+	const MapToolTipInstance = () => {
+		var elem = null;
+		if (toolTipMode === ToolTipMode.Hidden) {
+			elem = null;
+		} else if (toolTipMode === ToolTipMode.Industry) {
+			elem = <IndustryToolTip />
+		} else if (toolTipMode === ToolTipMode.Town) {
+			elem = <TownToolTip />
+		} else if (toolTipMode === ToolTipMode.Station) {
+			elem = <StationToolTip />
+		} else if (toolTipMode === ToolTipMode.Circle) {
+			elem = <CircleToolTip />
+		} else if (toolTipMode === ToolTipMode.Sign) {
+			elem = <SignToolTip />
+		} else if (toolTipMode === ToolTipMode.TrackSegment) {
+			// elem = <TrackSeg
+		} else {
+			console.warn("Unknown tooltip mode: ", toolTipMode)
+		}
+		if (elem !== null) {
+			const offset = { x: 5, y: 5 }
+			const sizes = zoomInstance?.getSizes()?.realZoom;
+			const realOffset = {
+				x: sizes ? offset.x * sizes : offset.x,
+				y: sizes ? offset.y * sizes : offset.y
+			}
+			if (tooltipDiv.current) {
+				tooltipDiv.current.style.position = 'absolute'
+				tooltipDiv.current.style.left = (toolTipEvent.clientX + realOffset.x) + 'px';
+				tooltipDiv.current.style.top = (toolTipEvent.clientY + realOffset.y) + 'px';
+			}
+		}
+		return elem;
+	}
 
 	const [selectedStation, setSelectedStation] = useState<CoverageConnectionProps>({
 		selectedStation: null, mapMode: ConnectMode.Inactive
 	});
 
-	const queryClient = useQueryClient()
+	const queryClient = useQueryClient();
+
+	const infoPanelMode = useAppSelector(selectInfoPanelMode);
+	const dispatch = useDispatch();
 
 	const onStartConnectingStation = useCallback((station: Station | null) => {
 		setAction(Action.ConnectStation);
@@ -102,27 +138,17 @@ const MapController = ({
 			selectedStation: station,
 			mapMode: ConnectMode.Connect
 		});
-		// hide info panel during this
-		setInfoPanel({
-			infoPanelMode: InformationPaneMode.Default,
-			data: {}
-		})
-	}, [setAction, setSelectedStation, setInfoPanel]);
+		dispatch(setInfoPanelMode({ infoPanelMode: InfoPanelMode.Default, infoPanelProps: null }));
+	}, [setAction, setSelectedStation, setInfoPanelMode, dispatch]);
 
 	// Add action-based effects here
 	useEffect(() => {
-		if (action === Action.DistanceMeasure && infoPanel.infoPanelMode !== InformationPaneMode.DistanceMeasure) {
-			setInfoPanel({
-				infoPanelMode: action !== Action.DistanceMeasure ? InformationPaneMode.Default : InformationPaneMode.DistanceMeasure,
-				data: null,
-			})
-		} else if (action !== Action.DistanceMeasure && infoPanel.infoPanelMode === InformationPaneMode.DistanceMeasure) {
-			setInfoPanel({
-				infoPanelMode: InformationPaneMode.Default,
-				data: null,
-			})
+		if (action === Action.DistanceMeasure && infoPanelMode !== InfoPanelMode.DistanceMeasure) {
+			dispatch(setInfoPanelMode({ infoPanelMode: InfoPanelMode.DistanceMeasure, infoPanelProps: null }));
+		} else if (action !== Action.DistanceMeasure && infoPanelMode === InfoPanelMode.DistanceMeasure) {
+			dispatch(setInfoPanelMode({ infoPanelMode: InfoPanelMode.Default, infoPanelProps: null }));
 		}
-	}, [action])
+	}, [action, setInfoPanelMode, dispatch, infoPanelMode])
 
 	const enablePan = useCallback(() => {
 		const svgElem = document.getElementById(CANVAS_ID);
@@ -166,8 +192,8 @@ const MapController = ({
 	}, [action, zoomInstance])
 
 	const infoPaneCoordProps = {
-		start: infoPanel.infoPanelMode === InformationPaneMode.DistanceMeasure ? mouseDownLoc : { x: 0, y: 0 },
-		end: infoPanel.infoPanelMode === InformationPaneMode.DistanceMeasure ? ((isDragging) ? currentMouseLoc : mouseUpLoc) : { x: 0, y: 0 },
+		start: infoPanelMode === InfoPanelMode.DistanceMeasure ? mouseDownLoc : { x: 0, y: 0 },
+		end: infoPanelMode === InfoPanelMode.DistanceMeasure ? ((isDragging) ? currentMouseLoc : mouseUpLoc) : { x: 0, y: 0 },
 	}
 
 	const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -211,10 +237,7 @@ const MapController = ({
 			mapMode: ConnectMode.Inactive
 		});
 		// force update of info panel because it shows connection data
-		setInfoPanel({
-			infoPanelMode: InformationPaneMode.Default,
-			data: {}
-		})
+		dispatch(setInfoPanelMode({ infoPanelMode: InfoPanelMode.Default, infoPanelProps: null }));
 		// setStations(stations);
 	}
 
@@ -226,28 +249,6 @@ const MapController = ({
 		}
 		return;
 	}, [setIsDragging, isDragging, setMouseUpLoc]);
-
-	const onObjectMouseEnter = useCallback((event: React.MouseEvent<Element, MouseEvent>, tooltip: ReactElement, offset: TileCoordinate): void => {
-		setInnerToolTip(tooltip);
-		const sizes = zoomInstance?.getSizes()?.realZoom;
-		const realOffset = {
-			x: sizes ? offset.x * sizes : offset.x,
-			y: sizes ? offset.y * sizes : offset.y
-		}
-		if (tooltipDiv.current) {
-			tooltipDiv.current.style.position = 'absolute'
-			tooltipDiv.current.style.left = (event.clientX + realOffset.x) + 'px';
-			tooltipDiv.current.style.top = (event.clientY + realOffset.y) + 'px';
-		}
-		return;
-	}, [setInnerToolTip, zoomInstance])
-
-	const onObjectMouseLeave = useCallback((_key: Key) => {
-		if (innerToolTip) {
-			setInnerToolTip(null);
-		}
-		return;
-	}, [innerToolTip?.key, innerToolTip])
 
 	const onMouseMove = (event: React.MouseEvent<SVGElement, MouseEvent>): void => {
 		setCurrentClientLoc({ x: event.clientX, y: event.clientY })
@@ -359,76 +360,32 @@ const MapController = ({
 	return (
 		<div className={styles.mapContainer}>
 			<svg width={saveQuery.data.mapWidth} height={saveQuery.data.mapHeight} id={CANVAS_ID} ref={svgElement}>
-				<image className={styles.defaultMapImage} style={{width: mapSize.mapWidth, height: mapSize.mapHeight}}></image>
-				{image ? 
-				<image id='map' xlinkHref={image.src} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onMouseMove={onMouseMove} /> : 
-				<image id='map' width={mapSize.mapWidth} height={mapSize.mapHeight} className={styles.defaultMapImage} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onMouseMove={onMouseMove} />}
+				<image className={styles.defaultMapImage} style={{ width: mapSize.mapWidth, height: mapSize.mapHeight }}></image>
+				{image ?
+					<image id='map' xlinkHref={image.src} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onMouseMove={onMouseMove} /> :
+					<image id='map' width={mapSize.mapWidth} height={mapSize.mapHeight} className={styles.defaultMapImage} onMouseDown={onMouseDown} onMouseUp={onMouseUp} onMouseMove={onMouseMove} />}
 				<g style={{ height: '100%', width: '100%', pointerEvents: (action === Action.Default || action === Action.ConnectStation || action === Action.BuildTrack) ? 'inherit' : 'none' }}>
-					<SaveContext.Consumer>
-						{values =>
-							<>
-								{
-									iconsVisible.includes(IconType.Industry) && <IndustryMap {...{
-										mapSize,
-										industryTypes,
-										industriesVisible,
-										showToolTip: onObjectMouseEnter,
-										hideToolTip: onObjectMouseLeave,
-										infoPanel,
-										setInfoPanel,
-										coverageConnectionProps: selectedStation,
-										onFinishCoverageConnection,
-										saveId: values?.saveId ?? 0,
-										tooltipDiv
-									}} />
-								}
-								{iconsVisible.includes(IconType.Circle) && <ShapeMap {...{
-									mapSize,
-									setInfoPanel,
-									infoPanel,
-									showToolTip: onObjectMouseEnter,
-									hideToolTip: onObjectMouseLeave,
-									saveId: values?.saveId ?? 0,
-									tooltipDiv
-								}} />}
-								{iconsVisible.includes(IconType.Station) && <StationMap {...{
-									mapSize,
-									setInfoPanel,
-									infoPanel,
-									showToolTip: onObjectMouseEnter,
-									hideToolTip: onObjectMouseLeave,
-									saveId: values?.saveId ?? 0,
-									tooltipDiv,
-									stationsVisible
-								}} />}
-								{iconsVisible.includes(IconType.Town) && <TownMap {...{
-									mapSize,
-									setInfoPanel,
-									infoPanel,
-									showToolTip: onObjectMouseEnter,
-									hideToolTip: onObjectMouseLeave,
-									saveId: values?.saveId ?? 0,
-									tooltipDiv,
-									coverageConnectionProps: selectedStation,
-									onFinishCoverageConnection,
-								}} />}
-								{iconsVisible.includes(IconType.Sign) && <SignMap {...{
-									mapSize,
-									setInfoPanel,
-									infoPanel,
-									showToolTip: onObjectMouseEnter,
-									hideToolTip: onObjectMouseLeave,
-									saveId: values?.saveId ?? 0,
-									tooltipDiv,
-									coverageConnectionProps: selectedStation,
-									onFinishCoverageConnection,
-								}} />}
-							</>
-						}
-					</SaveContext.Consumer>
+					{
+						iconsVisible.includes(IconType.Industry) && <IndustryMap {...{
+							industryTypes,
+							industriesVisible,
+							coverageConnectionProps: selectedStation,
+							onFinishCoverageConnection,
+						}} />
+					}
+					{iconsVisible.includes(IconType.Circle) && <ShapeMap />}
+					{iconsVisible.includes(IconType.Station) && <StationMap stationsVisible={stationsVisible}/>}
+					{iconsVisible.includes(IconType.Town) && <TownMap {...{
+						coverageConnectionProps: selectedStation,
+						onFinishCoverageConnection,
+					}} />}
+					{iconsVisible.includes(IconType.Sign) && <SignMap {...{
+						// coverageConnectionProps: selectedStation,
+						// onFinishCoverageConnection,
+					}} />}
 
 					{/* Distance Measurement Line */}
-					{(isDragging && action == Action.DistanceMeasure) && 
+					{(isDragging && action == Action.DistanceMeasure) &&
 						<line x1={mapSize.mapWidth - mouseDownLoc.x} y1={mouseDownLoc.y} x2={mapSize.mapWidth - currentMouseLoc.x} y2={currentMouseLoc.y} stroke='white' className={styles.distanceLine} />}
 					{/* Station connection line */}
 					{(action === Action.ConnectStation && selectedStation?.selectedStation?.id) &&
@@ -444,11 +401,11 @@ const MapController = ({
 			}
 
 
-			<div className={`${styles.tooltip} ${innerToolTip ? styles.toolTipVisible : styles.toolTipHidden}`} ref={tooltipDiv}>
-				{(innerToolTip) &&
+			<div className={`${styles.tooltip} ${toolTipMode !== ToolTipMode.Hidden ? styles.toolTipVisible : styles.toolTipHidden}`} ref={tooltipDiv}>
+				{(toolTipMode !== ToolTipMode.Hidden) &&
 					<Card className={tooltipStyles.container}>
 						<Card.Body>
-							<MapToolTipInstance innerToolTip={innerToolTip} />
+							<MapToolTipInstance />
 						</Card.Body>
 					</Card>
 				}
@@ -467,12 +424,8 @@ const MapController = ({
 				</ListGroup.Item>
 			</ListGroup>
 			{/* {console.log('data in info pane', infoPanel)} */}
-			<InformationPaneController
+			<InfoPanelController
 				{...{
-					...infoPanel,
-					setInfoPanelMode: (data) => {
-						setInfoPanel(data)
-					},
 					onStartConnectingStation,
 					setWindowIndex,
 					start: infoPaneCoordProps.start,

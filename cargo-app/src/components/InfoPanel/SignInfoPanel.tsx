@@ -7,12 +7,15 @@ import UpdateSignModal from "../Modals/UpdateSignModal";
 import { Button } from "react-bootstrap";
 import { useAppSelector } from "../../app/hooks";
 import { selectSaveId } from "../../features/saves/saveSlice";
+import { selectInfoPanelProps } from "../../features/infoPanel/infoPanelSlice";
 
 export interface SignInfoPanelProps extends BaseInfoPanelProps {}
 
-const SignInfoPanel = ({ id, onClose }: SignInfoPanelProps) => {
+const SignInfoPanel = ({ onClose }: SignInfoPanelProps) => {
 
     const saveId = useAppSelector(selectSaveId);
+    const panelProps = useAppSelector(selectInfoPanelProps);
+    const id = panelProps?.id;
 
     const queryClient = useQueryClient();
 
@@ -32,7 +35,7 @@ const SignInfoPanel = ({ id, onClose }: SignInfoPanelProps) => {
         }
     })
 
-    if (saveId === null || !data || !data.id) return <></>
+    if (!id || saveId === null || !data || !data.id) return <></>
 
     const { x, y, text } = data;
 

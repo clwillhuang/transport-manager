@@ -6,11 +6,15 @@ import UpdateTownModal from "../Modals/UpdateTownModal";
 import { Button } from "react-bootstrap";
 import { useAppSelector } from "../../app/hooks";
 import { selectSaveId } from "../../features/saves/saveSlice";
+import { selectInfoPanelProps } from "../../features/infoPanel/infoPanelSlice";
 
 
 export interface TownInfoPanelProps extends BaseInfoPanelProps {}
 
-const TownInfoPanel = ({ id, onClose }: TownInfoPanelProps) => {
+const TownInfoPanel = ({ onClose }: TownInfoPanelProps) => {
+
+    const props = useAppSelector(selectInfoPanelProps);
+    const id = props?.id;
 
     const saveId = useAppSelector(selectSaveId);
 
@@ -19,7 +23,7 @@ const TownInfoPanel = ({ id, onClose }: TownInfoPanelProps) => {
     const { data } = useQuery<GETOneTownResponse>({
         queryKey: ['town', saveId, id],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/towns/${id}`, {method: 'GET'}).then(res => res.json()),
-        enabled: saveId !== null,
+        enabled: !!id && saveId !== null,
     })
 
     const { isError, ...mutation } = useMutation({
@@ -30,7 +34,7 @@ const TownInfoPanel = ({ id, onClose }: TownInfoPanelProps) => {
         }
     })
 
-    if (saveId === null || !data || !data.id) return <></>
+    if (!id || saveId === null || !data || !data.id) return <></>
 
     const { name, x, y, isCity, population } = data;
 

@@ -14,6 +14,7 @@ import styles from './InfoPanel.module.css'
 import { Button } from "react-bootstrap";
 import { useAppSelector } from "../../app/hooks";
 import { selectSaveId } from "../../features/saves/saveSlice";
+import { selectInfoPanelProps } from "../../features/infoPanel/infoPanelSlice";
 
 export interface StationInfoPanelProps extends BaseInfoPanelProps {
     // data: Station,
@@ -21,9 +22,11 @@ export interface StationInfoPanelProps extends BaseInfoPanelProps {
     // onStartConnectingStation(station: Station | null): void,
 };
 
-const StationInfoPanel = ({ id, onClose }: StationInfoPanelProps) => {
+const StationInfoPanel = ({ onClose }: StationInfoPanelProps) => {
 
     const saveId = useAppSelector(selectSaveId);
+    const panelprops = useAppSelector(selectInfoPanelProps);
+    const id = panelprops?.id
 
     const queryClient = useQueryClient();
 
@@ -33,7 +36,7 @@ const StationInfoPanel = ({ id, onClose }: StationInfoPanelProps) => {
         enabled: saveId !== null
     })
 
-    if (saveId === null || !data || !data.id) {
+    if (!id || saveId === null || !data || !data.id) {
         return <></>
     }
 

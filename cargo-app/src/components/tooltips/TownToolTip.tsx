@@ -1,8 +1,10 @@
-import { ToolTipProps, ToolTipRenderer } from '../MapObjects/HoverableMapObjects/HoverableMapObject';
-import type { Town } from '@dbtypes/db/schema/town';
+import { useAppSelector } from '../../app/hooks';
+import { selectToolTipData } from '../../features/tooltips/tooltipSlice';
+import { TownMapObjectprops } from '../MapObjects/TownMapObject';
 
-export const TownToolTip: ToolTipRenderer<ToolTipProps<Town>> = ({data}) => {
-    const { x, y, name, isCity } = data;
+export const TownToolTip = () => {
+    const props = useAppSelector(selectToolTipData) as TownMapObjectprops;
+    const { data: { x, y, name, isCity }} = props;
     return (
         <>
             <h4>{isCity ? 'City' : 'Town'} of {name}</h4>

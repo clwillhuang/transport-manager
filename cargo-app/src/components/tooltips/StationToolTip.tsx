@@ -6,9 +6,14 @@ import { faPlane } from "@fortawesome/free-solid-svg-icons/faPlane";
 import { faTrain } from "@fortawesome/free-solid-svg-icons/faTrain";
 import { faBus } from "@fortawesome/free-solid-svg-icons/faBus";
 import { faShip } from "@fortawesome/free-solid-svg-icons/faShip";
+import { useAppSelector } from '../../app/hooks';
+import { selectToolTipData } from '../../features/tooltips/tooltipSlice';
+import { StationMapObjectProps } from '../MapObjects/StationMapObject';
 
-export const StationToolTip: ToolTipRenderer<ToolTipProps<Station>> = ({ data }) => {
-    const { x, y, name, hasAirport, hasBus, hasTrain, hasTruck, hasDock } = data; 
+export const StationToolTip = () => {
+    const props = useAppSelector(selectToolTipData) as StationMapObjectProps;
+
+    const { data: { x, y, name, hasAirport, hasBus, hasTrain, hasTruck, hasDock } } = props; 
     return (
         <>
             <h4>{name}</h4>

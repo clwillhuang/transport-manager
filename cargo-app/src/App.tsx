@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import './index.css'
 import styles from './map.module.css'
@@ -10,23 +10,15 @@ import MapController from './MapController';
 import MenuController, { Windows, WindowState } from './components/Menu/MenuController';
 // import ActionController from './components/ActionMenu/ActionMenuController';
 import ActionController from './components/ActionMenu/ActionMenuController';
-import { InformationPaneControllerData } from './components/InfoPanel/InformationPaneController';
-import { InformationPaneMode } from './components/InfoPanel/InformationPaneMode';
 import { useQuery } from '@tanstack/react-query';
 import { baseUrl } from './tools/serverConn';
 import type { GETCurrentCompanyResponse } from '@dbtypes/api/schema/apiCompany';
 import NotificationsPanel from './components/Notifications/NotificationsPanel';
 import type { GETAllSaveResponse, GETOneSaveResponse } from '@dbtypes/api/schema/apiSave';
 import { Action } from './components/ActionMenu/actionMenuOptions';
-import WelcomeModal from './components/WelcomeModal/WelcomeModal';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { selectSaveId, setSaveId } from './features/saves/saveSlice';
+import { selectSaveId, setMapDimensions, setSaveId } from './features/saves/saveSlice';
 
-type SaveContextType = {
-	saveId: number | null,
-}
-
-export const SaveContext = createContext<SaveContextType>({ saveId: null });
 
 function App() {
 	// Which menu window is open
@@ -36,15 +28,10 @@ function App() {
 	});
 	// Current mouse cursor action active
 	const [action, setAction] = useState<Action>(Action.Default);
-	// Top right info panel
-	const [infoPanel, setInfoPanel] = useState<InformationPaneControllerData>({
-		infoPanelMode: action !== Action.DistanceMeasure ? InformationPaneMode.Default : InformationPaneMode.DistanceMeasure,
-		data: null,
-	});
 
 	const saveId = useAppSelector(selectSaveId);
 	const dispatch = useAppDispatch();
-		
+
 	const { data: company } = useQuery<GETCurrentCompanyResponse | null>({
 		queryKey: ['player', saveId],
 		queryFn: () => fetch(`${baseUrl}/data/${saveId}/companies/player`).then(res => res.json()),
@@ -53,11 +40,11 @@ function App() {
 	})
 
 	const { data: allSaves } = useQuery<GETAllSaveResponse | null>({
-        queryKey: ['currentsave'],
-        queryFn: () => fetch(`${baseUrl}/saves`).then(res => res.json()),
+		queryKey: ['currentsave'],
+		queryFn: () => fetch(`${baseUrl}/saves`).then(res => res.json()),
 		// enabled: import.meta.env.VITE_ENABLE_SOCKET !== 'on',
 		initialData: null
-    })
+	})
 
 	const saveQuery = useQuery<GETOneSaveResponse | null>({
 		queryKey: ['save', saveId],
@@ -77,16 +64,20 @@ function App() {
 		}
 	}, [allSaves])
 
+	useEffect(() => {
+		if (saveQuery.data) {
+			dispatch(setMapDimensions({ mapWidth: saveQuery.data.mapWidth, mapHeight: saveQuery.data.mapHeight }))
+		}
+	}, [saveQuery.data?.mapWidth, saveQuery.data?.mapHeight])
+
 	return (
-		<SaveContext.Provider value={{ saveId }}>
-			<WelcomeModal/>
+		<>
+			{/* <WelcomeModal/> */}
 			<div className={styles.background}>
 				{saveId &&
 					<MapController {...{
 						action,
 						setAction,
-						infoPanel,
-						setInfoPanel,
 						setWindowIndex,
 						saveId,
 						company,
@@ -100,11 +91,11 @@ function App() {
 						setWindowIndex,
 						saveId,
 					}} />
-					{ (saveQuery.data && !saveQuery.isFetching && !saveQuery.isError) && <ActionController {...{action, setAction}} initial={{}}/> }
+					{(saveQuery.data && !saveQuery.isFetching && !saveQuery.isError) && <ActionController {...{ action, setAction }} initial={{}} />}
 				</div>
 			</div>
-			{import.meta.env.VITE_ENABLE_SOCKET === 'on' && <NotificationsPanel/>}
-		</SaveContext.Provider>
+			{import.meta.env.VITE_ENABLE_SOCKET === 'on' && <NotificationsPanel />}
+		</>
 	);
 };
 

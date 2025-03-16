@@ -1,8 +1,10 @@
-import { ToolTipProps, ToolTipRenderer } from '../MapObjects/HoverableMapObjects/HoverableMapObject';
-import type { Sign } from '@dbtypes/db/schema/sign';
+import { SignMapObjectProps } from '../MapObjects/SignMapObject';
+import { useAppSelector } from '../../app/hooks';
+import { selectToolTipData } from '../../features/tooltips/tooltipSlice';
 
-export const SignToolTip: ToolTipRenderer<ToolTipProps<Sign>> = ({ data }) => {
-    const { x, y, text } = data;
+export const SignToolTip = () => {
+    const props = useAppSelector(selectToolTipData) as SignMapObjectProps;
+    const { data: { x, y, text } }= props;
     return (
         <>
             <h4>Sign: "{text}"</h4>

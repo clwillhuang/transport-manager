@@ -1,7 +1,6 @@
 import { Component } from "react";
-import { InformationPaneControllerData } from "../InfoPanel/InformationPaneController";
-import { InformationPaneMode } from "../InfoPanel/InformationPaneMode";
 import { TileCoordinate } from "../../model/Point";
+import { InfoPanelMode, setInfoPanelMode } from "../../features/infoPanel/infoPanelSlice";
 
 export function ConvertTileToCanvasCoordinate(t: TileCoordinate, mapSize: { mapWidth: number, mapHeight: number }): { x: number, y: number } {
     return {x: mapSize.mapWidth - t.x, y: t.y}
@@ -9,8 +8,8 @@ export function ConvertTileToCanvasCoordinate(t: TileCoordinate, mapSize: { mapW
 
 export interface MapObjectProps<T> {
     data: T;
-    infoPanelMode: InformationPaneMode;
-    setInfoPanel(data: InformationPaneControllerData): void;
+    infoPanelMode: InfoPanelMode;
+    setInfoPanel: typeof setInfoPanelMode
     mapSize: { mapWidth: number, mapHeight: number };
 }
 
@@ -24,7 +23,7 @@ abstract class MapObject<T, P = {}> extends Component<MapObjectProps<T> & P> {
     abstract override render(): JSX.Element;
 
     onMouseDown(_event: React.MouseEvent<Element, MouseEvent>): void {
-        this.props.setInfoPanel(this.props);
+        // this.props.setInfoPanel({ infoPanelMode: this.props.infoPanelMode, infoPanelProps: { id: 1 } });
     }
 }
 

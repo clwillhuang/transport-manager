@@ -1,13 +1,9 @@
 import React from "react";
 import { IShowsToolTipOnHover } from "./HoverableMapObjects/HoverableMapObject";
-import { InformationPaneControllerData } from "../InfoPanel/InformationPaneController";
 
-export interface GenericMapProps extends IShowsToolTipOnHover {
-    tooltipDiv: React.RefObject<HTMLDivElement>;
-    mapSize: { mapWidth: number, mapHeight: number }
+export interface GenericMapProps {
 }
 
 export interface OpensInfoPanel {
-    infoPanel: InformationPaneControllerData,
-    setInfoPanel(data: InformationPaneControllerData): void;
+
 }

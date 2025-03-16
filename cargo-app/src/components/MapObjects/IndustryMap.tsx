@@ -1,25 +1,21 @@
 // draw icons on map 
 
-import { InformationPaneMode } from "../InfoPanel/InformationPaneMode";
-import IndustryToolTip from "../tooltips/IndustryToolTip";
 import { ConnectionProps } from "./ConnectableMapObject";
-import { ToolTipType } from "./HoverableMapObjects/HoverableMapObject";
 import IndustryMapObject, { } from "./IndustryMapObject";
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../tools/serverConn";
-import { GenericMapProps, OpensInfoPanel } from "./GenericMapProps";
 import type { Industry } from "@dbtypes/db/schema/industry";
 import type { GETAllIndustryResponse } from "@dbtypes/api/schema/apiIndustry";
 import type { GETAllIndustryTypeResponse } from "@dbtypes/api/schema/apiIndustryType";
 import { useAppSelector } from "../../app/hooks";
 import { selectSaveId } from "../../features/saves/saveSlice";
 
-interface IndustryMapProps extends GenericMapProps, ConnectionProps, OpensInfoPanel {
+interface IndustryMapProps extends ConnectionProps {
     industriesVisible: number[],
     industryTypes: GETAllIndustryTypeResponse,
 }
 
-function IndustryMap({ industriesVisible, industryTypes, mapSize, ...props }: IndustryMapProps) {
+function IndustryMap({ industriesVisible, industryTypes }: IndustryMapProps) {
 
     const saveId = useAppSelector(selectSaveId);
 
@@ -37,14 +33,9 @@ function IndustryMap({ industriesVisible, industryTypes, mapSize, ...props }: In
         <g>
             {
                 visible.map((site) => <IndustryMapObject
-                    mapSize={mapSize}
                     hex={industryTypes.find(x => x.id === site.industryTypeId)?.hex ?? '000000ff'}
-                    tooltipType={ToolTipType.INDUSTRY}
                     data={site}
-                    TTComponent={IndustryToolTip}
-                    infoPanelMode={InformationPaneMode.Industry}
                     key={site.industryId}
-                    {...props}
                 />)
             }
         </g>

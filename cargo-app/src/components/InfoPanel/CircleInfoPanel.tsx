@@ -8,13 +8,16 @@ import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import { Button, Form, FormControl } from "react-bootstrap"
 import { useAppSelector } from "../../app/hooks";
 import { selectSaveId } from "../../features/saves/saveSlice";
+import { selectInfoPanelProps } from "../../features/infoPanel/infoPanelSlice";
 
 
 export interface CircleInfoPanelProps extends BaseInfoPanelProps { };
 
-const CircleInfoPanel = ({ id, onClose }: CircleInfoPanelProps) => {
+const CircleInfoPanel = ({ onClose }: CircleInfoPanelProps) => {
 
     const saveId = useAppSelector(selectSaveId);
+    const panelProps = useAppSelector(selectInfoPanelProps);
+    const id = panelProps?.id
 
     const { data } = useQuery<GETOneCircleResponse>({
         queryKey: ['circle', id],
@@ -32,7 +35,7 @@ const CircleInfoPanel = ({ id, onClose }: CircleInfoPanelProps) => {
         }
     })
 
-    if (!data || !data.id) return <></>
+    if (!id || !data || !data.id) return <></>
 
     const handleDistanceTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         mutation.mutate({ id: data.id, circleType: event.target.value as CircleType })

@@ -11,19 +11,22 @@ import HexColorBox from "../HexColorBox";
 import { Button } from "react-bootstrap";
 import { useAppSelector } from "../../app/hooks";
 import { selectSaveId } from "../../features/saves/saveSlice";
+import { selectInfoPanelProps } from "../../features/infoPanel/infoPanelSlice";
 
 interface IndustryInfoPanelProps extends IWindowOpenable, BaseInfoPanelProps { }
 
-const IndustryInfoPanel = ({ id, setWindowIndex, onClose }: IndustryInfoPanelProps) => {
+const IndustryInfoPanel = ({ setWindowIndex, onClose }: IndustryInfoPanelProps) => {
 
     const saveId = useAppSelector(selectSaveId);
+    const props = useAppSelector(selectInfoPanelProps);
+    const id = props?.id;
 
     const queryClient = useQueryClient();
 
     const { data } = useQuery<GETOneIndustryResponse>({
-        queryKey: ['industry', id],
-        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries/${id}`, { method: 'GET' }).then(res => res.json()),
-        enabled: saveId !== null
+        queryKey: ['industry', id, saveId],
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries/${props?.id}`, { method: 'GET' }).then(res => res.json()),
+        enabled: !!id && saveId !== null
     })
 
     const mutation = useMutation({
@@ -36,7 +39,7 @@ const IndustryInfoPanel = ({ id, setWindowIndex, onClose }: IndustryInfoPanelPro
         }
     })
 
-    if (!data || saveId === null) {
+    if (!id || !data || saveId === null) {
         return <></>
     }
 

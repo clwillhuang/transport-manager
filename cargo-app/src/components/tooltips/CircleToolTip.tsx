@@ -1,9 +1,10 @@
-import { ToolTipProps, ToolTipRenderer } from '../MapObjects/HoverableMapObjects/HoverableMapObject';
-import type { Circle } from '@dbtypes/db/schema/circle';
+import { useAppSelector } from '../../app/hooks';
+import { selectToolTipData } from '../../features/tooltips/tooltipSlice';
+import { CircleMapObjectProps } from '../MapObjects/CircleMapObject';
 
-export const CircleToolTip: ToolTipRenderer<ToolTipProps<Circle>> = ({data}) => {
-
-	const {x, y, radius} = data;
+export const CircleToolTip = () => {
+	const props = useAppSelector(selectToolTipData) as CircleMapObjectProps;
+	const { data: {x, y, radius}} = props;
 
 	return <>
 		<h4>Circle</h4>
