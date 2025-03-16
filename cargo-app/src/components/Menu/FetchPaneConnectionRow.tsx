@@ -1,35 +1,39 @@
 import { useMutation } from "@tanstack/react-query"
 import { baseUrl } from "../../tools/serverConn"
 import { Row } from "react-bootstrap"
+import { setSaveId } from "../../features/saves/saveSlice"
+import { useAppDispatch } from "../../app/hooks"
 
 export type GameConnectionResponse = {
     serverName: string,
-    saveId: number,
+    saveId: number | null
 }
 
 const FetchPaneConnectionRow = ({
-    setSaveId,
     connection,
-    isLoadingConnection
+    isLoadingConnection,
+    connectedSaveId
 }: { 
-    setSaveId: React.Dispatch<React.SetStateAction<number | null>>,
     connection: GameConnectionResponse,
-    isLoadingConnection: boolean 
+    isLoadingConnection: boolean,
+    connectedSaveId: number | null
  }) => {
+    const dispatch = useAppDispatch();
 
     const disconnectMutation = useMutation({
         mutationKey: ['disconnect'],
         mutationFn: () => fetch(`${baseUrl}/socket/disconnect`, { method: 'POST', headers: { 'Content-Type': 'application/json' } }).then(res => res.json()),
         onSuccess: (_res) => {
-            setSaveId(null)
+            // do nothing; success only means process was initiated and doesn't mean it was completed successfully
         }
     })
 
+    // Make server connect to the game
     const connectMutation = useMutation({
         mutationKey: ['connect'],
         mutationFn: () => fetch(`${baseUrl}/socket/connect`, { method: 'POST', headers: { 'Content-Type': 'application/json' } }).then(res => res.json()),
-        onSuccess: (res) => {
-            setSaveId(res.saveId)
+        onSuccess: (_res) => {
+            // do nothing; success only means process was initiated and doesn't mean it was completed successfully
         }
     })
 
@@ -41,11 +45,12 @@ const FetchPaneConnectionRow = ({
                 </Row>
             )
         }
-        if (connection.saveId) {
+        if (connectedSaveId) {
             return(
                 <Row>
                     <p style={{ color: 'green' }}>State: Connected to save ID {connection.saveId}</p>
                     <button onClick={() => disconnectMutation.mutate()}>Disconnect</button>
+                    <button onClick={() => connectMutation.mutate()}>Update Connection</button>
                 </Row>
             )
         }

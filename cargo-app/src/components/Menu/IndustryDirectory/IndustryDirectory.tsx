@@ -9,24 +9,24 @@ import { GETIndustryDirectoryResponse } from "@dbtypes/api/schema/apiIndustry";
 import { faSortDown, faSortUp, faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SortSettings } from "../TownDirectory/TownDirectory";
-
-interface IndustryDirectoryProps {
-    saveId: number | null,
-}
+import { useAppSelector } from "../../../app/hooks";
+import { selectSaveId } from "../../../features/saves/saveSlice";
 
 const TYPE_NOT_SELECTED = 'All';
 
 const PAGE_SIZE = 10;
 
 /* Show a window that allows user to see a table of industries visible on the map. Table filtered by selected industry type and is paginated */
-const IndustryDirectory = ({ saveId }: IndustryDirectoryProps) => {
+const IndustryDirectory = () => {
+
+    const saveId = useAppSelector(selectSaveId);
     
     const { data: industryTypes, isLoading } = useQuery<GETAllIndustryTypeResponse>({
         queryKey: [`industrytypes`, saveId],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/industrytypes/`, { method: 'GET' })
             .then(res => res.json())
             .catch(e => console.error(e)),
-        enabled: !!saveId,
+        enabled: saveId !== null,
     })
 
     const [page, setPage] = useState(1);
@@ -52,7 +52,7 @@ const IndustryDirectory = ({ saveId }: IndustryDirectoryProps) => {
                 .then(res => res.json())
                 .catch((e) => { console.error(e); });
         },
-        enabled: !!saveId && !isLoading
+        enabled: saveId !== null && !isLoading
     });
 
     const queryClient = useQueryClient();

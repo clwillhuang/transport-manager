@@ -2,11 +2,19 @@ import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 import GraphContainer, { GraphSubclassProps } from "./Graph";
 import { baseUrl } from "../../tools/serverConn";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
-const GraphVariableSpeed = ({ cargos, saveId }: GraphSubclassProps) => {
+const GraphVariableSpeed = ({ cargos }: GraphSubclassProps) => {
+
+	const saveId = useAppSelector(selectSaveId);
 
 	const [squares, setSquares] = useState<number>(200);
 	const [units, setUnits] = useState<number>(20);
+
+	if (saveId === null) {
+		return null;
+	}
 
 	const renderParams = () =>
 		<>
@@ -19,7 +27,6 @@ const GraphVariableSpeed = ({ cargos, saveId }: GraphSubclassProps) => {
 
 	return (
 		<GraphContainer
-			saveId={saveId}
 			cargos={cargos}
 			endpoint={`${baseUrl}/calculate/${saveId}/speed`}
 			maxX={200}

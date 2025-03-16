@@ -8,13 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import type { GETAllIndustryTypeResponse } from '@dbtypes/api/schema/apiIndustryType';
 import styles from './UpdateModal.module.css'
+import { useAppSelector } from '../../app/hooks';
+import { selectSaveId } from '../../features/saves/saveSlice';
 
 interface UpdateIndustryModalProps {
     industryData: Industry;
-    saveId: number;
 }
 
-const UpdateIndustryModal: React.FC<UpdateIndustryModalProps> = ({ industryData, saveId }) => {
+const UpdateIndustryModal: React.FC<UpdateIndustryModalProps> = ({ industryData }) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const [editedIndustryData, setEditedIndustryType] = useState<Industry>({ ...industryData })
     const queryClient = useQueryClient();
 
@@ -32,7 +36,7 @@ const UpdateIndustryModal: React.FC<UpdateIndustryModalProps> = ({ industryData,
     const { data: industryTypes, isLoading } = useQuery<GETAllIndustryTypeResponse>({
         queryKey: [`industrytypes`],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/industrytypes/`, { method: 'GET' }).then(res => res.json()),
-        enabled: !!saveId && showEdit,
+        enabled: saveId !== null && showEdit,
     })
 
     const { isError, ...mutation } = useMutation({
@@ -65,7 +69,7 @@ const UpdateIndustryModal: React.FC<UpdateIndustryModalProps> = ({ industryData,
         </Button>
     )
 
-    if (isLoading || !industryTypes) return <>Loading ...</>
+    if (saveId === null || isLoading || !industryTypes) return <>Loading ...</>
 
     return (
         <Modal show={showEdit} onHide={() => setShowEdit(false)} size="lg" centered>

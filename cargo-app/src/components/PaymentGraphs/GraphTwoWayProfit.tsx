@@ -2,14 +2,21 @@ import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 import GraphContainer, { GraphSubclassProps } from "./Graph";
 import { baseUrl } from "../../tools/serverConn";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
-const GraphTwoWayProfit = ({ cargos, saveId }: GraphSubclassProps) => {
+const GraphTwoWayProfit = ({ cargos }: GraphSubclassProps) => {
+    const saveId = useAppSelector(selectSaveId);
 
     const [speed, setSpeed] = useState<number>(120);
     const [units, setUnits] = useState<number>(20);
     const [cost, setCost] = useState<number>(10000);
     const [loadTime, setLoadTime] = useState<number>(40);
     const [returningEmpty, setReturningEmpty] = useState<boolean>(true);
+
+    if (saveId === null) {
+		return null;
+	}
 
     const renderParams = () =>
         <div>
@@ -35,7 +42,6 @@ const GraphTwoWayProfit = ({ cargos, saveId }: GraphSubclassProps) => {
 
     return (
         <GraphContainer
-            saveId={saveId}
             endpoint={`${baseUrl}/calculate/${saveId}/twoway`}
             cargos={cargos}
             renderParams={renderParams}

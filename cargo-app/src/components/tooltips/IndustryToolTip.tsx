@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import { baseUrl } from '../../tools/serverConn';
 import type { Industry } from '@dbtypes/db/schema/industry';
 import type { GETOneIndustryResponse } from '@dbtypes/api/schema/apiIndustry';
+import { useAppSelector } from '../../app/hooks';
+import { selectSaveId } from '../../features/saves/saveSlice';
 
 // NOTE: Cannot directly use IndustryMapObjectProps b/c has extra prop for tooltip. It expands to
 // ConnectableMapObjectProps<Industry, AdditionalIndustryMapObjectProps> & AdditionalIndustryMapObjectProps
@@ -19,14 +21,17 @@ import type { GETOneIndustryResponse } from '@dbtypes/api/schema/apiIndustry';
 export const IndustryToolTip: ToolTipRenderer<
 	ToolTipProps<Industry, MapObjectProps<Industry> & ConnectionProps & AdditionalIndustryMapObjectProps>
 > = (props) => {
-	const { data: { id }, saveId } = props;
+	const { data: { id } } = props;
+
+	const saveId = useAppSelector(selectSaveId);
 
 	const { data: industryData, isLoading, isError } = useQuery<GETOneIndustryResponse>({
         queryKey: ['industry', id],
-        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries/${id}`, {method: 'GET'}).then(res => res.json())
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries/${id}`, {method: 'GET'}).then(res => res.json()),
+		enabled: saveId !== null,
     })
 
-	if (!industryData || isLoading || isError) return <></>
+	if (saveId === null || !industryData || isLoading || isError) return <></>
 
 	const { name, x, y } = industryData
 	const { produces, accepts, name: type_name } = industryData.type

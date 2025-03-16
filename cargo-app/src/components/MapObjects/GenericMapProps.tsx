@@ -3,7 +3,6 @@ import { IShowsToolTipOnHover } from "./HoverableMapObjects/HoverableMapObject";
 import { InformationPaneControllerData } from "../InfoPanel/InformationPaneController";
 
 export interface GenericMapProps extends IShowsToolTipOnHover {
-    saveId: number;
     tooltipDiv: React.RefObject<HTMLDivElement>;
     mapSize: { mapWidth: number, mapHeight: number }
 }

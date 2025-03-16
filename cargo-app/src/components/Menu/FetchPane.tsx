@@ -10,16 +10,16 @@ import type { GETAllSaveResponse, GETOneSaveResponse } from "@dbtypes/api/schema
 import { Button, Col, Container, ListGroup, Row, Tab, Tabs } from "react-bootstrap";
 import styles from './FetchPane.module.css'
 import FetchPaneConnectionRow, { GameConnectionResponse } from "./FetchPaneConnectionRow";
-
-type FetchPaneProps = {
-    saveId: number | null,
-    setSaveId: React.Dispatch<React.SetStateAction<number | null>>,
-}
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectSaveId, setSaveId } from "../../features/saves/saveSlice";
 
 // Corresponds to the game script data types that can be updated, as made available by API endpoints in socket.ts
 type PermittedUpdateTypes = 'com' | 'sta' | 'tow' | 'car' | 'ind' | 'mon' | 'typ' | 'all' | 'wai'
 
-const RenderLastFetched = ({ title, lastFetched, saveId, type }: { title: string, lastFetched: Date | null, saveId: number, type: PermittedUpdateTypes }) => {
+const RenderLastFetched = ({ title, lastFetched, type }: { title: string, lastFetched: Date | null, type: PermittedUpdateTypes }) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
         month: 'long',
@@ -48,6 +48,10 @@ const RenderLastFetched = ({ title, lastFetched, saveId, type }: { title: string
     })
     const date = lastFetched ? new Date(lastFetched) : null;
 
+    if (saveId === null) {
+        return null;
+    }
+
     return (
         <Row className={styles.lastFetched}>
             <Col xs={2} className={styles.title}>
@@ -67,14 +71,14 @@ const RenderLastFetched = ({ title, lastFetched, saveId, type }: { title: string
     )
 }
 
-const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
-    const queryClient = useQueryClient();
-    const [selectedSaveId, setSelectedSaveId] = useState<number | null>(saveId);
-    useEffect(() => {
-        setSelectedSaveId(saveId);
-        queryClient.invalidateQueries({ queryKey: ['currentsave'] })
-        queryClient.invalidateQueries({ queryKey: ['connection'] })
-    }, [saveId]);
+const FetchPane = () => {
+
+    // The save id selected for everything else (i.e. shown in menus and map)
+    const saveId = useAppSelector(selectSaveId);
+    const dispatch = useAppDispatch();
+
+    // The save id that is the backend server is connected to
+    const [connectedSaveId, setConnectedSaveId] = useState<number | null>(null);
 
     const { data: saves, isLoading } = useQuery<GETAllSaveResponse>({
         queryKey: ['currentsave'],
@@ -88,14 +92,14 @@ const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
 
     useEffect(() => {
         if (connection && connection.saveId) {
-            setSaveId(connection?.saveId)
+            setConnectedSaveId(connection?.saveId)
         }
     }, [connection?.saveId])
 
-    const { data: currentSave, isLoading: isLoadingCurrent } = useQuery<GETOneSaveResponse>({
-        queryKey: ['save', selectedSaveId],
-        queryFn: () => fetch(`${baseUrl}/saves/${selectedSaveId}`).then(res => res.json()),
-        enabled: !!selectedSaveId
+    const { data: currentConnectedSave, isLoading: isLoadingCurrent } = useQuery<GETOneSaveResponse>({
+        queryKey: ['save', connectedSaveId],
+        queryFn: () => fetch(`${baseUrl}/saves/${connectedSaveId}`).then(res => res.json()),
+        enabled: !!connectedSaveId
     })
 
     if (isLoading || !saves || !connection) return <div>Loading...</div>
@@ -107,27 +111,27 @@ const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
             { import.meta.env.VITE_ENABLE_SOCKET === 'on' && <Tab eventKey="current" title='Current Save'>
                 <Container>
                     {
-                        (!selectedSaveId || !currentSave) ? <div className={styles.pleaseSelect}>
+                        (saveId === null || !currentConnectedSave) ? <div className={styles.pleaseSelect}>
                             <p>Please select a save from the All Saves tab, or connect to your currently running instance of OpenTTD.</p>
                         </div>
                             :
                             <>
                                 <Row>
-                                    <h2 className={styles.saveTitle}><strong>{currentSave.serverName}</strong></h2>
+                                    <h2 className={styles.saveTitle}><strong>{currentConnectedSave.serverName}</strong></h2>
                                 </Row>
                                 <Row>
                                     <Col xs={6} className={styles.mapInfo}>
                                         <h3>Map Information</h3>
-                                        <p><strong>ID:</strong> {currentSave.id}</p>
-                                        <p><strong>Map:</strong> {currentSave.mapWidth} x {currentSave.mapHeight}</p>
-                                        <p><strong>Map Seed:</strong> {currentSave.mapSeed}</p>
+                                        <p><strong>ID:</strong> {currentConnectedSave.id}</p>
+                                        <p><strong>Map:</strong> {currentConnectedSave.mapWidth} x {currentConnectedSave.mapHeight}</p>
+                                        <p><strong>Map Seed:</strong> {currentConnectedSave.mapSeed}</p>
                                     </Col>
                                     {/* Show all of the save data: */}
                                     <Col xs={6} className={styles.industryInfo}>
                                         <h3>Industry Information</h3>
-                                        <p><strong>Pack:</strong> {currentSave.industryPack ?? 'None loaded'}</p>
-                                        <p><strong>Version:</strong> {currentSave.industryVersion ?? 'None loaded'}</p>
-                                        <p><strong>Economy:</strong> {currentSave.industryEconomy ?? 'None loaded'}</p>
+                                        <p><strong>Pack:</strong> {currentConnectedSave.industryPack ?? 'None loaded'}</p>
+                                        <p><strong>Version:</strong> {currentConnectedSave.industryVersion ?? 'None loaded'}</p>
+                                        <p><strong>Economy:</strong> {currentConnectedSave.industryEconomy ?? 'None loaded'}</p>
                                     </Col>
                                 </Row>
                                 {
@@ -136,18 +140,18 @@ const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
                                         :
                                         <>
                                             {
-                                                connection.saveId &&
+                                                saveId !== null &&
                                                     <>
                                                         <h3>Request for Data Update from Script</h3>
-                                                        <RenderLastFetched title='All' lastFetched={currentSave.timeFetchedCargoWaiting} saveId={currentSave.id} type='all' />
-                                                        <RenderLastFetched title='Cargoes' lastFetched={currentSave.timeFetchedCargos} saveId={currentSave.id} type='car' />
-                                                        <RenderLastFetched title='Industries' lastFetched={currentSave.timeFetchedIndustries} saveId={currentSave.id} type='ind' />
-                                                        <RenderLastFetched title='Industry Types' lastFetched={currentSave.timeFetchedIndustryTypes} saveId={currentSave.id} type='typ' />
-                                                        <RenderLastFetched title='Towns' lastFetched={currentSave.timeFetchedTowns} saveId={currentSave.id} type='tow' />
-                                                        {/* <RenderLastFetched title='Companies' lastFetched={currentSave.timeFetchedCompanies} saveId={currentSave.id} type='com' /> */}
-                                                        <RenderLastFetched title='Stations' lastFetched={currentSave.timeFetchedStations} saveId={currentSave.id} type='sta' />
-                                                        <RenderLastFetched title='Monthly Stats' lastFetched={currentSave.timeFetchedMonthlyStats} saveId={currentSave.id} type='mon' />
-                                                        <RenderLastFetched title='Cargo Waiting' lastFetched={currentSave.timeFetchedCargoWaiting} saveId={currentSave.id} type='wai' />
+                                                        <RenderLastFetched title='All' lastFetched={currentConnectedSave.timeFetchedCargoWaiting} type='all' />
+                                                        <RenderLastFetched title='Cargoes' lastFetched={currentConnectedSave.timeFetchedCargos} type='car' />
+                                                        <RenderLastFetched title='Industries' lastFetched={currentConnectedSave.timeFetchedIndustries} type='ind' />
+                                                        <RenderLastFetched title='Industry Types' lastFetched={currentConnectedSave.timeFetchedIndustryTypes} type='typ' />
+                                                        <RenderLastFetched title='Towns' lastFetched={currentConnectedSave.timeFetchedTowns} type='tow' />
+                                                        {/* <RenderLastFetched title='Companies' lastFetched={currentSave.timeFetchedCompanies} type='com' /> */}
+                                                        <RenderLastFetched title='Stations' lastFetched={currentConnectedSave.timeFetchedStations} type='sta' />
+                                                        <RenderLastFetched title='Monthly Stats' lastFetched={currentConnectedSave.timeFetchedMonthlyStats} type='mon' />
+                                                        <RenderLastFetched title='Cargo Waiting' lastFetched={currentConnectedSave.timeFetchedCargoWaiting} type='wai' />
                                                     </> 
                                             }
                                         </>
@@ -159,8 +163,7 @@ const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
                         <FetchPaneConnectionRow {...{
                             connection,
                             isLoadingConnection,
-                            selectedSaveId,
-                            setSaveId
+                            connectedSaveId
                         }} /> 
                     }
                 </Container>
@@ -172,7 +175,7 @@ const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
                             <ListGroup.Item key={save.id}>
                                 <Row>
                                     <Col>
-                                        <h3>{save.serverName}</h3>
+                                        <h3>{save.serverName} {(connectedSaveId !== null && connectedSaveId === save.id) ? <span>(Connected)</span> : null}</h3>
                                     </Col>
                                     <Col>
                                         <p><strong>ID:</strong> {save.id}</p>
@@ -181,7 +184,7 @@ const FetchPane = ({ saveId, setSaveId }: FetchPaneProps) => {
                                     </Col>
                                     {/* Show save data, and then a button which allows user to load that save */}
                                     <Col><Button onClick={() => {
-                                        setSaveId(save.id)
+                                        dispatch(setSaveId(save.id))
                                     }}>Select Save "{save.serverName}"</Button></Col>
                                 </Row>
                             </ListGroup.Item>

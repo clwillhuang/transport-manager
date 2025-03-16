@@ -8,20 +8,23 @@ import type { IndustryType } from '@dbtypes/db/schema/industryType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import type { GETAllIndustryTypeResponse } from '@dbtypes/api/schema/apiIndustryType';
+import { useAppSelector } from '../../app/hooks';
+import { selectSaveId } from '../../features/saves/saveSlice';
 
 interface EditIndustryTypeFormProps {
     selectedType: IndustryType;
     industryTypes: GETAllIndustryTypeResponse,
     cargoes: GETAllCargoResponse;
-    saveId: number;
 }
 
 const EditIndustryTypeForm: React.FC<EditIndustryTypeFormProps> = ({ 
     // industryTypes, 
     // cargoes,
     selectedType, 
-    saveId
 }) => {
+
+    const saveId = useAppSelector(selectSaveId);
+    
     const [editedIndustryType, setEditedIndustryType] = useState<IndustryType>({ ...selectedType })
 
     useEffect(() => {
@@ -34,6 +37,12 @@ const EditIndustryTypeForm: React.FC<EditIndustryTypeFormProps> = ({
     };
 
     const [showEdit, setShowEdit] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (saveId === null) {
+            setShowEdit(false)
+        }
+    }, [saveId])
 
     // const handleCargoSelectionChange = (cargoType: 'accepts' | 'produces', e: ChangeEvent<HTMLSelectElement>) => {
     //     const selectedCargoIds = Array.from(e.target.selectedOptions, (option) => option.value);
@@ -72,7 +81,7 @@ const EditIndustryTypeForm: React.FC<EditIndustryTypeFormProps> = ({
             fetchPOSTFactory(`${baseUrl}/data/${saveId}/industrytypes/${selectedType.id}`, newData),
         onSuccess: () => {
             setShowEdit(false);
-        }
+        },
     })
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
@@ -81,7 +90,9 @@ const EditIndustryTypeForm: React.FC<EditIndustryTypeFormProps> = ({
             name: editedIndustryType.name,
             id: selectedType.id as number,
         };
-        mutation.mutate(newData);
+        if (saveId !== null) {
+            mutation.mutate(newData);
+        }
     };
 
     if (!showEdit) return (

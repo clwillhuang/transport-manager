@@ -35,13 +35,14 @@ import { IconType, IconTypeValues } from './components/MapSettings/IconFilter';
 import { StationType, StationTypeValues } from './components/MapSettings/StationFilter';
 import ActionIndicator from './components/ActionMenu/ActionIndicator';
 import { Action } from './components/ActionMenu/actionMenuOptions';
+import { useAppSelector } from './app/hooks';
+import { selectSaveId } from './features/saves/saveSlice';
 
 interface MapControllerProps extends IWindowOpenable {
 	action: Action,
 	setAction: React.Dispatch<React.SetStateAction<Action>>,
 	infoPanel: InformationPaneControllerData,
 	setInfoPanel: React.Dispatch<React.SetStateAction<InformationPaneControllerData>>,
-	saveId: number,
 	company: GETCurrentCompanyResponse | null,
 	saveQuery: DefinedUseQueryResult<GETOneSaveResponse | null, Error>
 }
@@ -52,10 +53,12 @@ const MapController = ({
 	setAction,
 	infoPanel,
 	setInfoPanel,
-	saveId,
 	company,
 	saveQuery
 }: MapControllerProps) => {
+
+	const saveId = useAppSelector(selectSaveId);
+
 	const CANVAS_ID = 'map';
 	const [isDragging, setIsDragging] = useState<boolean>(false);
 	const [mouseDownLoc, setMouseDownLoc] = useState<TileCoordinate>({ x: 0, y: 0 });
@@ -259,6 +262,8 @@ const MapController = ({
 	}
 
 	const onMouseDown = async (event: React.MouseEvent<SVGElement, MouseEvent>): Promise<void> => {
+		if (saveId === null) return;
+
 		if (zoomInstance) {
 			let canvasCoordinates = calculateCanvasLocation(event.clientX, event.clientY);
 			let mapCoordinates = ConvertTileToCanvasCoordinate(canvasCoordinates, mapSize);

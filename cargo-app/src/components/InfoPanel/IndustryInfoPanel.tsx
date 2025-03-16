@@ -9,15 +9,21 @@ import UpdateIndustryModal from "../Modals/UpdateIndustryModal";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import HexColorBox from "../HexColorBox";
 import { Button } from "react-bootstrap";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 interface IndustryInfoPanelProps extends IWindowOpenable, BaseInfoPanelProps { }
 
-const IndustryInfoPanel = ({ id, saveId, setWindowIndex, onClose }: IndustryInfoPanelProps) => {
+const IndustryInfoPanel = ({ id, setWindowIndex, onClose }: IndustryInfoPanelProps) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const queryClient = useQueryClient();
 
     const { data } = useQuery<GETOneIndustryResponse>({
         queryKey: ['industry', id],
-        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries/${id}`, { method: 'GET' }).then(res => res.json())
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries/${id}`, { method: 'GET' }).then(res => res.json()),
+        enabled: saveId !== null
     })
 
     const mutation = useMutation({
@@ -30,7 +36,7 @@ const IndustryInfoPanel = ({ id, saveId, setWindowIndex, onClose }: IndustryInfo
         }
     })
 
-    if (!data) {
+    if (!data || saveId === null) {
         return <></>
     }
 
@@ -75,7 +81,7 @@ const IndustryInfoPanel = ({ id, saveId, setWindowIndex, onClose }: IndustryInfo
                 </section>
             </div>
             <div>
-                <UpdateIndustryModal industryData={data} saveId={saveId} />
+                <UpdateIndustryModal industryData={data} />
                 <Button onClick={() => setWindowIndex({
                     window: Windows.IndustryChain,
                     initial: {

@@ -8,7 +8,6 @@ import type { CalculateGraphResponse } from "@dbtypes/api/schema/apiCalculate";
 import CargoTooltip from "../tooltips/CargoToolTip";
 
 export interface GraphSubclassProps {
-	saveId: number,
 	cargos: Cargo[]
 }
 
@@ -21,12 +20,11 @@ interface GraphContainerProps {
 	renderParams: () => ReactNode;
 	getYValue?: (cargo: Cargo, xValue: number) => Promise<number>;
 	params: any,
-	saveId: number,
 	titleX?: string,
 	titleY?: string
 }
 
-const GraphContainer = ({ endpoint, cargos, minX, maxX, incrementX, renderParams, params, saveId, titleX, titleY }: GraphContainerProps) => {
+const GraphContainer = ({ endpoint, cargos, minX, maxX, incrementX, renderParams, params, titleX, titleY }: GraphContainerProps) => {
 	const canvasParent = useRef<HTMLDivElement>(null);
 	const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 	const [chart, setChart] = useState<Chart | undefined>(undefined);
@@ -74,7 +72,7 @@ const GraphContainer = ({ endpoint, cargos, minX, maxX, incrementX, renderParams
 		if (selectedCargos.includes(id)) {
 			return (
 				<OverlayTrigger overlay={
-					<CargoTooltip cargoId={id} saveId={saveId} />
+					<CargoTooltip cargoId={id} />
 				} key={item.text}>
 					<li className={styles.checkboxItemVisible} onClick={() => handleChange(id)} >
 						<span style={{ borderColor: item.strokeStyle?.toString(), background: item.fillStyle?.toString() }}></span>

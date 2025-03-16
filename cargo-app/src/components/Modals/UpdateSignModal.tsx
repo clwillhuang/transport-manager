@@ -6,13 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import styles from './UpdateModal.module.css'
 import type { Sign } from '@dbtypes/db/schema/sign'
+import { useAppSelector } from '../../app/hooks';
+import { selectSaveId } from '../../features/saves/saveSlice';
 
 interface UpdateSignModalProps {
     signData: Sign;
-    saveId: number;
 }
 
-const UpdateSignModal: React.FC<UpdateSignModalProps> = ({ signData, saveId }) => {
+const UpdateSignModal: React.FC<UpdateSignModalProps> = ({ signData }) => {
+    const saveId = useAppSelector(selectSaveId);
+
     const [editedSignData, setEditedSignData] = useState<Sign>({ ...signData })
 
     const queryClient = useQueryClient()
@@ -54,6 +57,10 @@ const UpdateSignModal: React.FC<UpdateSignModalProps> = ({ signData, saveId }) =
         };
         mutation.mutate(newData);
     };
+
+    if (saveId === null) {
+        return null;
+    }
 
     if (!showEdit) return (
         <Button className={styles.editButton} onClick={() => setShowEdit(true)}>

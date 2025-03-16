@@ -5,16 +5,22 @@ import type { Sign } from "@dbtypes/db/schema/sign";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import UpdateSignModal from "../Modals/UpdateSignModal";
 import { Button } from "react-bootstrap";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 export interface SignInfoPanelProps extends BaseInfoPanelProps {}
 
-const SignInfoPanel = ({ id, saveId, onClose }: SignInfoPanelProps) => {
+const SignInfoPanel = ({ id, onClose }: SignInfoPanelProps) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const queryClient = useQueryClient();
 
     const { data } = useQuery<GETOneSignResponse>({
         queryKey: ['sign', id],
         queryFn: (): Promise<Sign> => 
-            fetch(`${baseUrl}/data/${saveId}/signs/${id}`, {method: 'GET'}).then(res => res.json())
+            fetch(`${baseUrl}/data/${saveId}/signs/${id}`, {method: 'GET'}).then(res => res.json()),
+        enabled: saveId !== null
     })
 
     const { isError, ...mutation } = useMutation({
@@ -26,7 +32,7 @@ const SignInfoPanel = ({ id, saveId, onClose }: SignInfoPanelProps) => {
         }
     })
 
-    if (!data || !data.id) return <></>
+    if (saveId === null || !data || !data.id) return <></>
 
     const { x, y, text } = data;
 
@@ -43,7 +49,7 @@ const SignInfoPanel = ({ id, saveId, onClose }: SignInfoPanelProps) => {
                 <span>X: {x}, Y: {y}</span>
             </div>
             <div>
-                <UpdateSignModal signData={data} saveId={saveId}/>
+                <UpdateSignModal signData={data} />
                 <Button onClick={deleteStation}>
                     Delete
                 </Button>

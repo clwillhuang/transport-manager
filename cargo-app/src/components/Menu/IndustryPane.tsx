@@ -10,31 +10,35 @@ import { Container, ListGroup } from "react-bootstrap";
 import EditIndustryTypeForm from "./IndustryEditForm";
 import HexColorBox from "../HexColorBox";
 import IndustryPaneCargoList from "./IndustryPaneCargoList";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 interface IndustryPaneProps {
     initialIndustryVisible: number | undefined | null,
-    saveId: number,
 }
 
-const IndustryPane = ({ initialIndustryVisible, saveId }: IndustryPaneProps) => {
+const IndustryPane = ({ initialIndustryVisible }: IndustryPaneProps) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const [selectedType, setSelectedType] = useState<number | null>(initialIndustryVisible ?? null);
 
     const { data: industryTypes, isLoading } = useQuery<GETAllIndustryTypeResponse>({
         queryKey: [`industrytypes`, saveId],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/industrytypes/`, { method: 'GET' }).then(res => res.json()),
-        enabled: !!saveId,
+        enabled: saveId !== null,
     })
 
     const { data: cargoes, isLoading: cargosLoading } = useQuery<GETAllCargoResponse>({
         queryKey: [`cargoes`, saveId],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/cargoes`, { method: 'GET' }).then(res => res.json()),
-        enabled: !!saveId,
+        enabled: saveId !== null,
     })
 
     const { data, isLoading: typeLoading, isFetching: typeFetching } = useQuery<GETOneIndustryTypeResponse>({
         queryKey: ['industrytype', selectedType, saveId],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/industrytypes/${selectedType}`, { method: 'GET' }).then(res => res.json()),
-        enabled: !!selectedType && !!saveId,
+        enabled: !!selectedType && saveId !== null,
     })
 
     if (!saveId) {
@@ -79,7 +83,7 @@ const IndustryPane = ({ initialIndustryVisible, saveId }: IndustryPaneProps) => 
                             <div className={styles.industryInfo}>
                                 <div className={styles.acceptsList}>
                                     <h3>Accepts</h3>
-                                    <IndustryPaneCargoList list={accepts} setSelectedType={setSelectedType} mode='accepts' saveId={saveId} />
+                                    <IndustryPaneCargoList list={accepts} setSelectedType={setSelectedType} mode='accepts'/>
                                 </div>
                                 <div className={styles.industryMiddle}>
                                     <h3>Industry</h3>
@@ -87,13 +91,13 @@ const IndustryPane = ({ initialIndustryVisible, saveId }: IndustryPaneProps) => 
                                         <div>
                                             <h4>{data.name}</h4>
                                             <HexColorBox hex={data.hex} textcolor="white" />
-                                            {import.meta.env.VITE_ENABLE_SOCKET === 'on' && <EditIndustryTypeForm industryTypes={industryTypes} cargoes={cargoes} saveId={saveId} selectedType={data} />}
+                                            {import.meta.env.VITE_ENABLE_SOCKET === 'on' && <EditIndustryTypeForm industryTypes={industryTypes} cargoes={cargoes} selectedType={data} />}
                                         </div>
                                     }
                                 </div>
                                 <div className={styles.producesList}>
                                     <h3>Produces</h3>
-                                    <IndustryPaneCargoList list={produces} setSelectedType={setSelectedType} mode='produces' saveId={saveId} />
+                                    <IndustryPaneCargoList list={produces} setSelectedType={setSelectedType} mode='produces'/>
                                 </div>
                             </div>
                 }

@@ -11,20 +11,25 @@ import { GenericMapProps, OpensInfoPanel } from "./GenericMapProps";
 import type { Industry } from "@dbtypes/db/schema/industry";
 import type { GETAllIndustryResponse } from "@dbtypes/api/schema/apiIndustry";
 import type { GETAllIndustryTypeResponse } from "@dbtypes/api/schema/apiIndustryType";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 interface IndustryMapProps extends GenericMapProps, ConnectionProps, OpensInfoPanel {
     industriesVisible: number[],
     industryTypes: GETAllIndustryTypeResponse,
 }
 
-function IndustryMap({ industriesVisible, industryTypes, mapSize, saveId, ...props }: IndustryMapProps) {
+function IndustryMap({ industriesVisible, industryTypes, mapSize, ...props }: IndustryMapProps) {
+
+    const saveId = useAppSelector(selectSaveId);
 
     const { data } = useQuery<GETAllIndustryResponse>({
         queryKey: ['industries', saveId],
-        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries`).then(res => res.json())
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/industries`).then(res => res.json()),
+        enabled: saveId !== null,
     })
 
-    if (!data) return <></>
+    if (saveId === null || !data) return <></>
 
     const visible = data.filter((i: Industry) => industriesVisible.includes(i.industryTypeId))
 
@@ -39,7 +44,6 @@ function IndustryMap({ industriesVisible, industryTypes, mapSize, saveId, ...pro
                     TTComponent={IndustryToolTip}
                     infoPanelMode={InformationPaneMode.Industry}
                     key={site.industryId}
-                    saveId={saveId}
                     {...props}
                 />)
             }

@@ -9,6 +9,8 @@ import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../tools/serverConn";
 import type { GETAllCircleResponse } from "@dbtypes/api/schema/apiCircle";
 import type { Circle } from "@dbtypes/db/schema/circle";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 interface ShapeMapProps extends GenericMapProps, OpensInfoPanel {
     infoPanel: InformationPaneControllerData,
@@ -17,12 +19,15 @@ interface ShapeMapProps extends GenericMapProps, OpensInfoPanel {
 
 function ShapeMap(props: ShapeMapProps) {
 
+    const saveId = useAppSelector(selectSaveId);
+
     const { data } = useQuery<GETAllCircleResponse>({
         queryKey: ['circle'],
-        queryFn: () => fetch(`${baseUrl}/data/${props.saveId}/circles`).then(res => res.json())
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/circles`).then(res => res.json()),
+        enabled: saveId !== null,
     })
 
-    if (!data) return <></>
+    if (saveId === null || !data) return <></>
 
     return (
         <g>

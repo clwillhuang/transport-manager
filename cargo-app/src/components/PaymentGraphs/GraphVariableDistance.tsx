@@ -2,11 +2,19 @@ import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 import GraphContainer, { GraphSubclassProps } from "./Graph";
 import { baseUrl } from "../../tools/serverConn";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
-const GraphVariableDistance = ({ cargos, saveId }: GraphSubclassProps) => {
+const GraphVariableDistance = ({ cargos }: GraphSubclassProps) => {
+
+	const saveId = useAppSelector(selectSaveId);
 
 	const [speed, setSpeed] = useState<number>(120);
 	const [units, setUnits] = useState<number>(20);
+
+	if (saveId === null) {
+		return null;
+	}
 
 	const renderParams = () =>
 		<>
@@ -19,7 +27,6 @@ const GraphVariableDistance = ({ cargos, saveId }: GraphSubclassProps) => {
 
 	return (
 		<GraphContainer 
-			saveId={saveId}
 			cargos={cargos}
 			endpoint={`${baseUrl}/calculate/${saveId}/distance`}
 			renderParams={renderParams}

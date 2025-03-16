@@ -7,7 +7,6 @@ import IndustryInfoPanel from "./IndustryInfoPanel";
 import StationInfoPanel from "./StationInfoPanel";
 import SignInfoPanel from "./SignInfoPanel";
 import TownInfoPanel from "./TownInfoPanel";
-import { SaveContext } from "../../App";
 import type { Station } from "@dbtypes/db/schema/station";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import { Card } from "react-bootstrap";
@@ -34,8 +33,8 @@ const InformationPaneController = ({ infoPanelMode, data, setInfoPanelMode, setW
     });
   };
 
-  const innerContent = (saveId: number) => {
-    const baseProps: BaseInfoPanelProps = { saveId: saveId, onClose: onClose, id: data?.id ?? 0 }
+  const innerContent = () => {
+    const baseProps: BaseInfoPanelProps = { onClose: onClose, id: data?.id ?? 0 }
     if (infoPanelMode === InformationPaneMode.Industry) {
       return <IndustryInfoPanel {...baseProps} {...{setWindowIndex}} />
     } 
@@ -65,13 +64,8 @@ const InformationPaneController = ({ infoPanelMode, data, setInfoPanelMode, setW
   return (
     <div className={styles.anchor}>
       <Card className={styles.content}>
-        {/* <Card> */}
-          {infoPanelMode !== InformationPaneMode.Default &&
-            <CustomCloseButton onClickHandler={onClose} />}
-            <SaveContext.Consumer>
-              { value => value?.saveId && innerContent(value.saveId) }
-            </SaveContext.Consumer>
-          {/* </Card> */}
+        { infoPanelMode !== InformationPaneMode.Default && <CustomCloseButton onClickHandler={onClose} /> }
+        { innerContent() }
       </Card>
     </div>
   )

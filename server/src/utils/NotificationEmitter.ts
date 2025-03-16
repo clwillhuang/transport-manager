@@ -1,9 +1,10 @@
 import { Server } from "socket.io";
 import { GameConnection } from "./connection";
 
-enum NOTIFICATION_TYPES {
+enum NotificationTypes {
     MESSAGE = 'message',
-    LOADING = 'loading'
+    LOADING = 'loading',
+    CONNECTION = 'connection',
 }
 
 enum MessageNotificationContext {
@@ -39,7 +40,7 @@ type NotificationEmitter = (event: string, data: { title: string; message: strin
  * @param context 
  */
 function emitNotificationMessage(io: Server, title: string, message: string, context?: MessageNotificationContext): void {
-    io.emit(NOTIFICATION_TYPES.MESSAGE, {
+    io.emit(NotificationTypes.MESSAGE, {
         title,
         message,
         context
@@ -47,17 +48,41 @@ function emitNotificationMessage(io: Server, title: string, message: string, con
 }
 
 function emitNotificationLoading(io: Server, loadingCategory: MessageLoadingCategory, progress: number, total: number): void {
-    io.emit(NOTIFICATION_TYPES.LOADING, {
+    io.emit(NotificationTypes.LOADING, {
         loadingCategory,
         progress,
         total
     });
 }
 
+enum NotificationConnectionStatus {
+    /* Connection has been interrupted unexpectedly */
+    INTERRUPTED = "interrupted",
+    /* Connection has completed being disconnected */
+    DISCONNECTED = "disconnected",
+    /* Server is attempting to connect */
+    CONNECTING = "connecting",
+    /* Server successfully made connection */
+    CONNECTED = "connected",
+    /* Server has voluntarily aborted trying to connect to the server */
+    ABORTED = "aborted",
+    /* Connection is unsuccessful */
+    CONNECTION_UNSUCCESSFUL = "connection_unsuccessful",
+}
+
+function emitNotificationConnection(io: Server, status: NotificationConnectionStatus, saveId: number | null) {
+    io.emit(NotificationTypes.CONNECTION, {
+        status,
+        saveId,
+    });
+}
+
 export {
-    NOTIFICATION_TYPES,
+    NotificationTypes as NOTIFICATION_TYPES,
     MessageNotificationContext,
     NotificationEmitter,
     emitNotificationMessage,
-    emitNotificationLoading
+    emitNotificationLoading,
+    NotificationConnectionStatus,
+    emitNotificationConnection,
 }

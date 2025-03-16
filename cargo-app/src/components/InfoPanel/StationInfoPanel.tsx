@@ -12,6 +12,8 @@ import { faShip } from "@fortawesome/free-solid-svg-icons/faShip";
 import UpdateStationModal from "../Modals/UpdateStationModal";
 import styles from './InfoPanel.module.css'
 import { Button } from "react-bootstrap";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 export interface StationInfoPanelProps extends BaseInfoPanelProps {
     // data: Station,
@@ -19,15 +21,19 @@ export interface StationInfoPanelProps extends BaseInfoPanelProps {
     // onStartConnectingStation(station: Station | null): void,
 };
 
-const StationInfoPanel = ({ id, saveId, onClose }: StationInfoPanelProps) => {
+const StationInfoPanel = ({ id, onClose }: StationInfoPanelProps) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const queryClient = useQueryClient();
 
     const { data } = useQuery<GETOneStationResponse>({
         queryKey: ['station', id],
-        queryFn: () => fetch(`${baseUrl}/data/${saveId}/stations/${id}`, { method: 'GET' }).then(res => res.json())
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/stations/${id}`, { method: 'GET' }).then(res => res.json()),
+        enabled: saveId !== null
     })
 
-    if (!data || !data.id) {
+    if (saveId === null || !data || !data.id) {
         return <></>
     }
 
@@ -64,7 +70,7 @@ const StationInfoPanel = ({ id, saveId, onClose }: StationInfoPanelProps) => {
                 <span>X: {x}, Y: {y}</span>
             </div>
             <div>
-                <UpdateStationModal stationData={data} saveId={saveId} />
+                <UpdateStationModal stationData={data} />
                 <Button onClick={deleteStation}>
                     Delete
                 </Button>

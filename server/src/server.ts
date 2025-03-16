@@ -21,7 +21,7 @@ import { requireSave } from './middleware/saveMiddleware';
 import saveRouter from './routes/saveRoutes';
 import economyRouter from './routes/economyRoutes';
 import calculateRouter from './routes/calculateRoutes';
-import { MessageNotificationContext, emitNotificationMessage } from './utils/NotificationEmitter';
+import { MessageNotificationContext, NotificationConnectionStatus, emitNotificationConnection, emitNotificationMessage } from './utils/NotificationEmitter';
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -93,8 +93,10 @@ app.use('/saves', saveRouter)
 app.get("/socket/disconnect", (req: Request, res: Response) => {
     req.activeConnection = activeConnection
     if (req.activeConnection.socket) {
+        req.activeConnection.saveId = null;
         req.activeConnection.socket!.end(Buffer.from(new Uint8Array([0x03, 0x00, 0x01])), () => { console.log("Ending This Connection") })
-        req.activeConnection.emitNotification('message', { title: "Disconnect", message: "Disconnected from your OpenTTD game.", context: MessageNotificationContext.SUCCESS })
+        emitNotificationConnection(activeConnection.io, NotificationConnectionStatus.DISCONNECTED, null);
+        // req.activeConnection.emitNotification('message', { title: "Disconnect", message: "Disconnected from your OpenTTD game.", context: MessageNotificationContext.SUCCESS })
         res.json(200);
     } else {
         req.activeConnection.emitNotification('message', { title: "Disconnect", message: "Cannot disconnect, because there is no existing connection to OpenTTD!", context: MessageNotificationContext.WARNING })
@@ -105,7 +107,7 @@ app.get("/socket/disconnect", (req: Request, res: Response) => {
 app.use("/socket/connect", (req: Request, res: Response) => {
     req.activeConnection = activeConnection
     activeConnection.socket = createConnection(io, activeConnection);
-    req.activeConnection.emitNotification('message', { title: "Connect", message: "Trying to connect to your OpenTTD game.", context: MessageNotificationContext.INFO })
+    emitNotificationConnection(activeConnection.io, NotificationConnectionStatus.CONNECTING, null);
     res.status(200).json({
         'ip': process.env.OPENTTD_SERVER_IP as string,
         'port': process.env.OPENTTD_SERVER_ADMIN_PORT as string,

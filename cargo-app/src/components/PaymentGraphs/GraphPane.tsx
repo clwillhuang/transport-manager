@@ -8,12 +8,13 @@ import GraphVariableTransitDays from "./GraphVariableTransitDays";
 import GraphTwoWayProfit from "./GraphTwoWayProfit";
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../tools/serverConn";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
-interface GraphPaneProps {
-    saveId: number | null;
-}
+const GraphPane = () => {
 
-const GraphPane = ({ saveId }: GraphPaneProps) => {
+    const saveId = useAppSelector(selectSaveId);
+
     const {data: cargos, isLoading, isError } = useQuery({
         queryKey: ['cargos', saveId],
         queryFn: () => {
@@ -21,7 +22,7 @@ const GraphPane = ({ saveId }: GraphPaneProps) => {
             .then(res => res.json())
             .then((data: Cargo[]) => data.sort((a: Cargo, b: Cargo) => a.name.localeCompare(b.name)))
         },
-        enabled: !!saveId
+        enabled: saveId !== null
     })
 
     if (!saveId) {

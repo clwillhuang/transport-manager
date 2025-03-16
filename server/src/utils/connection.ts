@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { Server } from "socket.io";
-import { MessageNotificationContext, NotificationEmitter } from './NotificationEmitter';
+import { MessageNotificationContext, NotificationConnectionStatus, NotificationEmitter, emitNotificationConnection } from './NotificationEmitter';
 
 export type GameConnection = {
     socket: Socket | null,
@@ -34,9 +34,11 @@ export function createConnection(io, activeConnection: GameConnection, processDa
     activeConnection.serverName = null;
     activeConnection.queuedRequests = [];
     // Connect to the open and active OpenTTD Server
+    console.log("Initiating connection to " + HOST + ":" + PORT);
     socket.connect(PORT, HOST, function () {
-        socket.write(createAdminJoin(PASS, NAME, VERSION));
         console.log('CONNECTED TO: ' + HOST + ':' + PORT);
+        emitNotificationConnection(io, NotificationConnectionStatus.CONNECTED, activeConnection.saveId);
+        socket.write(createAdminJoin(PASS, NAME, VERSION));
         socket.write(createUpdatePacket(AdminUpdateType.GameScript, AdminUpdateFrequency.Automatic))
     });
     socket.on('data', async (data) => {
@@ -50,34 +52,18 @@ export function createConnection(io, activeConnection: GameConnection, processDa
     socket.on('error', (err) => {
         console.log('errored: ', err.message, err.name)
         if (activeConnection.saveId) {
-            activeConnection.emitNotification('message', { 
-                title: "Connection Failure", 
-                message: "Encountered an error while connected to your OpenTTD game.",
-                context: MessageNotificationContext.DANGER
-            })
+            emitNotificationConnection(activeConnection.io, NotificationConnectionStatus.INTERRUPTED, activeConnection.saveId);
+            // TODO: Disconnect?
         } else {
-            console.log(activeConnection)
-            activeConnection.emitNotification('message', { 
-                title: "Connection Unsuccessful", 
-                message: `Encountered an error while trying to connect to your OpenTTD game at Host ${HOST}, Port ${PORT}.`,
-                context: MessageNotificationContext.DANGER
-            })
+            emitNotificationConnection(activeConnection.io, NotificationConnectionStatus.CONNECTION_UNSUCCESSFUL, null);
         }
         activeConnection.queuedRequests = [];
         activeConnection.saveId = null;
         activeConnection.serverName = null;
-        get(`http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/socket/error`)
-        return ([null, null])
     })
     // Add a 'close' event handler for the client socket
     socket.on('close', function () {
-        if (activeConnection.saveId) {
-            activeConnection.emitNotification('message', { 
-                title: "Connection Closed", 
-                message: "Disconnected from your OpenTTD game.",
-                context: MessageNotificationContext.DANGER
-            })
-        }
+        console.log('Connection closed');
         activeConnection.queuedRequests = [];
         activeConnection.saveId = null;
         activeConnection.serverName = null;

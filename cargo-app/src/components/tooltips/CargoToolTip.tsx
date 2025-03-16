@@ -5,28 +5,33 @@ import type { GETOneCargoResponse } from "@dbtypes/api/schema/apiCargo";
 import { forwardRef } from "react";
 import styles from './Tooltip.module.css'
 import { ConvertTEToString } from '@dbtypes/db/utils'
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 type CargoTooltipProps = {
     cargoId: number | null,
-    saveId: number | null,
 }
 
 const CargoTooltip = forwardRef<HTMLDivElement, CargoTooltipProps>((props: CargoTooltipProps & any, ref) => {
-    const { cargoId, saveId, ...injectedProps } = props
+
+    const saveId = useAppSelector(selectSaveId);
+
+    const { cargoId, ...injectedProps } = props
 
     const { data: cargoData, isLoading, isFetching, isError } = useQuery<GETOneCargoResponse>({
         queryKey: ['cargo', cargoId],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/cargoes/${cargoId}`).then(res => res.json()),
-        enabled: !!cargoId && !!saveId
+        enabled: !!cargoId && saveId !== null
     })
     let content: string | React.ReactNode = ''
 
-    if (isLoading || isFetching) {
+    if (saveId === null) {
+		return null;
+	} else if (isLoading || isFetching) {
         content = "Loading..."
     } else if (isError || !cargoData) {
         content = "Error"
-    }
-    else {
+    } else {
         const { name, label, isPassenger, isMail, isExpress, isArmoured, isBulk, isPieceGoods, isLiquid, isRefrigerated, isHazardous, isCovered, townEffect, grfData } = cargoData;
 
         const cargoClasses: string[] = [
@@ -67,9 +72,8 @@ const CargoTooltip = forwardRef<HTMLDivElement, CargoTooltipProps>((props: Cargo
             <p>{ConvertTEToString(townEffect)}</p>
         </div>
     }
-
+    
     return <Tooltip id="cargoTooltip" {...injectedProps} ref={ref}>{content}</Tooltip>
-
 })
 
 export default CargoTooltip;

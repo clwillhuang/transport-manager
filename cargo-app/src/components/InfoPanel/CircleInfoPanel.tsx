@@ -6,11 +6,16 @@ import type { Circle, CircleType } from "@dbtypes/db/schema/circle"
 import type { GETOneCircleResponse } from "@dbtypes/api/schema/apiCircle"
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import { Button, Form, FormControl } from "react-bootstrap"
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 
 export interface CircleInfoPanelProps extends BaseInfoPanelProps { };
 
-const CircleInfoPanel = ({ id, saveId, onClose }: CircleInfoPanelProps) => {
+const CircleInfoPanel = ({ id, onClose }: CircleInfoPanelProps) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const { data } = useQuery<GETOneCircleResponse>({
         queryKey: ['circle', id],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/circles/${id}`, { method: 'GET' }).then(res => res.json())

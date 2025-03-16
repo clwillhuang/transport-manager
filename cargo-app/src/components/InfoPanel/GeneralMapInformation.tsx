@@ -2,17 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import styles from './GeneralMapInformation.module.css'
 import { GETOneSaveResponse } from "@dbtypes/api/schema/apiSave";
 import { baseUrl } from '../../tools/serverConn';
+import { useAppSelector } from '../../app/hooks';
+import { selectSaveId } from '../../features/saves/saveSlice';
 
+const GeneralMapInformation = () => {
+    const saveId = useAppSelector(selectSaveId);
 
-interface GeneralMapInformationProps {
-    saveId: number,
-}
-
-const GeneralMapInformation = ({saveId }: GeneralMapInformationProps) => {
     const { data } = useQuery<GETOneSaveResponse>({
         queryKey: ['save'],
         queryFn: () => fetch(`${baseUrl}/saves/${saveId}`).then(res => res.json()),
-        enabled: !!saveId
+        enabled: saveId !== null
     })
 
     if (!data) return <></>

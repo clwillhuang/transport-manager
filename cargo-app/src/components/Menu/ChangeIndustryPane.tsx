@@ -6,16 +6,17 @@ import styles from './ChangeIndustryPane.module.css'
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { baseUrl, fetchPOSTFactory } from "../../tools/serverConn";
 import type { GETAllPacksResponse, IndustryPackResponse, IndustryVersionResponse } from "@dbtypes/api/schema/apiEconomies";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
-interface ChangeIndustryPaneProps {
-    saveId: number | null,
-}
+const ChangeIndustryPane = () => {
+    const saveId = useAppSelector(selectSaveId);
 
-const ChangeIndustryPane = ({ saveId }: ChangeIndustryPaneProps) => {
     const { data: industryPacks, isLoading } = useQuery<GETAllPacksResponse>({
         queryKey: [saveId],
         queryFn: () => fetch(`${baseUrl}/economies/all`).then(res => res.json()),
         initialData: [],
+        enabled: saveId !== null
     })
 
     const [pack, setPack] = useState<IndustryPackResponse | null>(null);

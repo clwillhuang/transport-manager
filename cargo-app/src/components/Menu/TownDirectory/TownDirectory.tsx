@@ -6,10 +6,8 @@ import { baseUrl } from "../../../tools/serverConn";
 import { GETTownDirectoryResponse } from "@dbtypes/api/schema/apiTown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortUp, faSort, faSortDown } from "@fortawesome/free-solid-svg-icons";
-
-interface IndustryDirectoryProps {
-    saveId: number | null,
-}
+import { useAppSelector } from "../../../app/hooks";
+import { selectSaveId } from "../../../features/saves/saveSlice";
 
 // an array with restricted set of possible attributes ('population', 'name'), with each attribute value being 'asc' or 'desc'
 export type ColumnSetting = { key: string, order: 'asc' | 'desc' };
@@ -17,13 +15,15 @@ export type SortSettings = ColumnSetting[];
 
 const PAGE_SIZE = 10;
 
-/* Show a window that allows user to see a table of cities visible on the map. Table filtered by selected industry type and is paginated */
-const TownDirectory = ({ saveId }: IndustryDirectoryProps) => {
+/* Show a window that allows user to see a table of cities visible on the map. */
+const TownDirectory = () => {
+    const saveId = useAppSelector(selectSaveId);
+
     const queryClient = useQueryClient();
     const [page, setPage] = useState(1);
     const [order, setOrder] = useState<SortSettings>([]);
 
-    const { data: response, isLoading: industriesLoading, isSuccess } = useQuery<GETTownDirectoryResponse>({
+    const { data: response, isLoading: townsLoading, isSuccess } = useQuery<GETTownDirectoryResponse>({
         queryKey: [`dirTown`, page, saveId ],
         queryFn: () => {
             const queryBuilder = new URLSearchParams({
@@ -35,7 +35,7 @@ const TownDirectory = ({ saveId }: IndustryDirectoryProps) => {
             .then(res => res.json())
             .catch((e) => { console.error(e); })
         },
-        enabled: !!saveId
+        enabled: saveId !== null,
     })
 
     const { data: towns, total, pages } = isSuccess ? response : { data: [], total: 0, pages: 0 };
@@ -67,10 +67,14 @@ const TownDirectory = ({ saveId }: IndustryDirectoryProps) => {
         if (saveId) {
             queryClient.invalidateQueries({ queryKey: ['dirTown', page, saveId] });
         }
-    }, [order.map(o => o.order)])
+    }, [order.map(o => o.order), saveId])
+
+    if (saveId === null) {
+        return null;
+    }
 
     const renderTable = () => {
-        if (industriesLoading) return <>Loading...</>;
+        if (townsLoading) return <>Loading...</>;
         else if (towns.length === 0) return <>No results</>;
         else return (
             <>

@@ -6,13 +6,16 @@ import type { Town } from '@dbtypes/db/schema/town';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import styles from './UpdateModal.module.css'
+import { useAppSelector } from '../../app/hooks';
+import { selectSaveId } from '../../features/saves/saveSlice';
 
 interface UpdateTownModalProps {
     townData: Town;
-    saveId: number;
 }
 
-const UpdateTownModal: React.FC<UpdateTownModalProps> = ({ townData, saveId }) => {
+const UpdateTownModal: React.FC<UpdateTownModalProps> = ({ townData }) => {
+    const saveId = useAppSelector(selectSaveId);
+
     const [editedTownData, setEditedTownData] = useState<Town>({ ...townData })
 
     const queryClient = useQueryClient()
@@ -56,6 +59,10 @@ const UpdateTownModal: React.FC<UpdateTownModalProps> = ({ townData, saveId }) =
         };
         mutation.mutate(newData);
     };
+
+    if (saveId === null) {
+        return null;
+    }
 
     if (!showEdit) return (
         <Button className={styles.editButton} onClick={() => setShowEdit(true)}>

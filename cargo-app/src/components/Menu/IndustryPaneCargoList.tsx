@@ -6,11 +6,10 @@ import { OverlayTrigger } from "react-bootstrap";
 interface IndustryPaneCargoListProps {
     list: GETAllCargoResponse,
     setSelectedType: (id: number) => void,
-    saveId: number | null,
     mode: 'produces' | 'accepts',
 }
 
-const IndustryPaneCargoList = ({ list, setSelectedType, saveId, mode }: IndustryPaneCargoListProps) => {
+const IndustryPaneCargoList = ({ list, setSelectedType, mode }: IndustryPaneCargoListProps) => {
     return (
         <div>
             <ul>
@@ -20,7 +19,7 @@ const IndustryPaneCargoList = ({ list, setSelectedType, saveId, mode }: Industry
                         if (!id) return null;
                         return (
                             <OverlayTrigger overlay={
-                                <CargoTooltip cargoId={id} saveId={saveId} />
+                                <CargoTooltip cargoId={id} />
                             } key={`${mode}-${id}`}>
                                 {({ ref, ...triggerHandler }) => (
                                     <li ref={ref} className={mode === 'accepts' ? styles.acceptsItem : styles.producesItem} {...triggerHandler} >

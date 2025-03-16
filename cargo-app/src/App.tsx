@@ -19,6 +19,8 @@ import NotificationsPanel from './components/Notifications/NotificationsPanel';
 import type { GETAllSaveResponse, GETOneSaveResponse } from '@dbtypes/api/schema/apiSave';
 import { Action } from './components/ActionMenu/actionMenuOptions';
 import WelcomeModal from './components/WelcomeModal/WelcomeModal';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { selectSaveId, setSaveId } from './features/saves/saveSlice';
 
 type SaveContextType = {
 	saveId: number | null,
@@ -39,34 +41,39 @@ function App() {
 		infoPanelMode: action !== Action.DistanceMeasure ? InformationPaneMode.Default : InformationPaneMode.DistanceMeasure,
 		data: null,
 	});
-	const [saveId, setSaveId] = useState<number | null>(null);
 
+	const saveId = useAppSelector(selectSaveId);
+	const dispatch = useAppDispatch();
+		
 	const { data: company } = useQuery<GETCurrentCompanyResponse | null>({
 		queryKey: ['player', saveId],
 		queryFn: () => fetch(`${baseUrl}/data/${saveId}/companies/player`).then(res => res.json()),
-		enabled: !!saveId,
+		enabled: saveId !== null,
 		initialData: null,
 	})
 
 	const { data: allSaves } = useQuery<GETAllSaveResponse | null>({
         queryKey: ['currentsave'],
         queryFn: () => fetch(`${baseUrl}/saves`).then(res => res.json()),
-		enabled: import.meta.env.VITE_ENABLE_SOCKET !== 'on',
+		// enabled: import.meta.env.VITE_ENABLE_SOCKET !== 'on',
 		initialData: null
     })
 
 	const saveQuery = useQuery<GETOneSaveResponse | null>({
 		queryKey: ['save', saveId],
 		queryFn: () => fetch(`${baseUrl}/saves/${saveId}`).then(res => res.json()),
-		enabled: !!saveId,
+		enabled: saveId !== null,
 		initialData: null,
 	})
 
 	// Once all saves are retrieved, pre-emptively load first one if socket is disabled.
 	useEffect(() => {
-		if (import.meta.env.VITE_ENABLE_SOCKET !== 'on' && allSaves) {
+		if (allSaves) {
 			const firstSave = allSaves.at(0);
-			if (firstSave) setSaveId(firstSave.id)
+			if (firstSave) {
+				console.log("Setting ", firstSave.id)
+				dispatch(setSaveId(firstSave.id));
+			}
 		}
 	}, [allSaves])
 
@@ -92,7 +99,6 @@ function App() {
 						setAction,
 						setWindowIndex,
 						saveId,
-						setSaveId,
 					}} />
 					{ (saveQuery.data && !saveQuery.isFetching && !saveQuery.isError) && <ActionController {...{action, setAction}} initial={{}}/> }
 				</div>

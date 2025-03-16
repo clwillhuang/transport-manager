@@ -9,6 +9,8 @@ import StationMapObject from "./StationMapObject";
 import type { GETAllStationResponse } from "@dbtypes/api/schema/apiStation";
 import type { Station } from "@dbtypes/db/schema/station";
 import { StationType } from "../MapSettings/StationFilter";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 // import { TrackConnectableObjectProps } from "./TrackConnectableObjectProps";
 
 interface StationMapProps extends GenericMapProps, OpensInfoPanel {
@@ -17,12 +19,15 @@ interface StationMapProps extends GenericMapProps, OpensInfoPanel {
 
 function StationMap(props: StationMapProps) {
 
+    const saveId = useAppSelector(selectSaveId);
+
     const { data: allStations } = useQuery<GETAllStationResponse>({
         queryKey: ['station'],
-        queryFn: () => fetch(`${baseUrl}/data/${props.saveId}/stations`).then(res => res.json())
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/stations`).then(res => res.json()),
+        enabled: saveId !== null,
     })
 
-    if (!allStations) return <></>
+    if (saveId === null || !allStations) return <></>
         
     const data = allStations.filter((s: Station) => 
         props.stationsVisible.includes(StationType.Train) && s.hasTrain ||

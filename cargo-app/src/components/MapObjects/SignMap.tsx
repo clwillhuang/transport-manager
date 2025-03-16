@@ -8,17 +8,23 @@ import { baseUrl } from "../../tools/serverConn";
 import { GenericMapProps, OpensInfoPanel } from "./GenericMapProps";
 import type { GETAllSignResponse } from "@dbtypes/api/schema/apiSign";
 import type { Sign } from "@dbtypes/db/schema/sign";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 interface SignMapProps extends GenericMapProps, OpensInfoPanel {
 }
 
 function SignMap(props: SignMapProps) {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const { data } = useQuery<GETAllSignResponse>({
         queryKey: ['sign'],
-        queryFn: () => fetch(`${baseUrl}/data/${props.saveId}/signs`).then(res => res.json())
+        queryFn: () => fetch(`${baseUrl}/data/${saveId}/signs`).then(res => res.json()),
+        enabled: saveId !== null,
     })
 
-    if (!data) return <></>
+    if (saveId === null || !data) return <></>
 
     return (
         <g>

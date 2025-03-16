@@ -6,13 +6,17 @@ import type { Station } from '@dbtypes/db/schema/station';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import styles from './UpdateModal.module.css'
+import { useAppSelector } from '../../app/hooks';
+import { selectSaveId } from '../../features/saves/saveSlice';
 
 interface UpdateStationModalProps {
     stationData: Station;
-    saveId: number;
 }
 
-const UpdateStationModal: React.FC<UpdateStationModalProps> = ({ stationData, saveId }) => {
+const UpdateStationModal: React.FC<UpdateStationModalProps> = ({ stationData }) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const [editedstationData, setEditedStationType] = useState<Station>({ ...stationData })
 
     const queryClient = useQueryClient()
@@ -59,6 +63,10 @@ const UpdateStationModal: React.FC<UpdateStationModalProps> = ({ stationData, sa
         };
         mutation.mutate(newData);
     };
+    
+    if (saveId === null) {
+        return null;
+    }
 
     if (!showEdit) return (
         <Button className={styles.editButton} onClick={() => setShowEdit(true)}>

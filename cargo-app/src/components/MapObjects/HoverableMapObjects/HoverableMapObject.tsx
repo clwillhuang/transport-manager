@@ -27,11 +27,10 @@ export interface HoverProps<Z = {}> extends IShowsToolTipOnHover {
     tooltipType: ToolTipType;
     // factory used to create abstract tooltip
     TTComponent: ToolTipRenderer<Z>;
-    saveId: number
 }
 
 // Props to be received by tooltip
-export type ToolTipProps<T, P = {}> = MapObjectProps<T> & P & { saveId: number };
+export type ToolTipProps<T, P = {}> = MapObjectProps<T> & P;
 
 // All props
 export type HoverableMapObjectProps<T, P = {}> = MapObjectProps<T> & HoverProps<ToolTipProps<T, P>> & P;

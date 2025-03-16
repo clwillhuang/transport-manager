@@ -4,16 +4,22 @@ import type { GETOneTownResponse } from "@dbtypes/api/schema/apiTown";
 import { BaseInfoPanelProps } from "./BaseInfoPanelProps";
 import UpdateTownModal from "../Modals/UpdateTownModal";
 import { Button } from "react-bootstrap";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 
 export interface TownInfoPanelProps extends BaseInfoPanelProps {}
 
-const TownInfoPanel = ({ id, saveId, onClose }: TownInfoPanelProps) => {
+const TownInfoPanel = ({ id, onClose }: TownInfoPanelProps) => {
+
+    const saveId = useAppSelector(selectSaveId);
+
     const queryClient = useQueryClient();
 
     const { data } = useQuery<GETOneTownResponse>({
         queryKey: ['town', saveId, id],
         queryFn: () => fetch(`${baseUrl}/data/${saveId}/towns/${id}`, {method: 'GET'}).then(res => res.json()),
+        enabled: saveId !== null,
     })
 
     const { isError, ...mutation } = useMutation({
@@ -24,7 +30,7 @@ const TownInfoPanel = ({ id, saveId, onClose }: TownInfoPanelProps) => {
         }
     })
 
-    if (!data || !data.id) return <></>
+    if (saveId === null || !data || !data.id) return <></>
 
     const { name, x, y, isCity, population } = data;
 
@@ -45,7 +51,7 @@ const TownInfoPanel = ({ id, saveId, onClose }: TownInfoPanelProps) => {
                 <p>X: {x}, Y: {y}</p>
             </div>
             <div>
-                <UpdateTownModal townData={data} saveId={saveId}/>
+                <UpdateTownModal townData={data} />
                 <Button onClick={deleteStation}>
                     Delete
                 </Button>

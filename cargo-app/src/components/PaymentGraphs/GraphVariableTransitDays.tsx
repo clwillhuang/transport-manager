@@ -2,11 +2,19 @@ import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 import GraphContainer, { GraphSubclassProps } from "./Graph";
 import { baseUrl } from "../../tools/serverConn";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
-const GraphVariableTransitDays = ({ cargos, saveId }: GraphSubclassProps) => {
+const GraphVariableTransitDays = ({ cargos }: GraphSubclassProps) => {
+
+	const saveId = useAppSelector(selectSaveId);
 
 	const [squares, setSquares] = useState<number>(20);
 	const [units, setUnits] = useState<number>(20);
+
+	if (saveId === null) {
+		return null;
+	}
 
 	const renderParams = () =>
 		<>
@@ -19,7 +27,6 @@ const GraphVariableTransitDays = ({ cargos, saveId }: GraphSubclassProps) => {
 
 	return (
 		<GraphContainer
-			saveId={saveId}
 			cargos={cargos}
 			endpoint={`${baseUrl}/calculate/${saveId}/days`}
 			renderParams={renderParams}

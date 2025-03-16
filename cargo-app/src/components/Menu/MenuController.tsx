@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement, useContext, useMemo } from "react"
+import { ReactElement, useMemo } from "react"
 import IndustryPane from "./IndustryPane";
 import ChangeIndustryPane from "./ChangeIndustryPane";
 import styles from './MenuController.module.css'
@@ -14,7 +14,8 @@ import TownDirectory from "./TownDirectory/TownDirectory";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons/faMapLocationDot";
 import { faIndustry } from "@fortawesome/free-solid-svg-icons/faIndustry";
 import { faDiagramProject } from "@fortawesome/free-solid-svg-icons/faDiagramProject";
-import { SaveContext } from "../../App";
+import { useAppSelector } from "../../app/hooks";
+import { selectSaveId } from "../../features/saves/saveSlice";
 
 // This is the top bar of the app, with options to view different windows
 export enum Windows {
@@ -46,18 +47,15 @@ export interface IWindowOpenable {
 interface MenuControllerProps extends IWindowOpenable {
     initial: any,
     window: Windows,
-    saveId: number | null,
-    setSaveId: React.Dispatch<React.SetStateAction<number | null>>
 }
 
 const MenuController = ({
     window,
     setWindowIndex,
     initial,
-    setSaveId
 }: MenuControllerProps) => {
 
-    const { saveId } = useContext(SaveContext);
+    const saveId = useAppSelector(selectSaveId);
 
     const handleClick = (index: Windows) => {
         var initial = null
@@ -71,34 +69,34 @@ const MenuController = ({
         ... (import.meta.env.VITE_ENABLE_SOCKET === 'on' ? [{ 
             index: Windows.EconomyOptions,
             title: <><FontAwesomeIcon icon={faCog} /> Economies</>,
-            content: <ChangeIndustryPane {...{ saveId, initial }} />
+            content: <ChangeIndustryPane />
         }] : []),
         {
             index: Windows.Saves,
             title: <><FontAwesomeIcon icon={faSave} /> Saves</>,
-            content: <FetchPane {...{ saveId, setSaveId }} />
+            content: <FetchPane />
         },
         {
             index: Windows.Graphs,
             title: <><FontAwesomeIcon icon={faChartLine} />Graphs</>,
-            content: <GraphPane {...{ saveId }} />
+            content: <GraphPane />
         },
         {
             index: Windows.IndustryChain,
             title: <><FontAwesomeIcon icon={faDiagramProject} />Supply Chain</>,
-            content: <IndustryPane {...initial} saveId={saveId} />
+            content: <IndustryPane {...initial} />
         },
         {
             index: Windows.IndustryDirectory,
             title: <><FontAwesomeIcon icon={faIndustry} />Industry Directory</>,
-            content: <IndustryDirectory {...initial} saveId={saveId} />
+            content: <IndustryDirectory {...initial} />
         },
         {
             index: Windows.TownDirectory,
             title: <><FontAwesomeIcon icon={faMapLocationDot} />Town Directory</>,
-            content: <TownDirectory {...initial} saveId={saveId} />
+            content: <TownDirectory {...initial} />
         }
-    ], [initial, saveId, setSaveId]);
+    ], [initial, saveId]);
 
     const activeElement: MenuWindowData | undefined = window !== Windows.Closed ? items.find(x => x.index === window) : undefined;
 
